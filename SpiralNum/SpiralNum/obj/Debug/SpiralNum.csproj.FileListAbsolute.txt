@@ -1,0 +1,6 @@
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\bin\Debug\SpiralNum.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\bin\Debug\SpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\bin\Debug\SpiralNum.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\obj\Debug\SpiralNum.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\obj\Debug\SpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\SpiralNum\SpiralNum\obj\Debug\SpiralNum.pdb

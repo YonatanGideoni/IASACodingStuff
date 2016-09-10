@@ -1,0 +1,5 @@
+C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.pdb
