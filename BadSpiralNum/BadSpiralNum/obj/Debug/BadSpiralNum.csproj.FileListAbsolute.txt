@@ -3,3 +3,9 @@ C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpi
 C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.pdb
 C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.exe
 C:\Users\Yonatan\Desktop\Coding Stuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\obj\Debug\BadSpiralNum.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\BadSpiralNum\BadSpiralNum\bin\Debug\BadSpiralNum.pdb

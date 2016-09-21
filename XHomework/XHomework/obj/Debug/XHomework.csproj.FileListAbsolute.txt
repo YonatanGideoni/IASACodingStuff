@@ -1,0 +1,6 @@
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\bin\Debug\XHomework.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\bin\Debug\XHomework.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\bin\Debug\XHomework.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\obj\Debug\XHomework.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\obj\Debug\XHomework.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\XHomework\XHomework\obj\Debug\XHomework.pdb

@@ -11,8 +11,8 @@ namespace SpiralNum
     {
         static void Main(string[] args)
         {   
-            int totalWidth = 7;
-            int totalHeight = 10;
+            int totalWidth = 10;
+            int totalHeight = 7;
             int[,] a = new int[totalWidth, totalHeight];
             int[] dir = new int[4] {1, 0, -1, 0 };
             int x = 0;
