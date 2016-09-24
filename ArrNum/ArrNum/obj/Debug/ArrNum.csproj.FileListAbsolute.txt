@@ -1,0 +1,6 @@
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\bin\Debug\ArrNum.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\bin\Debug\ArrNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\bin\Debug\ArrNum.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\obj\Debug\ArrNum.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\obj\Debug\ArrNum.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ArrNum\ArrNum\obj\Debug\ArrNum.pdb
