@@ -31,16 +31,16 @@ namespace Reversi
             BoardPanel.Size = new Size(GridLength * ButtonSize, GridLength * ButtonSize);
             this.Size = new Size(400, BoardPanel.Height + BoardPanel.Location.Y + 50);
 
-            for (int i = 0; i < GridLength; i++)
+            for (short i = 0; i < GridLength; i++)
             {
-                for (int k = 0; k < GridLength; k++)
+                for (short k = 0; k < GridLength; k++)
                 {
                     Board[i, k] = new Button();
                     Board[i, k].Size = new Size(ButtonSize, ButtonSize);
                     Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
                     intBrd[i, k] = 0;
                     Board[i, k].BackColor = default(Color);
-                    Board[i, k].Tag = i.ToString() + k.ToString();
+                    Board[i, k].Tag = new short[2]{ i, k };
 
                     BoardPanel.Controls.Add(Board[i, k]);
                     Board[i, k].Click += Form1_Click;
@@ -66,7 +66,10 @@ namespace Reversi
 
         public bool CanPlace(short type, short row, short col)
         {
-
+            if (intBrd[row, col] != 0)
+            {
+                return false;
+            }
             for (short i = 1; i < Board.GetLength(0) - row - 2; i++)
             {
                 if (type != intBrd[row + i, col] && intBrd[row + i, col] != 0)//check if a touching tile is an enemy tile
@@ -193,12 +196,11 @@ namespace Reversi
 
         void Form1_Click(object sender, EventArgs e)
         {
-            short ButtonLoc = short.Parse(((Button)(sender)).Tag.ToString());
-            short GridLength = Convert.ToInt16(GridSizeBox.Value);
-            short row = (short)(ButtonLoc / GridLength);
-            short col = (short)(ButtonLoc % GridLength);
+            short[] ButtonLoc = (short[])((Array)(((Button)(sender)).Tag));
+            short row = ButtonLoc[0];
+            short col = ButtonLoc[1];
 
-            if (CanPlace(1, row, col) == true)
+            if (CanPlace(1, row, col))
             {
                 MessageBox.Show("Can Place!");
             }
