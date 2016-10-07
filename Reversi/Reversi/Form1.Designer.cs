@@ -31,8 +31,10 @@
             this.RestartButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.GridSizeBox = new System.Windows.Forms.NumericUpDown();
-            this.GameTimeBox = new System.Windows.Forms.TextBox();
             this.BoardPanel = new System.Windows.Forms.Panel();
+            this.TileCountBox = new System.Windows.Forms.TextBox();
+            this.SkipButton = new System.Windows.Forms.Button();
+            this.TurnTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,31 +87,51 @@
             0,
             0});
             // 
-            // GameTimeBox
-            // 
-            this.GameTimeBox.BackColor = System.Drawing.SystemColors.Control;
-            this.GameTimeBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.GameTimeBox.Location = new System.Drawing.Point(247, 12);
-            this.GameTimeBox.Name = "GameTimeBox";
-            this.GameTimeBox.ReadOnly = true;
-            this.GameTimeBox.Size = new System.Drawing.Size(46, 13);
-            this.GameTimeBox.TabIndex = 3;
-            this.GameTimeBox.Text = "Time: 0";
-            // 
             // BoardPanel
             // 
-            this.BoardPanel.Location = new System.Drawing.Point(13, 62);
+            this.BoardPanel.Location = new System.Drawing.Point(13, 74);
             this.BoardPanel.Name = "BoardPanel";
             this.BoardPanel.Size = new System.Drawing.Size(35, 36);
             this.BoardPanel.TabIndex = 4;
+            // 
+            // TileCountBox
+            // 
+            this.TileCountBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TileCountBox.Location = new System.Drawing.Point(238, 12);
+            this.TileCountBox.Name = "TileCountBox";
+            this.TileCountBox.ReadOnly = true;
+            this.TileCountBox.Size = new System.Drawing.Size(150, 13);
+            this.TileCountBox.TabIndex = 5;
+            // 
+            // SkipButton
+            // 
+            this.SkipButton.Location = new System.Drawing.Point(13, 45);
+            this.SkipButton.Name = "SkipButton";
+            this.SkipButton.Size = new System.Drawing.Size(75, 23);
+            this.SkipButton.TabIndex = 6;
+            this.SkipButton.Text = "Skip Turn";
+            this.SkipButton.UseVisualStyleBackColor = true;
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            // 
+            // TurnTextBox
+            // 
+            this.TurnTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.TurnTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TurnTextBox.Location = new System.Drawing.Point(127, 45);
+            this.TurnTextBox.Name = "TurnTextBox";
+            this.TurnTextBox.ReadOnly = true;
+            this.TurnTextBox.Size = new System.Drawing.Size(100, 19);
+            this.TurnTextBox.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(512, 262);
+            this.Controls.Add(this.TurnTextBox);
+            this.Controls.Add(this.SkipButton);
+            this.Controls.Add(this.TileCountBox);
             this.Controls.Add(this.BoardPanel);
-            this.Controls.Add(this.GameTimeBox);
             this.Controls.Add(this.GridSizeBox);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.RestartButton);
@@ -126,8 +148,10 @@
         private System.Windows.Forms.Button RestartButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.NumericUpDown GridSizeBox;
-        private System.Windows.Forms.TextBox GameTimeBox;
         private System.Windows.Forms.Panel BoardPanel;
+        private System.Windows.Forms.TextBox TileCountBox;
+        private System.Windows.Forms.Button SkipButton;
+        private System.Windows.Forms.TextBox TurnTextBox;
     }
 }
 

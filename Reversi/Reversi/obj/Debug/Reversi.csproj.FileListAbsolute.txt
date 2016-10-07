@@ -16,3 +16,12 @@ C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Reversi\Reversi\obj\Debug\
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Reversi\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Reversi\Reversi\bin\Debug\Reversi.exe
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Reversi\Reversi\bin\Debug\Reversi.pdb
+C:\Users\Yonatan\Desktop\Reversi\Reversi\bin\Debug\Reversi.exe.config
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.exe
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.pdb
+C:\Users\Yonatan\Desktop\Reversi\Reversi\bin\Debug\Reversi.exe
+C:\Users\Yonatan\Desktop\Reversi\Reversi\bin\Debug\Reversi.pdb
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.Form1.resources
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.Properties.Resources.resources
+C:\Users\Yonatan\Desktop\Reversi\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache
