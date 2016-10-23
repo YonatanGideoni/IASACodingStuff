@@ -52,11 +52,12 @@
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Enabled = false;
+            this.textBox1.ForeColor = System.Drawing.Color.Black;
             this.textBox1.HideSelection = false;
             this.textBox1.Location = new System.Drawing.Point(127, 13);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(43, 13);
+            this.textBox1.Size = new System.Drawing.Size(52, 13);
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = "Grid Size:";
             // 

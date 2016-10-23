@@ -47,7 +47,7 @@ namespace Reversi
 
                     BoardPanel.Controls.Add(Board[i, k]);
                     Board[i, k].Click += Form1_Click;
-
+                    
                     if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)
                     {
                         Board[i, k].Enabled = false;
@@ -391,6 +391,7 @@ namespace Reversi
             {
                 intBrd[row, col] = 1;
                 Board[row, col].BackColor = Color.Black;
+                Board[row, col].Enabled = false;
                 BlackTile++;
                 turnType = 2;
                 TurnTextBox.Text = "Blue's Turn";
@@ -399,6 +400,7 @@ namespace Reversi
             {
                 intBrd[row, col] = 2;
                 Board[row, col].BackColor = Color.Blue;
+                Board[row, col].Enabled = false;
                 BlueTile++;
                 turnType = 1;
                 TurnTextBox.Text = "Black's Turn";
@@ -422,14 +424,15 @@ namespace Reversi
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
-            turnType++;
             if (turnType == 1)
             {
-                TurnTextBox.Text = "Black's Turn";
+                TurnTextBox.Text = "Blue's Turn";
+                turnType = 2;
             }
             else
             {
-                TurnTextBox.Text = "Blue's Turn";
+                TurnTextBox.Text = "Black's Turn";
+                turnType = 1;
             }
         }
     }
