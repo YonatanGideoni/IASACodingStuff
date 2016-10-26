@@ -23,6 +23,274 @@ namespace Reversi
             InitializeComponent();
         }
 
+        static short BrdCheck(short[,] tempBrd)
+        {
+            short BrdPoints = 0;
+            short BrdLength = (short)(tempBrd.GetLength(0) - 1);
+            short BrdHeight = (short)(tempBrd.GetLength(1) - 1);
+            for (short i = 1; i < BrdLength; i++)
+            {
+                for (short k = 1; k < BrdHeight; k++)
+                {
+                    if (i > 1 && i < BrdLength - 1 && k > 1 && k < BrdHeight - 1)
+                    {
+                        if (tempBrd[i, k] == 0)
+                        {
+                            continue;
+                        }
+                        else if (tempBrd[i, k] == 2)
+                        {
+                            BrdPoints++;
+                        }
+                        else
+                        {
+                            BrdPoints--;
+                        }
+                    }
+                    else if (i == k)
+                    {
+                        if (tempBrd[i, k] == 0)
+                        {
+                            continue;
+                        }
+                        else if (tempBrd[i, k] == 2)
+                        {
+                            BrdPoints += 5;
+                        }
+                        else
+                        {
+                            BrdPoints -= 5;
+                        }
+                    }
+                    else if (i == 1 && k == BrdHeight - 1)
+                    {
+                        {
+                            if (tempBrd[i, k] == 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i, k] == 2)
+                            {
+                                BrdPoints += 5;
+                            }
+                            else
+                            {
+                                BrdPoints -= 5;
+                            }
+                        }
+                    }
+                    else if (i == BrdLength - 1 && k == 1)
+                    {
+                        {
+                            if (tempBrd[i, k] == 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i, k] == 2)
+                            {
+                                BrdPoints += 5;
+                            }
+                            else
+                            {
+                                BrdPoints -= 5;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (tempBrd[i, k] == 0)
+                        {
+                            continue;
+                        }
+                        else if (tempBrd[i, k] == 2)
+                        {
+                            BrdPoints += 2;
+                        }
+                        else
+                        {
+                            BrdPoints -= 2;
+                        }
+                    }
+                }
+            }
+            return BrdPoints;
+        }
+
+        static short[] MoveCheck(short[,] CurrentBrd)
+        {
+            short BrdLength = (short)(CurrentBrd.GetLength(0));
+            short BrdHeight = (short)(CurrentBrd.GetLength(1));
+            short[,] tempBrd = CurrentBrd;
+            for (short i = 0; i < BrdLength; i++)
+            {
+                bool CanPlace = false;
+                for (short k = 0; k < BrdLength; k++)
+                {
+                    if (2 != tempBrd[i + 1, k])
+                    {
+                        for (short j = 1; j < BrdLength - i - 2; j++)
+                        {
+                            if (2 != tempBrd[i + j, k] && tempBrd[i + j, k] != 0)//check if a touching tile is an enemy tile
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i + j, k] == 0) //if it is an uninhabited tile, stop checking
+                            {
+                                break;
+                            }
+                            else //if the next tile over is a friendly tile, start placing friendly tiles  
+                            {                                
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+                    // Same deal for all the other loops. Each checks a different direction
+
+                    if (2 != tempBrd[i, k + 1])
+                    {
+                        for (short j = 1; j < BrdHeight - k - 2; j++)
+                        {
+                            if (2 != tempBrd[i, k + j] && tempBrd[i, k + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i, k + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i, k - 1])
+                    {
+                        for (short j = 1; j < k; j++)
+                        {
+                            if (2 != tempBrd[i, k - j] && tempBrd[i, k - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i, k - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i - 1, k])
+                    {
+                        for (short j = 1; j < i; j++)
+                        {
+                            if (2 != tempBrd[i - j, k] && tempBrd[i - j, k] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i - j, k] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i - 1, k - 1])
+                    {
+                        for (short j = 1; j < i && j < k; j++)
+                        {
+                            if (2 != tempBrd[i - j, k - j] && tempBrd[i - j, k - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i - j, k - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i + 1, k - 1])
+                    {
+                        for (short j = 1; j < BrdLength - 1 - i && j < k; j++)
+                        {
+                            if (2 != tempBrd[i + j, k - j] && tempBrd[i + j, k - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i + j, k - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {                                
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i + 1, k + 1])
+                    {
+                        for (short j = 1; j < BrdLength - 1 - i && j < BrdHeight - 1 - k; j++)
+                        {
+                            if (2 != tempBrd[i + j, k + j] && tempBrd[i + j, k + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i + j, k + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {                                
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != tempBrd[i - 1, k + 1])
+                    {
+                        for (short j = 1; j < i && j < BrdHeight - 1 - k; j++)
+                        {
+                            if (2 != tempBrd[i - j, k + j] && tempBrd[i - j, k + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (tempBrd[i - j, k + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                CanPlace = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+
         private void RestartButton_Click(object sender, EventArgs e)
         {
             short GridLength = Convert.ToInt16(GridSizeBox.Value + 2);
@@ -47,7 +315,7 @@ namespace Reversi
 
                     BoardPanel.Controls.Add(Board[i, k]);
                     Board[i, k].Click += Form1_Click;
-                    
+
                     if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)
                     {
                         Board[i, k].Enabled = false;
@@ -407,7 +675,6 @@ namespace Reversi
             }
 
             TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
-
 
             if (BlackTile + BlueTile == (Board.GetLength(0) - 2) * (Board.GetLength(0) - 2))//Win condition
             {
