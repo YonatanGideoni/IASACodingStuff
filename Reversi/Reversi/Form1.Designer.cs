@@ -35,6 +35,7 @@
             this.TileCountBox = new System.Windows.Forms.TextBox();
             this.SkipButton = new System.Windows.Forms.Button();
             this.TurnTextBox = new System.Windows.Forms.TextBox();
+            this.CompTurn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,7 +91,7 @@
             // 
             // BoardPanel
             // 
-            this.BoardPanel.Location = new System.Drawing.Point(13, 74);
+            this.BoardPanel.Location = new System.Drawing.Point(13, 106);
             this.BoardPanel.Name = "BoardPanel";
             this.BoardPanel.Size = new System.Drawing.Size(35, 36);
             this.BoardPanel.TabIndex = 4;
@@ -124,11 +125,23 @@
             this.TurnTextBox.Size = new System.Drawing.Size(100, 19);
             this.TurnTextBox.TabIndex = 7;
             // 
+            // CompTurn
+            // 
+            this.CompTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CompTurn.Location = new System.Drawing.Point(12, 77);
+            this.CompTurn.Name = "CompTurn";
+            this.CompTurn.Size = new System.Drawing.Size(85, 23);
+            this.CompTurn.TabIndex = 8;
+            this.CompTurn.Text = "Computer Turn";
+            this.CompTurn.UseVisualStyleBackColor = true;
+            this.CompTurn.Click += new System.EventHandler(this.CompTurn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(512, 262);
+            this.Controls.Add(this.CompTurn);
             this.Controls.Add(this.TurnTextBox);
             this.Controls.Add(this.SkipButton);
             this.Controls.Add(this.TileCountBox);
@@ -153,6 +166,7 @@
         private System.Windows.Forms.TextBox TileCountBox;
         private System.Windows.Forms.Button SkipButton;
         private System.Windows.Forms.TextBox TurnTextBox;
+        private System.Windows.Forms.Button CompTurn;
     }
 }
 
