@@ -36,20 +36,35 @@ namespace Reversi
                     BrdPoints = 0;
                     if (i > 1 && i < BrdLength - 1 && k > 1 && k < BrdHeight - 1)
                     {
-                        if (tempBrd[i, k] == 0)
+                        if (tempBrd[i, k] == 0)//skips uninhabited tiles. Same for all other checks
+                        {
+                            continue;
+                        }
+                        else if (tempBrd[i, k] == 2)//awards a point for a friendly non-frame tile
+                        {
+                            BrdPoints++;
+                        }
+                        else//takes a point for an enemy non-frame tile
+                        {
+                            BrdPoints--;
+                        }
+                    }
+                    else if (i == 1 && k==1)
+                    {
+                        if (tempBrd[i, k] == 0)//this check and the next three are the same, just for corners and it awards more points
                         {
                             continue;
                         }
                         else if (tempBrd[i, k] == 2)
                         {
-                            BrdPoints++;
+                            BrdPoints += 10;
                         }
                         else
                         {
-                            BrdPoints--;
+                            BrdPoints -= 10;
                         }
                     }
-                    else if (i == k)
+                    else if (i == BrdLength-1 && k == BrdHeight-1)
                     {
                         if (tempBrd[i, k] == 0)
                         {
@@ -57,11 +72,11 @@ namespace Reversi
                         }
                         else if (tempBrd[i, k] == 2)
                         {
-                            BrdPoints += 5;
+                            BrdPoints += 10;
                         }
                         else
                         {
-                            BrdPoints -= 5;
+                            BrdPoints -= 10;
                         }
                     }
                     else if (i == 1 && k == BrdHeight - 1)
@@ -73,11 +88,11 @@ namespace Reversi
                             }
                             else if (tempBrd[i, k] == 2)
                             {
-                                BrdPoints += 5;
+                                BrdPoints += 10;
                             }
                             else
                             {
-                                BrdPoints -= 5;
+                                BrdPoints -= 10;
                             }
                         }
                     }
@@ -90,11 +105,11 @@ namespace Reversi
                             }
                             else if (tempBrd[i, k] == 2)
                             {
-                                BrdPoints += 5;
+                                BrdPoints += 10;
                             }
                             else
                             {
-                                BrdPoints -= 5;
+                                BrdPoints -= 10;
                             }
                         }
                     }
@@ -106,11 +121,11 @@ namespace Reversi
                         }
                         else if (tempBrd[i, k] == 2)
                         {
-                            BrdPoints += 2;
+                            BrdPoints += 4;
                         }
                         else
                         {
-                            BrdPoints -= 2;
+                            BrdPoints -= 4;
                         }
                     }
                 }
@@ -118,7 +133,7 @@ namespace Reversi
             return BrdPoints;
         }
 
-        static short[] MoveCheck(short[,] CurrentBrd)
+        public short[] MoveCheck(short[,] CurrentBrd)
         {
             short BrdLength = (short)(CurrentBrd.GetLength(0));
             short BrdHeight = (short)(CurrentBrd.GetLength(1));
@@ -129,7 +144,7 @@ namespace Reversi
             {                
                 for (short col = 1; col < BrdLength-1; col++)
                 {
-                    short[,] tempBrd = CurrentBrd;
+                    short[,] tempBrd = (short[,])CurrentBrd.Clone();//shallow clone of the array
                     bool CanPlace = false;
                     if (tempBrd[row, col] != 0)//Don't check buttons that have already been pressed
                     {
@@ -938,7 +953,7 @@ namespace Reversi
                                 Board[row + k, col].BackColor = Color.Blue;
                                 Board[row + k, col].Enabled = false;
                                 BlueTile++;
-                                BlackTile--;                                
+                                BlackTile--;
                             }
                             
                             break;
@@ -1131,9 +1146,26 @@ namespace Reversi
                                 Board[row - k, col + k].Enabled = false;
                                 BlueTile++;
                                 BlackTile--;                                
-                            }                            
+                            }
                             break;
                         }
+                    }
+                }
+                BlueTile++;
+                TurnTextBox.Text = "Black's Turn";
+                TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
+                Board[row, col].BackColor = Color.Blue;
+                Board[row, col].Enabled = false;
+                intBrd[row, col] = 2;
+                if (BlackTile + BlueTile == (Board.GetLength(0) - 2) * (Board.GetLength(0) - 2))//Win condition
+                {
+                    if (BlackTile > BlueTile)
+                    {
+                        MessageBox.Show("Black Wins!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Blue Wins!");
                     }
                 }
                 turnType = 1;
