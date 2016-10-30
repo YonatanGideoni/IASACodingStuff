@@ -51,7 +51,7 @@ namespace Reversi
                     }
                     else if (i == 1 && k==1)
                     {
-                        if (tempBrd[i, k] == 0)//this check and the next three are the same, just for corners and it awards more points
+                        if (tempBrd[i, k] == 0)//this check and the next three are the same, just for corners. Awards more points
                         {
                             continue;
                         }
@@ -115,7 +115,7 @@ namespace Reversi
                     }
                     else
                     {
-                        if (tempBrd[i, k] == 0)
+                        if (tempBrd[i, k] == 0)//check for non corner non frame tiles
                         {
                             continue;
                         }
@@ -151,25 +151,25 @@ namespace Reversi
                         continue;
                     }
 
-                    if (2 != tempBrd[row + 1, col])
+                    if (2 != tempBrd[row + 1, col])//checks if the adjacent tile in this direction is the same color
                     {
                         for (short j = 1; j < BrdLength - row - 2; j++)
                         {
-                            if (2 != tempBrd[row + j, col] && tempBrd[row + j, col] != 0)
+                            if (2 != tempBrd[row + j, col] && tempBrd[row + j, col] != 0)//checks that the next tile is an enemy tile
                             {
                                 continue;
                             }
-                            else if (tempBrd[row + j, col] == 0) 
+                            else if (tempBrd[row + j, col] == 0)//if it reaches an uninhabited tile, stop checking
                             {
                                 break;
                             }
-                            else
+                            else//if after some enemy tiles it reaches a friendly tile, it can be placed.
                             {
                                 CanPlace = true;
                                 break;
                             }
                         }
-                    }
+                    }//same logic for all the other checks, each is in a different direction
 
                     if (2 != tempBrd[row, col + 1])
                     {
@@ -311,7 +311,7 @@ namespace Reversi
                         }
                     }
 
-                    if (CanPlace == true)
+                    if (CanPlace == true)//simulates a move to the board
                     {
                         tempBrd[row, col] = 2;
 
@@ -499,7 +499,7 @@ namespace Reversi
                             }
                         }
 
-                        if (BrdScore < BrdCheck(tempBrd))
+                        if (BrdScore < BrdCheck(tempBrd))//if this is the best possible move, store the button's location
                         {
                             BrdScore = BrdCheck(tempBrd);
                             ButtonLoc[0] = row;
@@ -517,15 +517,15 @@ namespace Reversi
             short GridLength = Convert.ToInt16(GridSizeBox.Value + 2);
             short ButtonSize = 30;
 
-            Board = new Button[GridLength, GridLength];
+            Board = new Button[GridLength, GridLength];//sets the int and Button array sizes
             intBrd = new short[GridLength, GridLength];
 
-            BoardPanel.Size = new Size(GridLength * ButtonSize, GridLength * ButtonSize);
+            BoardPanel.Size = new Size(GridLength * ButtonSize, GridLength * ButtonSize);//sets the panel and window sizes
             this.Size = new Size(Math.Max(BoardPanel.Width + BoardPanel.Location.X + 50, 400), BoardPanel.Height + BoardPanel.Location.Y + 100);
 
             for (short i = 0; i < GridLength; i++)
             {
-                for (short k = 0; k < GridLength; k++)
+                for (short k = 0; k < GridLength; k++)//assigns the Buttons values and adds them to the panel
                 {
                     Board[i, k] = new Button();
                     Board[i, k].Size = new Size(ButtonSize, ButtonSize);
@@ -537,7 +537,7 @@ namespace Reversi
                     BoardPanel.Controls.Add(Board[i, k]);
                     Board[i, k].Click += Form1_Click;
 
-                    if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)
+                    if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)//if it is a frame button, make it invisible and inactive
                     {
                         Board[i, k].Enabled = false;
                         Board[i, k].Visible = false;
@@ -545,7 +545,7 @@ namespace Reversi
                 }
             }
 
-            Board[GridLength / 2, GridLength / 2].BackColor = Color.Black;
+            Board[GridLength / 2, GridLength / 2].BackColor = Color.Black;//create the center starting buttons
             Board[GridLength / 2 - 1, GridLength / 2].BackColor = Color.Blue;
             Board[GridLength / 2, GridLength / 2 - 1].BackColor = Color.Blue;
             Board[GridLength / 2 - 1, GridLength / 2 - 1].BackColor = Color.Black;
@@ -559,14 +559,14 @@ namespace Reversi
             intBrd[GridLength / 2, GridLength / 2 - 1] = 2;
             intBrd[GridLength / 2 - 1, GridLength / 2 - 1] = 1;
 
-            turnType = 1;
-            TurnTextBox.Text = "Black's Turn";
+            turnType = 1;//black starts
+            TurnTextBox.Text = "Black's Turn";//inputs the necessary text in the textboxes
             TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
         }
 
         void Form1_Click(object sender, EventArgs e)
         {
-            short[] ButtonLoc = (short[])((Array)(((Button)(sender)).Tag));
+            short[] ButtonLoc = (short[])((Array)(((Button)(sender)).Tag));//retrieves the pressed button's location
             short row = ButtonLoc[0];
             short col = ButtonLoc[1];
             bool CanPlace = false;
@@ -876,7 +876,7 @@ namespace Reversi
                 }
             }
 
-            if (turnType == 1 && CanPlace == true)
+            if (turnType == 1 && CanPlace == true)//changes the button you pressed if it is a legitimate tile
             {
                 intBrd[row, col] = 1;
                 Board[row, col].BackColor = Color.Black;
@@ -912,7 +912,7 @@ namespace Reversi
 
         private void SkipButton_Click(object sender, EventArgs e)
         {
-            if (turnType == 1)
+            if (turnType == 1)//skip turn function
             {
                 TurnTextBox.Text = "Blue's Turn";
                 turnType = 2;
@@ -926,14 +926,14 @@ namespace Reversi
 
         private void CompTurn_Click(object sender, EventArgs e)
         {
-            if (turnType == 2)
+            if (turnType == 2)//Computer turn function. The computer is always blue
             {
-                short[] ButtonLoc = MoveCheck(intBrd);
+                short[] ButtonLoc = MoveCheck(intBrd);//finds the optimal button to press
 
-                short row = ButtonLoc[0];
+                short row = ButtonLoc[0];//retrieves button location
                 short col = ButtonLoc[1];
 
-                if (2 != intBrd[row + 1, col])
+                if (2 != intBrd[row + 1, col])//same as the player move function, adjusted for only blue (computer) tiles
                 {
                     for (short i = 1; i < Board.GetLength(0) - row - 2; i++)
                     {
@@ -1151,12 +1151,14 @@ namespace Reversi
                         }
                     }
                 }
-                BlueTile++;
+
+                BlueTile++;//gives origin button correct values and changes turn
                 TurnTextBox.Text = "Black's Turn";
                 TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
                 Board[row, col].BackColor = Color.Blue;
                 Board[row, col].Enabled = false;
                 intBrd[row, col] = 2;
+
                 if (BlackTile + BlueTile == (Board.GetLength(0) - 2) * (Board.GetLength(0) - 2))//Win condition
                 {
                     if (BlackTile > BlueTile)
