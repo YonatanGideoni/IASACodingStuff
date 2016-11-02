@@ -570,10 +570,12 @@ namespace Reversi
             short row = ButtonLoc[0];
             short col = ButtonLoc[1];
             bool CanPlace = false;
+            short BrdLength = (short)Board.GetLength(0);
+            short BrdHeight = (short)Board.GetLength(1);
 
             if (turnType != intBrd[row + 1, col])
             {
-                for (short i = 1; i < Board.GetLength(0) - row - 2; i++)
+                for (short i = 1; i < BrdLength - row - 2; i++)
                 {
                     if (turnType != intBrd[row + i, col] && intBrd[row + i, col] != 0)//check if a touching tile is an enemy tile
                     {
@@ -612,7 +614,7 @@ namespace Reversi
 
             if (turnType != intBrd[row, col + 1])
             {
-                for (short i = 1; i < Board.GetLength(0) - col - 2; i++)
+                for (short i = 1; i < BrdHeight - col - 2; i++)
                 {
                     if (turnType != intBrd[row, col + i] && intBrd[row, col + i] != 0)
                     {
@@ -764,7 +766,7 @@ namespace Reversi
 
             if (turnType != intBrd[row + 1, col - 1])
             {
-                for (short i = 1; i < Board.GetLength(0) - 1 - row && i < col; i++)
+                for (short i = 1; i < BrdLength - 1 - row && i < col; i++)
                 {
                     if (turnType != intBrd[row + i, col - i] && intBrd[row + i, col - i] != 0)
                     {
@@ -802,7 +804,7 @@ namespace Reversi
 
             if (turnType != intBrd[row + 1, col + 1])
             {
-                for (short i = 1; i < Board.GetLength(0) - 1 - row && i < Board.GetLength(0) - 1 - col; i++)
+                for (short i = 1; i < BrdLength - 1 - row && i < BrdHeight - 1 - col; i++)
                 {
                     if (turnType != intBrd[row + i, col + i] && intBrd[row + i, col + i] != 0)
                     {
@@ -840,7 +842,7 @@ namespace Reversi
 
             if (turnType != intBrd[row - 1, col + 1])
             {
-                for (short i = 1; i < row && i < Board.GetLength(0) - 1 - col; i++)
+                for (short i = 1; i < row && i < BrdHeight - 1 - col; i++)
                 {
                     if (turnType != intBrd[row - i, col + i] && intBrd[row - i, col + i] != 0)
                     {
@@ -897,7 +899,7 @@ namespace Reversi
 
             TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
 
-            if (BlackTile + BlueTile == (Board.GetLength(0) - 2) * (Board.GetLength(0) - 2))//Win condition
+            if (BlackTile + BlueTile == (BrdLength - 2) * (BrdHeight - 2))//Win condition
             {
                 if (BlackTile > BlueTile)
                 {
@@ -930,12 +932,15 @@ namespace Reversi
             {
                 short[] ButtonLoc = MoveCheck(intBrd);//finds the optimal button to press
 
+                short BrdLength = (short)Board.GetLength(0);
+                short BrdHeight = (short)Board.GetLength(1);
+
                 short row = ButtonLoc[0];//retrieves button location
                 short col = ButtonLoc[1];
 
                 if (2 != intBrd[row + 1, col])//same as the player move function, adjusted for only blue (computer) tiles
                 {
-                    for (short i = 1; i < Board.GetLength(0) - row - 2; i++)
+                    for (short i = 1; i < BrdLength - row - 2; i++)
                     {
                         if (2 != intBrd[row + i, col] && intBrd[row + i, col] != 0)
                         {
@@ -963,7 +968,7 @@ namespace Reversi
 
                 if (2 != intBrd[row, col + 1])
                 {
-                    for (short i = 1; i < Board.GetLength(0) - col - 2; i++)
+                    for (short i = 1; i < BrdHeight - col - 2; i++)
                     {
                         if (2 != intBrd[row, col + i] && intBrd[row, col + i] != 0)
                         {
@@ -1073,7 +1078,7 @@ namespace Reversi
 
                 if (2 != intBrd[row + 1, col - 1])
                 {
-                    for (short i = 1; i < Board.GetLength(0) - 1 - row && i < col; i++)
+                    for (short i = 1; i < BrdLength - 1 - row && i < col; i++)
                     {
                         if (2 != intBrd[row + i, col - i] && intBrd[row + i, col - i] != 0)
                         {
@@ -1100,7 +1105,7 @@ namespace Reversi
 
                 if (2 != intBrd[row + 1, col + 1])
                 {
-                    for (short i = 1; i < Board.GetLength(0) - 1 - row && i < Board.GetLength(0) - 1 - col; i++)
+                    for (short i = 1; i < BrdLength - 1 - row && i < BrdHeight - 1 - col; i++)
                     {
                         if (2 != intBrd[row + i, col + i] && intBrd[row + i, col + i] != 0)
                         {
@@ -1127,7 +1132,7 @@ namespace Reversi
 
                 if (2 != intBrd[row - 1, col + 1])
                 {
-                    for (short i = 1; i < row && i < Board.GetLength(0) - 1 - col; i++)
+                    for (short i = 1; i < row && i < BrdHeight - 1 - col; i++)
                     {
                         if (2 != intBrd[row - i, col + i] && intBrd[row - i, col + i] != 0)
                         {
@@ -1159,7 +1164,7 @@ namespace Reversi
                 Board[row, col].Enabled = false;
                 intBrd[row, col] = 2;
 
-                if (BlackTile + BlueTile == (Board.GetLength(0) - 2) * (Board.GetLength(0) - 2))//Win condition
+                if (BlackTile + BlueTile == (BrdLength - 2) * (BrdHeight - 2))//Win condition
                 {
                     if (BlackTile > BlueTile)
                     {
