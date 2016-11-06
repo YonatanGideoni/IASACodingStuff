@@ -32,8 +32,7 @@ namespace Reversi
             for (short i = 1; i < BrdLength; i++)
             {
                 for (short k = 1; k < BrdHeight; k++)
-                {
-                    BrdPoints = 0;
+                {                    
                     if (i > 1 && i < BrdLength - 1 && k > 1 && k < BrdHeight - 1)
                     {
                         if (tempBrd[i, k] == 0)//skips uninhabited tiles. Same for all other checks
