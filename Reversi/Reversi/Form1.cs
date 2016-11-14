@@ -142,6 +142,8 @@ namespace Reversi
             bool[] CanPlace = new bool[3];
             short[] row = new short[3];
             short[] col = new short[3];
+            short BrdArea = (short)(BrdLength * BrdHeight);
+            short BrdScore;
 
             for (row[0] = 1; row[0] < BrdLength - 1; row[0]++)
             {
@@ -503,7 +505,7 @@ namespace Reversi
                             }
                         }
 
-                        if (BlackTile + BlueTile > (BrdLength - 2) * (BrdHeight - 2) - 31)//if there is only one or two moves left, place the piece there if you can
+                        if (BlackTile + BlueTile == BrdArea - 1)//if there is only one or two moves left, place the piece there if you can
                         {
                             ButtonLoc[0] = row[0];
                             ButtonLoc[1] = col[0];
@@ -873,184 +875,30 @@ namespace Reversi
                                             }
                                         }
 
-                                        BranchScore[2] = -1000;
-                                        for (row[2] = 1; row[2] < BrdLength - 1; row[2]++)
+                                        if (BlackTile + BlueTile == BrdArea - 2)
                                         {
-                                            for (col[2] = 1; col[2] < BrdLength - 1; col[2]++)
+                                            BrdScore = BrdCheck(tempBrd[1]);
+                                            if (BranchScore[1] > BrdScore)//remember if this is the worst possible player move for this branch
                                             {
-                                                tempBrd[2] = (short[,])tempBrd[1].Clone();//shallow clone of the array
-                                                CanPlace[2] = false;
-
-                                                if (tempBrd[2][row[2], col[2]] != 0)//Don't check buttons that have already been pressed
+                                                BranchScore[1] = BrdScore;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            BranchScore[2] = -1000;
+                                            for (row[2] = 1; row[2] < BrdLength - 1; row[2]++)
+                                            {
+                                                for (col[2] = 1; col[2] < BrdLength - 1; col[2]++)
                                                 {
-                                                    continue;
-                                                }
+                                                    tempBrd[2] = (short[,])tempBrd[1].Clone();//shallow clone of the array
+                                                    CanPlace[2] = false;
 
-                                                if (2 != tempBrd[2][row[2] + 1, col[2]])//same kind of move check
-                                                {
-                                                    for (short j = 1; j < BrdLength - row[2] - 2; j++)
+                                                    if (tempBrd[2][row[2], col[2]] != 0)//Don't check buttons that have already been pressed
                                                     {
-                                                        if (2 != tempBrd[2][row[2] + j, col[2]] && tempBrd[2][row[2] + j, col[2]] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] + j, col[2]] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else//if after some enemy tiles it reaches a friendly tile, it can be placed.
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
+                                                        continue;
                                                     }
-                                                }//same logic for all the other checks, each is in a different direction
 
-                                                if (2 != tempBrd[2][row[2], col[2] + 1])
-                                                {
-                                                    for (short j = 1; j < BrdHeight - col[2] - 2; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2], col[2] + j] && tempBrd[2][row[2], col[2] + j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2], col[2] + j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2], col[2] - 1])
-                                                {
-                                                    for (short j = 1; j < col[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2], col[2] - j] && tempBrd[2][row[2], col[2] - j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2], col[2] - j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2] - 1, col[2]])
-                                                {
-                                                    for (short j = 1; j < row[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2] - j, col[2]] && tempBrd[2][row[2] - j, col[2]] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] - j, col[2]] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2] - 1, col[2] - 1])
-                                                {
-                                                    for (short j = 1; j < row[2] && j < col[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2] - j, col[2] - j] && tempBrd[2][row[2] - j, col[2] - j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] - j, col[2] - j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2] + 1, col[2] - 1])
-                                                {
-                                                    for (short j = 1; j < BrdLength - 1 - row[2] && j < col[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2] + j, col[2] - j] && tempBrd[2][row[2] + j, col[2] - j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] + j, col[2] - j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2] + 1, col[2] + 1])
-                                                {
-                                                    for (short j = 1; j < BrdLength - 1 - row[2] && j < BrdHeight - 1 - col[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2] + j, col[2] + j] && tempBrd[2][row[2] + j, col[2] + j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] + j, col[2] + j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (2 != tempBrd[2][row[2] - 1, col[2] + 1])
-                                                {
-                                                    for (short j = 1; j < row[2] && j < BrdHeight - 1 - col[2]; j++)
-                                                    {
-                                                        if (2 != tempBrd[2][row[2] - j, col[2] + j] && tempBrd[2][row[2] - j, col[2] + j] != 0)
-                                                        {
-                                                            continue;
-                                                        }
-                                                        else if (tempBrd[2][row[2] - j, col[2] + j] == 0)
-                                                        {
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            CanPlace[2] = true;
-                                                            break;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (CanPlace[2] == true)//simulates a move to the board
-                                                {
-                                                    tempBrd[2][row[2], col[2]] = 2;
-
-                                                    if (2 != tempBrd[2][row[2] + 1, col[2]])
+                                                    if (2 != tempBrd[2][row[2] + 1, col[2]])//same kind of move check
                                                     {
                                                         for (short j = 1; j < BrdLength - row[2] - 2; j++)
                                                         {
@@ -1062,20 +910,17 @@ namespace Reversi
                                                             {
                                                                 break;
                                                             }
-                                                            else
+                                                            else//if after some enemy tiles it reaches a friendly tile, it can be placed.
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] + m, col[2]] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
-                                                    }
+                                                    }//same logic for all the other checks, each is in a different direction
 
                                                     if (2 != tempBrd[2][row[2], col[2] + 1])
                                                     {
-                                                        for (short j = 1; j < BrdLength - col[2] - 2; j++)
+                                                        for (short j = 1; j < BrdHeight - col[2] - 2; j++)
                                                         {
                                                             if (2 != tempBrd[2][row[2], col[2] + j] && tempBrd[2][row[2], col[2] + j] != 0)
                                                             {
@@ -1087,10 +932,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2], col[2] + m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1110,10 +952,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2], col[2] - m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1133,10 +972,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] - m, col[2]] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1156,10 +992,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] - m, col[2] - m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1179,10 +1012,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] + m, col[2] - m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1190,7 +1020,7 @@ namespace Reversi
 
                                                     if (2 != tempBrd[2][row[2] + 1, col[2] + 1])
                                                     {
-                                                        for (short j = 1; j < BrdLength - 1 - row[2] && j < BrdLength - 1 - col[2]; j++)
+                                                        for (short j = 1; j < BrdLength - 1 - row[2] && j < BrdHeight - 1 - col[2]; j++)
                                                         {
                                                             if (2 != tempBrd[2][row[2] + j, col[2] + j] && tempBrd[2][row[2] + j, col[2] + j] != 0)
                                                             {
@@ -1202,10 +1032,7 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] + m, col[2] + m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
@@ -1213,7 +1040,7 @@ namespace Reversi
 
                                                     if (2 != tempBrd[2][row[2] - 1, col[2] + 1])
                                                     {
-                                                        for (short j = 1; j < row[2] && j < BrdLength - 1 - col[2]; j++)
+                                                        for (short j = 1; j < row[2] && j < BrdHeight - 1 - col[2]; j++)
                                                         {
                                                             if (2 != tempBrd[2][row[2] - j, col[2] + j] && tempBrd[2][row[2] - j, col[2] + j] != 0)
                                                             {
@@ -1225,26 +1052,212 @@ namespace Reversi
                                                             }
                                                             else
                                                             {
-                                                                for (short m = 1; m < j; m++)
-                                                                {
-                                                                    tempBrd[2][row[2] - m, col[2] + m] = 2;
-                                                                }
+                                                                CanPlace[2] = true;
                                                                 break;
                                                             }
                                                         }
                                                     }
 
-                                                    if (BranchScore[2] < BrdCheck(tempBrd[2]))//remember if this is the best possible move for this branch
+                                                    if (CanPlace[2] == true)//simulates a move to the board
                                                     {
-                                                        BranchScore[2] = BrdCheck(tempBrd[2]);
+                                                        tempBrd[2][row[2], col[2]] = 2;
+
+                                                        if (2 != tempBrd[2][row[2] + 1, col[2]])
+                                                        {
+                                                            for (short j = 1; j < BrdLength - row[2] - 2; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] + j, col[2]] && tempBrd[2][row[2] + j, col[2]] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] + j, col[2]] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] + m, col[2]] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2], col[2] + 1])
+                                                        {
+                                                            for (short j = 1; j < BrdLength - col[2] - 2; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2], col[2] + j] && tempBrd[2][row[2], col[2] + j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2], col[2] + j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2], col[2] + m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2], col[2] - 1])
+                                                        {
+                                                            for (short j = 1; j < col[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2], col[2] - j] && tempBrd[2][row[2], col[2] - j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2], col[2] - j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2], col[2] - m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2] - 1, col[2]])
+                                                        {
+                                                            for (short j = 1; j < row[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] - j, col[2]] && tempBrd[2][row[2] - j, col[2]] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] - j, col[2]] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] - m, col[2]] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2] - 1, col[2] - 1])
+                                                        {
+                                                            for (short j = 1; j < row[2] && j < col[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] - j, col[2] - j] && tempBrd[2][row[2] - j, col[2] - j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] - j, col[2] - j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] - m, col[2] - m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2] + 1, col[2] - 1])
+                                                        {
+                                                            for (short j = 1; j < BrdLength - 1 - row[2] && j < col[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] + j, col[2] - j] && tempBrd[2][row[2] + j, col[2] - j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] + j, col[2] - j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] + m, col[2] - m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2] + 1, col[2] + 1])
+                                                        {
+                                                            for (short j = 1; j < BrdLength - 1 - row[2] && j < BrdLength - 1 - col[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] + j, col[2] + j] && tempBrd[2][row[2] + j, col[2] + j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] + j, col[2] + j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] + m, col[2] + m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+
+                                                        if (2 != tempBrd[2][row[2] - 1, col[2] + 1])
+                                                        {
+                                                            for (short j = 1; j < row[2] && j < BrdLength - 1 - col[2]; j++)
+                                                            {
+                                                                if (2 != tempBrd[2][row[2] - j, col[2] + j] && tempBrd[2][row[2] - j, col[2] + j] != 0)
+                                                                {
+                                                                    continue;
+                                                                }
+                                                                else if (tempBrd[2][row[2] - j, col[2] + j] == 0)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                else
+                                                                {
+                                                                    for (short m = 1; m < j; m++)
+                                                                    {
+                                                                        tempBrd[2][row[2] - m, col[2] + m] = 2;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        BrdScore = BrdCheck(tempBrd[2]);
+                                                        if (BranchScore[2] < BrdScore)//remember if this is the best possible move for this branch
+                                                        {
+                                                            BranchScore[2] = BrdScore;
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        if (BranchScore[1] > BranchScore[2])//remember if this is the worst possible player move for this branch
-                                        {
-                                            BranchScore[1] = BranchScore[2];
+                                            if (BranchScore[1] > BranchScore[2])//remember if this is the worst possible player move for this branch
+                                            {
+                                                BranchScore[1] = BranchScore[2];
+                                            }
                                         }
                                     }
                                 }
@@ -1700,7 +1713,6 @@ namespace Reversi
                 }
                 else
                 {
-
                     if (2 != intBrd[row + 1, col])//same as the player move function, adjusted for only blue (computer) tiles
                     {
                         for (short i = 1; i < BrdLength - row - 2; i++)
