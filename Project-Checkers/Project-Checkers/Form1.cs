@@ -17,8 +17,9 @@ namespace Project_Checkers
         short BlackCheckers;
         short WhiteCheckers;
         short BrdSize;
-        short[] PressedButton;
+        short[] PressedButton=new short[2]{5,5};
         short turnVal = 2;
+        bool CleanYellow = false;
 
         public Form1()
         {
@@ -97,56 +98,10 @@ namespace Project_Checkers
                 moveDir = -1;
             }
 
-            if (intBrd[col, row] == turnVal)//checks if the button that was pressed is valid
-            {
-                if (col != 0 && row != 0)//checks that the button isn't on an edge
+            if (CleanYellow == true) {
+                if (intBrd[col, row] == turnVal)
                 {
-                    if (intBrd[col - 1, row - moveDir] == rivalTurnVal)//checks if there is a rival in this direction
-                    {
-                        if (col != 1 && row != 1)
-                        {
-                            if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
-                            {
-                                Board[col - 2, row - 2 * moveDir].BackColor = Color.Yellow;
-                                intBrd[col - 2, row - 2 * moveDir] = 3;
-                                PressedButton = new short[2] { col, row };
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Board[col - 1, row - moveDir].BackColor = Color.Yellow;
-                        intBrd[col - 1, row - moveDir] = 3;
-                        PressedButton = new short[2] { col, row };
-                    }
-                }
-                if (col != BrdLength - 1 && row != BrdLength - 1)
-                {
-                    if (intBrd[col + 1, row - moveDir] == rivalTurnVal)
-                    {
-                        if (col != BrdLength - 2 && row != BrdLength - 2)
-                        {
-                            if (intBrd[col + 2, row - 2 * moveDir] == 0)
-                            {
-                                Board[col + 2, row - 2 * moveDir].BackColor = Color.Yellow;
-                                intBrd[col + 2, row - 2 * moveDir] = 3;
-                                PressedButton = new short[2] { col, row };
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Board[col + 1, row - moveDir].BackColor = Color.Yellow;
-                        intBrd[col + 1, row - moveDir] = 3;
-                        PressedButton = new short[2] { col, row };
-                    }
-                }
-            }
-            else if (intBrd[col, row] == 3)
-            {
-                if(turnVal==2)
-                {                    
-                    if (PressedButton[0] != 0 && PressedButton[1] != 0)//makes all the possible-place buttons return to default
+                    if (PressedButton[0] != 0 && PressedButton[1] != 0)
                     {
                         if (intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] == rivalTurnVal)
                         {
@@ -184,6 +139,99 @@ namespace Project_Checkers
                             intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] = 0;
                         }
                     }
+                    CleanYellow = false;
+                }
+
+                if (col != 0 && row != 0)//checks that the button isn't on an edge
+                {
+                    if (intBrd[col - 1, row - moveDir] == rivalTurnVal)//checks if there is a rival in this direction
+                    {
+                        if (col != 1 && row != 1)
+                        {
+                            if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
+                            {
+                                Board[col - 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                intBrd[col - 2, row - 2 * moveDir] = 3;
+                                CleanYellow = true;
+                                PressedButton = new short[2] { col, row };
+                            }
+                        }
+                    }
+                    else if (intBrd[col - 1, row - moveDir] != turnVal)
+                    {
+                        Board[col - 1, row - moveDir].BackColor = Color.Yellow;
+                        intBrd[col - 1, row - moveDir] = 3;
+                        CleanYellow = true;
+                        PressedButton = new short[2] { col, row };
+                    }
+                }
+                if (col != BrdLength - 1 && row != BrdLength - 1)
+                {
+                    if (intBrd[col + 1, row - moveDir] == rivalTurnVal)
+                    {
+                        if (col != BrdLength - 2 && row != BrdLength - 2)
+                        {
+                            if (intBrd[col + 2, row - 2 * moveDir] == 0)
+                            {
+                                Board[col + 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                intBrd[col + 2, row - 2 * moveDir] = 3;
+                                CleanYellow = true;
+                                PressedButton = new short[2] { col, row };
+                            }
+                        }
+                    }
+                    else if (intBrd[col + 1, row - moveDir] != turnVal)
+                    {
+                        Board[col + 1, row - moveDir].BackColor = Color.Yellow;
+                        intBrd[col + 1, row - moveDir] = 3;
+                        CleanYellow = true;
+                        PressedButton = new short[2] { col, row };
+                    }
+                }
+            }
+            else if (intBrd[col, row] == 3)
+            {
+                if(turnVal==2)
+                {                    
+                    if (PressedButton[0] != 0 && PressedButton[1] != 0)
+                    {
+                        if (intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] == rivalTurnVal)
+                        {
+                            if (PressedButton[0] != 1 && PressedButton[1] != 1)
+                            {
+                                if (intBrd[PressedButton[0] - 2, PressedButton[1] - 2 * moveDir] == 0)
+                                {
+                                    Board[PressedButton[0] - 2, PressedButton[1] - 2 * moveDir].BackColor = Color.Black;
+                                    intBrd[PressedButton[0] - 2, PressedButton[1] - 2 * moveDir] = 0;
+                                }
+                            }
+                        }
+                        else if (intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] != turnVal)
+                        {
+                            Board[PressedButton[0] - 1, PressedButton[1] - moveDir].BackColor = Color.Black;
+                            intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] = 0;
+                        }
+                    }
+                    if (PressedButton[0] != BrdLength - 1 && PressedButton[1] != BrdLength - 1)
+                    {
+                        if (intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] == rivalTurnVal)
+                        {
+                            if (PressedButton[0] != BrdLength - 2 && PressedButton[1] != BrdLength - 2)
+                            {
+                                if (intBrd[PressedButton[0] + 2, PressedButton[1] - 2 * moveDir] == 0)
+                                {
+                                    Board[PressedButton[0] + 2, PressedButton[1] - 2 * moveDir].BackColor = Color.Black;
+                                    intBrd[PressedButton[0] + 2, PressedButton[1] - 2 * moveDir] = 0;
+                                }
+                            }
+                        }
+                        else if (intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] != turnVal)
+                        {
+                            Board[PressedButton[0] + 1, PressedButton[1] - moveDir].BackColor = Color.Black;
+                            intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] = 0;
+                        }
+                    }
+                    CleanYellow = false;
 
                     Board[col, row].BackColor = Color.SandyBrown;
                     intBrd[col, row] = 2;
@@ -206,7 +254,7 @@ namespace Project_Checkers
                                 }
                             }
                         }
-                        else
+                        else if (intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] != turnVal)
                         {
                             Board[PressedButton[0] - 1, PressedButton[1] - moveDir].BackColor = Color.Black;
                             intBrd[PressedButton[0] - 1, PressedButton[1] - moveDir] = 0;
@@ -225,12 +273,13 @@ namespace Project_Checkers
                                 }
                             }
                         }
-                        else
+                        else if (intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] != turnVal)
                         {
                             Board[PressedButton[0] + 1, PressedButton[1] - moveDir].BackColor = Color.Black;
                             intBrd[PressedButton[0] + 1, PressedButton[1] - moveDir] = 0;
                         }
                     }
+                    CleanYellow = false;
 
                     Board[col, row].BackColor = Color.DarkOrchid;
                     intBrd[col, row] = 1;
