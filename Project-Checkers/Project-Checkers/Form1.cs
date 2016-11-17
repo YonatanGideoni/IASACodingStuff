@@ -122,6 +122,11 @@ namespace Project_Checkers
                             if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
                             {
                                 Board[col - 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                intBrd[col - 2, row - 2*moveDir] = 3;
+                                if (PossibleMoveButtons[0] != null)
+                                {
+                                    intBrd[PossibleMoveButtons[0][0], PossibleMoveButtons[0][1]] = 0;
+                                }
                                 PossibleMoveButtons[0] = new short[2] { (short)(col - 2),(short)(row - 2 * moveDir) };
                                 PressedButton = new short[2] { col, row };
                             }
@@ -130,6 +135,11 @@ namespace Project_Checkers
                     else if (intBrd[col - 1, row - moveDir] != turnVal)
                     {
                         Board[col - 1, row - moveDir].BackColor = Color.Yellow;
+                        intBrd[col - 1, row - moveDir] = 3;
+                        if (PossibleMoveButtons[0] != null)
+                        {
+                            intBrd[PossibleMoveButtons[0][0], PossibleMoveButtons[0][1]] = 0;
+                        }
                         PossibleMoveButtons[0] = new short[2] { (short)(col - 1), (short)(row - moveDir) };
                         PressedButton = new short[2] { col, row };
                     }
@@ -143,6 +153,11 @@ namespace Project_Checkers
                             if (intBrd[col + 2, row - 2 * moveDir] == 0)
                             {
                                 Board[col + 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                intBrd[col + 2, row - 2*moveDir] = 3;
+                                if (PossibleMoveButtons[1] != null)
+                                {
+                                    intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
+                                }
                                 PossibleMoveButtons[1] = new short[2] { (short)(col + 2), (short)(row - 2 * moveDir) };
                                 PressedButton = new short[2] { col, row };
                             }
@@ -151,15 +166,29 @@ namespace Project_Checkers
                     else if (intBrd[col + 1, row - moveDir] != turnVal)
                     {
                         Board[col + 1, row - moveDir].BackColor = Color.Yellow;
+                        intBrd[col + 1, row - moveDir] = 3;
+                        if (PossibleMoveButtons[1] != null)
+                        {
+                            intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
+                        }
                         PossibleMoveButtons[1] = new short[2] { (short)(col +1), (short)(row - moveDir) };
                         PressedButton = new short[2] { col, row };
                     }
                 }
             }
-            else if (intBrd[col,row] == 0)
+            else if (intBrd[col,row] == 3)
             {
                 if(turnVal==2)
                 {
+                    if (PossibleMoveButtons[0] != null)
+                    {
+                        intBrd[PossibleMoveButtons[0][0], PossibleMoveButtons[0][1]] = 0;
+                    }
+                    if (PossibleMoveButtons[1] != null)
+                    {
+                        intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
+                    }                    
+
                     Board[col, row].BackColor = Color.SandyBrown;
                     intBrd[col, row] = 2;
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
@@ -171,6 +200,15 @@ namespace Project_Checkers
                 }
                 else
                 {
+                    if (PossibleMoveButtons[0] != null)
+                    {
+                        intBrd[PossibleMoveButtons[0][0], PossibleMoveButtons[0][1]] = 0;
+                    }
+                    if (PossibleMoveButtons[1] != null)
+                    {
+                        intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
+                    }
+
                     Board[col, row].BackColor = Color.DarkOrchid;
                     intBrd[col, row] = 1;
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
@@ -179,7 +217,7 @@ namespace Project_Checkers
                     PossibleMoveButtons[0] = null;
                     PossibleMoveButtons[1] = null;
                     turnVal = rivalTurnVal;
-                }                
+                }    
             }
         }
     }
