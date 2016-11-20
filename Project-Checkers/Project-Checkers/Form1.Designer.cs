@@ -32,6 +32,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.BrdSizeBox = new System.Windows.Forms.NumericUpDown();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.WhiteCheckerBox = new System.Windows.Forms.TextBox();
+            this.BlackCheckerBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.BrdSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,11 +86,35 @@
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "Board Size:";
             // 
+            // WhiteCheckerBox
+            // 
+            this.WhiteCheckerBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.WhiteCheckerBox.Cursor = System.Windows.Forms.Cursors.No;
+            this.WhiteCheckerBox.Location = new System.Drawing.Point(258, 13);
+            this.WhiteCheckerBox.Name = "WhiteCheckerBox";
+            this.WhiteCheckerBox.ReadOnly = true;
+            this.WhiteCheckerBox.Size = new System.Drawing.Size(100, 13);
+            this.WhiteCheckerBox.TabIndex = 4;
+            this.WhiteCheckerBox.Text = "White Checkers:";
+            // 
+            // BlackCheckerBox
+            // 
+            this.BlackCheckerBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.BlackCheckerBox.Cursor = System.Windows.Forms.Cursors.No;
+            this.BlackCheckerBox.Location = new System.Drawing.Point(258, 32);
+            this.BlackCheckerBox.Name = "BlackCheckerBox";
+            this.BlackCheckerBox.ReadOnly = true;
+            this.BlackCheckerBox.Size = new System.Drawing.Size(100, 13);
+            this.BlackCheckerBox.TabIndex = 5;
+            this.BlackCheckerBox.Text = "Black Checkers:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(479, 347);
+            this.Controls.Add(this.BlackCheckerBox);
+            this.Controls.Add(this.WhiteCheckerBox);
             this.Controls.Add(this.BrdSizeBox);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.panel1);
@@ -107,6 +133,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.NumericUpDown BrdSizeBox;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox WhiteCheckerBox;
+        private System.Windows.Forms.TextBox BlackCheckerBox;
     }
 }
 

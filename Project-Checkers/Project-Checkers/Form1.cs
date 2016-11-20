@@ -19,6 +19,7 @@ namespace Project_Checkers
         short BrdSize;
         short[] PressedButton=new short[2];
         short[][] PossibleMoveButtons=new short[2][];
+        short[][] DyingButtons=new short[2][];
         short turnVal = 2;
 
         public Form1()
@@ -115,6 +116,9 @@ namespace Project_Checkers
                     PossibleMoveButtons[1] = null;
                 }
 
+                DyingButtons[0] = null;
+                DyingButtons[1] = null;
+
                 if (col != 0 && row != 0)//checks that the button isn't on an edge
                 {
                     if (intBrd[col - 1, row - moveDir] == rivalTurnVal)//checks if there is a rival in this direction
@@ -125,6 +129,7 @@ namespace Project_Checkers
                             {
                                 Board[col - 2, row - 2 * moveDir].BackColor = Color.Yellow;
                                 intBrd[col -2, row - 2*moveDir] = 3;
+                                DyingButtons[0] = new short[2]{(short)(col - 1), (short)(row - moveDir)};
                                 PossibleMoveButtons[0] = new short[2] { (short)(col - 2),(short)(row - 2 * moveDir) };
                                 PressedButton = new short[2] { col, row };
                             }
@@ -148,6 +153,7 @@ namespace Project_Checkers
                             {
                                 Board[col + 2, row - 2 * moveDir].BackColor = Color.Yellow;
                                 intBrd[col + 2, row - 2*moveDir] = 3;
+                                DyingButtons[1] = new short[2] { (short)(col + 1), (short)(row - moveDir) };
                                 PossibleMoveButtons[1] = new short[2] { (short)(col + 2), (short)(row - 2 * moveDir) };
                                 PressedButton = new short[2] { col, row };
                             }
@@ -176,6 +182,19 @@ namespace Project_Checkers
                         Board[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]].BackColor = Color.Black;
                         intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
                     }
+
+                    if (DyingButtons[0]!=null && DyingButtons[0][0] == col + 1)
+                    {
+                        intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
+                        Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
+                        WhiteCheckers--;
+                    }
+                    else if (DyingButtons[1]!=null && DyingButtons[1][0] == col - 1)
+                    {
+                        intBrd[DyingButtons[1][0], DyingButtons[1][1]] = 0;
+                        Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
+                        WhiteCheckers--;
+                    }
                     Board[col, row].BackColor = Color.SandyBrown;
                     intBrd[col, row] = 2;
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
@@ -183,6 +202,12 @@ namespace Project_Checkers
                     PossibleMoveButtons[0] = null;
                     PossibleMoveButtons[1] = null;
                     PressedButton = null;
+                    DyingButtons[0] = null;
+                    DyingButtons[1] = null;
+
+                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
+                    BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
+
                     turnVal = rivalTurnVal;
                 }
                 else
@@ -197,6 +222,19 @@ namespace Project_Checkers
                         Board[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]].BackColor = Color.Black;
                         intBrd[PossibleMoveButtons[1][0], PossibleMoveButtons[1][1]] = 0;
                     }
+
+                    if (DyingButtons[0]!=null && DyingButtons[0][0] == col + 1)
+                    {
+                        intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
+                        Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
+                        BlackCheckers--;
+                    }
+                    else if (DyingButtons[1]!=null && DyingButtons[1][0] == col - 1)
+                    {
+                        intBrd[DyingButtons[1][0], DyingButtons[1][1]] = 0;
+                        Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
+                        BlackCheckers--;
+                    }
                     Board[col, row].BackColor = Color.DarkOrchid;
                     intBrd[col, row] = 1;
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
@@ -204,6 +242,12 @@ namespace Project_Checkers
                     PressedButton = null;
                     PossibleMoveButtons[0] = null;
                     PossibleMoveButtons[1] = null;
+                    DyingButtons[0] = null;
+                    DyingButtons[1] = null;
+
+                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
+                    BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
+
                     turnVal = rivalTurnVal;
                 }                
             }
