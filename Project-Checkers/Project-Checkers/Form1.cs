@@ -26,6 +26,40 @@ namespace Project_Checkers
             InitializeComponent();
         }
 
+        static short BrdScore(short[,] OriginBrd)
+        {
+            short BrdSize=(short)(OriginBrd.GetLength(0));
+            short Score = 0;
+
+            for (short i = 0; i < BrdSize; i++)
+            {
+                for (short k = 0; k < BrdSize; k++)
+                {
+                    if (OriginBrd[i, k] == 0)
+                    {
+                        continue;
+                    }
+                    else if (OriginBrd[i, k] == 2)
+                    {
+                        Score += (short)(BrdSize-k);
+                    }
+                    else if (OriginBrd[i, k] == 1)
+                    {
+                        Score += (short)(k-BrdSize);
+                    }
+                    else if (OriginBrd[i, k] == -2)
+                    {
+                        Score += (short)(BrdSize * 2);
+                    }
+                    else if (OriginBrd[i, k] == -1)
+                    {
+                        Score -= (short)(BrdSize * 2);
+                    }
+                }
+            }
+            return Score;
+        }
+
         private void RestartButton_Click(object sender, EventArgs e)
         {
             BrdSize = (short)(BrdSizeBox.Value);
@@ -127,7 +161,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col - 1, row - moveDir] == rivalTurnVal || intBrd[col - 1, row - moveDir] == -rivalTurnVal)//checks if there is a rival in this direction
                     {
-                        if (col != 1 && row != (-moveDir*(BrdSize - 2)+BrdSize-2)/2)
+                        if (col != 1 && row != rivalTurnVal / 2 * (BrdSize - 3) + 1)
                         {
                             if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
                             {
@@ -149,7 +183,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col + 1, row - moveDir] == rivalTurnVal || intBrd[col + 1, row - moveDir] == -rivalTurnVal)
                     {
-                        if (col != BrdSize - 2 && row != (-moveDir * (BrdSize - 2) + BrdSize - 2) / 2)
+                        if (col != BrdSize - 2 && row != rivalTurnVal / 2 * (BrdSize - 3) + 1)
                         {
                             if (intBrd[col + 2, row - 2 * moveDir] == 0)
                             {
@@ -175,7 +209,7 @@ namespace Project_Checkers
                 DyingButtons[2] = null;
                 DyingButtons[3] = null;
 
-                for (short i = 0; i < BrdSize; i++)
+                for (short i = 0; i < BrdSize; i++)//clean yellow
                 {
                     for (short k = 0; k < BrdSize; k++)
                     {
@@ -193,7 +227,7 @@ namespace Project_Checkers
 
                 bool CanPlace = false;
 
-                for (short i = 1; i < row && i < col; i++)
+                for (short i = 1; i < row + 1 && i < col + 1; i++)//create yellow tiles in all directions
                 {
                     if (intBrd[col - i, row - i] == 0)
                     {
@@ -212,12 +246,13 @@ namespace Project_Checkers
                             Board[col - i - 1, row - i - 1].BackColor = Color.Yellow;
                             intBrd[col - i - 1, row - i - 1] = 3;
                             DyingButtons[0] = new short[2] { (short)(col - i), (short)(row - i) };
+                            CanPlace = true;
                         }
                         break;
                     }
                 }
 
-                for (short i = 1; i < row && i < BrdSize - col; i++)
+                for (short i = 1; i < row + 1 && i < BrdSize - col; i++)
                 {
                     if (intBrd[col + i, row - i] == 0)
                     {
@@ -236,12 +271,13 @@ namespace Project_Checkers
                             Board[col + i + 1, row - i - 1].BackColor = Color.Yellow;
                             intBrd[col + i + 1, row - i - 1] = 3;
                             DyingButtons[1] = new short[2] { (short)(col + i), (short)(row - i) };
+                            CanPlace = true;
                         }
                         break;
                     }
                 }
 
-                for (short i = 1; i < BrdSize - row && i < col; i++)
+                for (short i = 1; i < BrdSize - row && i < col + 1; i++)
                 {
                     if (intBrd[col - i, row + i] == 0)
                     {
@@ -260,6 +296,7 @@ namespace Project_Checkers
                             Board[col - i - 1, row + i + 1].BackColor = Color.Yellow;
                             intBrd[col - i - 1, row + i + 1] = 3;
                             DyingButtons[2] = new short[2] { (short)(col - i), (short)(row + i) };
+                            CanPlace = true;
                         }
                         break;
                     }
@@ -284,6 +321,7 @@ namespace Project_Checkers
                             Board[col + i + 1, row + i + 1].BackColor = Color.Yellow;
                             intBrd[col + i + 1, row + i + 1] = 3;
                             DyingButtons[3] = new short[2] { (short)(col + i), (short)(row + i) };
+                            CanPlace = true;
                         }
                         break;
                     }
@@ -296,10 +334,10 @@ namespace Project_Checkers
             }
             else if (intBrd[col, row] == 3)
             {
-                if (turnVal == 2)
+                if (turnVal == 2)//Move Black Checkers
                 {
                     if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row + 1)
-                    {
+                    {//check if a checker is eaten via this move
                         intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
                         Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
                         WhiteCheckers--;
@@ -323,7 +361,7 @@ namespace Project_Checkers
                         WhiteCheckers--;
                     }
 
-                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row > 0)
+                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row > 0)//check if it's a king or becomes one
                     {
                         Board[col, row].BackColor = Color.SandyBrown;
                         intBrd[col, row] = 2;
@@ -337,7 +375,7 @@ namespace Project_Checkers
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
                     intBrd[PressedButton[0], PressedButton[1]] = 0;
 
-                    for (short i = 0; i < BrdSize; i++)
+                    for (short i = 0; i < BrdSize; i++)//cleans yellow tiles
                     {
                         for (short k = 0; k < BrdSize; k++)
                         {
@@ -355,20 +393,20 @@ namespace Project_Checkers
 
                     PressedButton = null;
 
-                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
+                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();//updates textboxes
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
                     TurnBox.Text = "White Turn";
 
-                    if (WhiteCheckers == 1)
+                    if (WhiteCheckers == 1)//win condition
                     {
-                        MessageBox.Show("White Wins!");
+                        MessageBox.Show("Black Wins!");
                     }
 
                     turnVal = rivalTurnVal;
                 }
                 else
                 {
-                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal)
+                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal)//same for the most part as the black move function
                     {
                         if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row - 1)
                         {
@@ -382,7 +420,7 @@ namespace Project_Checkers
                             Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
                             BlackCheckers--;
                         }
-                    }
+                    }//here because the DyingButtons[] array doesn't perfectly line up there is a difference between kings and non-kings
                     else
                     {
                         if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row + 1)
@@ -418,7 +456,6 @@ namespace Project_Checkers
                     }
                     else
                     {
-                        MessageBox.Show("Is king");
                         Board[col, row].BackColor = Color.Purple;
                         intBrd[col, row] = -1;
                     }
@@ -450,7 +487,7 @@ namespace Project_Checkers
 
                     if (BlackCheckers == 1)
                     {
-                        MessageBox.Show("Black Wins!");
+                        MessageBox.Show("White Wins!");
                     }
 
                     turnVal = rivalTurnVal;
