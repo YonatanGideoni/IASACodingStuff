@@ -35,6 +35,7 @@
             this.BlackCheckerBox = new System.Windows.Forms.TextBox();
             this.WhiteCheckerBox = new System.Windows.Forms.TextBox();
             this.TurnBox = new System.Windows.Forms.TextBox();
+            this.CompButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.BrdSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,11 +120,22 @@
             this.TurnBox.Text = "Blacks Turn";
             this.TurnBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // CompButton
+            // 
+            this.CompButton.Location = new System.Drawing.Point(13, 39);
+            this.CompButton.Name = "CompButton";
+            this.CompButton.Size = new System.Drawing.Size(85, 23);
+            this.CompButton.TabIndex = 7;
+            this.CompButton.Text = "Computer Turn";
+            this.CompButton.UseVisualStyleBackColor = true;
+            this.CompButton.Click += new System.EventHandler(this.CompButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(479, 347);
+            this.Controls.Add(this.CompButton);
             this.Controls.Add(this.TurnBox);
             this.Controls.Add(this.WhiteCheckerBox);
             this.Controls.Add(this.BlackCheckerBox);
@@ -148,6 +160,7 @@
         private System.Windows.Forms.TextBox BlackCheckerBox;
         private System.Windows.Forms.TextBox WhiteCheckerBox;
         private System.Windows.Forms.TextBox TurnBox;
+        private System.Windows.Forms.Button CompButton;
     }
 }
 
