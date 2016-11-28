@@ -74,86 +74,86 @@ namespace Project_Checkers
                 {
                     if (tempBrd[col, row] == 1)
                     {
-                        if (col != 0 && row!=0)
+                        if (col != 0 && row!=BrdSize-1)
                         {
-                            if (tempBrd[col - 1, row - 1] == 2 || tempBrd[col - 1, row - 1] == -2)
+                            if (tempBrd[col - 1, row + 1] == 2 || tempBrd[col - 1, row + 1] == -2)
                             {
                                 if (col != 1 && row != BrdSize-2)
                                 {
-                                    if (tempBrd[col - 2, row - 2] == 0)
+                                    if (tempBrd[col - 2, row + 2] == 0)
                                     {
-                                        tempBrd[col - 2, row - 2] = 1;
-                                        tempBrd[col - 1, row - 1] = 0;
+                                        tempBrd[col - 2, row + 2] = 1;
+                                        tempBrd[col - 1, row + 1] = 0;
                                         tempBrd[col, row] = 0;
 
                                         MoveScore = BrdScore(tempBrd);
                                         if (MoveScore > Score)
                                         {
                                             Score = MoveScore;
-                                            ButtonLoc = new short[6] {col,row, (short)(col - 2), (short)(row - 2), (short)(col - 1), (short)(row - 1) };
+                                            ButtonLoc = new short[6] {col,row, (short)(col - 2), (short)(row + 2), (short)(col - 1), (short)(row + 1) };
                                         }
 
-                                        tempBrd[col - 2, row - 2] = 0;
-                                        tempBrd[col - 1, row - 1] = originBrd[col - 1, row - 1];
+                                        tempBrd[col - 2, row + 2] = 0;
+                                        tempBrd[col - 1, row + 1] = originBrd[col - 1, row + 1];
                                         tempBrd[col, row] = 1;
                                     }
                                 }
                             }
-                            else if (tempBrd[col - 1, row - 1] != 2 && tempBrd[col - 1, row - 1] != -2)
+                            else if (tempBrd[col - 1, row + 1] ==0)
                             {
-                                tempBrd[col - 1, row - 1] = 0;
-                                tempBrd[col, row] = 2;
+                                tempBrd[col - 1, row + 1] = originBrd[col-1,row+1];
+                                tempBrd[col, row] = 0;
 
                                 MoveScore = BrdScore(tempBrd);
                                 if (MoveScore > Score)
                                 {
                                     Score = MoveScore;
-                                    ButtonLoc = new short[4] {col,row, (short)(col - 1), (short)(row - 1) };
+                                    ButtonLoc = new short[4] {col,row, (short)(col - 1), (short)(row + 1) };
                                 }
 
-                                tempBrd[col - 1, row - 1] = 2;
-                                tempBrd[col, row] = 0;
+                                tempBrd[col - 1, row + 1] = 0;
+                                tempBrd[col, row] = originBrd[col - 1, row + 1];
                             }
                         }
-                        if (col != BrdSize - 1 && row!=0)
+                        if (col != BrdSize - 1 && row!=BrdSize-1)
                         {
-                            if (tempBrd[col + 1, row - 1] == 1 || tempBrd[col + 1, row - 1] == -1)
+                            if (tempBrd[col + 1, row + 1] == 2 || tempBrd[col + 1, row + 1] == -2)
                             {
-                                if (col != BrdSize - 2 && row != 1 / 2 * (BrdSize - 3) + 1)
+                                if (col != BrdSize - 2 && row != BrdSize-2)
                                 {
-                                    if (tempBrd[col + 2, row - 2] == 0)
+                                    if (tempBrd[col + 2, row + 2] == 0)
                                     {
-                                        tempBrd[col + 2, row - 2] = 2;
-                                        tempBrd[col + 1, row - 1] = 0;
+                                        tempBrd[col + 2, row + 2] = originBrd[col,row];
+                                        tempBrd[col + 1, row + 1] = 0;
                                         tempBrd[col, row] = 0;
 
                                         MoveScore = BrdScore(tempBrd);
                                         if (MoveScore > Score)
                                         {
                                             Score = MoveScore;
-                                            ButtonLoc = new short[6] { col, row, (short)(col + 2), (short)(row - 2), (short)(col + 1), (short)(row - 1) };
+                                            ButtonLoc = new short[6] { col, row, (short)(col + 2), (short)(row + 2), (short)(col + 1), (short)(row + 1) };
                                         }
 
-                                        tempBrd[col + 2, row - 2] = 0;
-                                        tempBrd[col + 1, row - 1] = originBrd[col + 1, row - 1];
-                                        tempBrd[col, row] = 2;
+                                        tempBrd[col + 2, row + 2] = 0;
+                                        tempBrd[col + 1, row + 1] = originBrd[col + 1, row + 1];
+                                        tempBrd[col, row] = originBrd[col, row];
                                     }
                                 }
                             }
-                            else if (tempBrd[col + 1, row - 1] != 1 && tempBrd[col + 1, row - 1] != -1)
+                            else if (tempBrd[col + 1, row + 1] != 1 && tempBrd[col + 1, row + 1] != -1)
                             {
-                                tempBrd[col + 1, row - 1] = 0;
-                                tempBrd[col, row] = 1;
+                                tempBrd[col + 1, row + 1] = originBrd[col,row];
+                                tempBrd[col, row] = 0;
 
                                 MoveScore = BrdScore(tempBrd);
                                 if (MoveScore > Score)
                                 {
                                     Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col + 1), (short)(row - 1) };
+                                    ButtonLoc = new short[4] { col, row, (short)(col + 1), (short)(row + 1) };
                                 }
 
-                                tempBrd[col + 1, row - 1] = 1;
-                                tempBrd[col, row] = 0;
+                                tempBrd[col + 1, row + 1] = 0;
+                                tempBrd[col, row] = originBrd[col, row];
                             }
                         }
                     }
@@ -604,14 +604,14 @@ namespace Project_Checkers
             {
                 short[] ButtonLoc = CompMove(intBrd);
 
-                if (ButtonLoc[3] > 0 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -2)
+                if (ButtonLoc[3] < BrdSize-1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -2)
                 {
-                    intBrd[ButtonLoc[2], ButtonLoc[3]] = 2;
+                    intBrd[ButtonLoc[2], ButtonLoc[3]] = 1;
                     Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.DarkOrchid;
                 }
                 else
                 {
-                    intBrd[ButtonLoc[2], ButtonLoc[3]] = -2;
+                    intBrd[ButtonLoc[2], ButtonLoc[3]] = -1;
                     Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.Purple;
                 }
 
@@ -622,6 +622,9 @@ namespace Project_Checkers
                 }
 
                 intBrd[ButtonLoc[0], ButtonLoc[1]] = 0;
+                Board[ButtonLoc[0], ButtonLoc[1]].BackColor = Color.Black; ;
+
+                MessageBox.Show(BrdScore(intBrd).ToString());
 
                 turnVal = 2;
             }
