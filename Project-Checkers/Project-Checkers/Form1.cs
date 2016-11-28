@@ -65,287 +65,3587 @@ namespace Project_Checkers
             short[][,] tempBrd = new short[2][,];
             tempBrd[0]= (short[,])originBrd.Clone();
             short BrdSize=(short)(originBrd.GetLength(0));
-            short Score = -100;
-            short MoveScore;
+            short[] MoveScore=new short[3]{-100,100,-100};
             short[] ButtonLoc=null;
+            short[] col = new short[2];
+            short[] row = new short[2];
 
-
-            for (short row = 0; row < BrdSize; row++)
+            for (row[0] = 0; row[0] < BrdSize; row[0]++)
             {
-                for (short col = (short)(row % 2); col < BrdSize; col+=2)
+                for (col[0] = (short)(row[0] % 2); col[0] < BrdSize; col[0]+=2)
                 {
-                    if (tempBrd[0][col, row] == 1)//simulate normal checker move
+                    if (tempBrd[0][col[0], row[0]] == 1)//simulate normal checker move
                     {
-                        if (col != 0 && row!=BrdSize-1)
+                        if (col[0] != 0 && row[0]!=BrdSize-1)
                         {
-                            if (tempBrd[0][col - 1, row + 1] == 2 || tempBrd[0][col - 1, row + 1] == -2)
+                            if (tempBrd[0][col[0] - 1, row[0] + 1] == 2 || tempBrd[0][col[0] - 1, row[0] + 1] == -2)
                             {
-                                if (col != 1 && row != BrdSize-2)
+                                if (col[0] != 1 && row[0] != BrdSize-2)
                                 {
-                                    if (tempBrd[0][col - 2, row + 2] == 0)
+                                    if (tempBrd[0][col[0] - 2, row[0] + 2] == 0)
                                     {
-                                        if (row + 2 == BrdSize - 1)
+                                        if (row[0] + 2 == BrdSize - 1)
                                         {
-                                            tempBrd[0][col - 2, row + 2] = -1;
+                                            tempBrd[0][col[0] - 2, row[0] + 2] = -1;
                                         }
                                         else
                                         {
-                                            tempBrd[0][col - 2, row + 2] = 1;
+                                            tempBrd[0][col[0] - 2, row[0] + 2] = 1;
                                         }
-                                        tempBrd[0][col - 1, row + 1] = 0;
-                                        tempBrd[0][col, row] = 0;
+                                        tempBrd[0][col[0] - 1, row[0] + 1] = 0;
+                                        tempBrd[0][col[0], row[0]] = 0;
 
-                                        MoveScore = BrdScore(tempBrd[0]);
-                                        if (MoveScore > Score)
+                                        #region 2-Move-AI
+                                        tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                        for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
-                                            Score = MoveScore;
-                                            ButtonLoc = new short[6] {col,row, (short)(col - 2), (short)(row + 2), (short)(col - 1), (short)(row + 1) };
+                                            for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                            {
+                                                if (tempBrd[1][col[1], row[1]] == 2)
+                                                {
+                                                    if (col[1] != 0 && row[1] != 0)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                        {
+                                                            if (col[1] != 1 && row[1] != 1)
+                                                            {
+                                                                if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                                {
+                                                                    if (row[1] - 2 == 0)
+                                                                    {
+                                                                        tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                    }
+                                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                    if (MoveScore[2] < MoveScore[1])
+                                                                    {
+                                                                        MoveScore[1] = MoveScore[2];
+                                                                    }
+
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                    tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                        {
+                                                            if (row[1] - 1 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                            }
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                    if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                        {
+                                                            if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                            {
+                                                                if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                    if (MoveScore[2] < MoveScore[1])
+                                                                    {
+                                                                        MoveScore[1] = MoveScore[2];
+                                                                    }
+
+                                                                    tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                        {
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                                {
+                                                    for (short i = 1; i < row[1] + 1 && i < col[1] + 1; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] - i, row[1] - i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - i, row[1] - i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] - i] == 2 || tempBrd[1][col[1] - i, row[1] - i] == -2)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] - i] == 1 || tempBrd[1][col[1] - i, row[1] - i] == -1)
+                                                        {
+                                                            if (row[1] - i > 0 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] - i - 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - i - 1, row[1] - i - 1] = -2;
+                                                                tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[1] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - i - 1, row[1] - i - 1] = 0;
+                                                                tempBrd[1][col[1] - i, row[1] - i] = tempBrd[0][col[1] - i, row[1] - i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < row[1] + 1 && i < BrdSize - col[1]; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] + i, row[1] - i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + i, row[1] - i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] - i] == 2 || tempBrd[1][col[1] + i, row[1] - i] == -2)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] - i] == 1 || tempBrd[1][col[1] + i, row[1] - i] == -1)
+                                                        {
+                                                            if (row[1] - i > 0 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] - i - 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + i + 1, row[1] - i - 1] = -2;
+                                                                tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[1] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + i + 1, row[1] - i - 1] = 0;
+                                                                tempBrd[1][col[1] + i, row[1] - i] = tempBrd[0][col[1] + i, row[1] - i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < BrdSize - row[1] && i < col[1] + 1; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] - i, row[1] + i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - i, row[1] + i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] + i] == 1 || tempBrd[1][col[1] - i, row[1] + i] == -1)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] + i] == 2 || tempBrd[1][col[1] - i, row[1] + i] == -2)
+                                                        {
+                                                            if (row[1] + i < BrdSize - 1 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] + i + 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - i - 1, row[1] + i + 1] = -2;
+                                                                tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - i - 1, row[1] + i + 1] = 0;
+                                                                tempBrd[1][col[1] - i, row[1] + i] = tempBrd[0][col[1] - i, row[1] + i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < BrdSize - row[1] && i < BrdSize - col[1]; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] + i, row[1] + i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + i, row[1] + i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                        {
+                                                            if (row[1] + i < BrdSize - 1 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] + i + 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + i + 1, row[1] + i + 1] = -2;
+                                                                tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[2] = MoveScore[1];
+                                                                }
+
+                                                                tempBrd[1][col[1] + i + 1, row[1] + i + 1] = 0;
+                                                                tempBrd[1][col[1] + i, row[1] + i] = tempBrd[0][col[1] + i, row[1] + i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                                    #endregion
+
+                                        MoveScore[1] = BrdScore(tempBrd[0]);
+                                        if (MoveScore[1] > MoveScore[0])
+                                        {
+                                            MoveScore[0] = MoveScore[1];
+                                            ButtonLoc = new short[6] {col[0],row[0], (short)(col[0] - 2), (short)(row[0] + 2), (short)(col[0] - 1), (short)(row[0] + 1) };
                                         }
 
-                                        tempBrd[0][col - 2, row + 2] = 0;
-                                        tempBrd[0][col - 1, row + 1] = originBrd[col - 1, row + 1];
-                                        tempBrd[0][col, row] = 1;
+                                        tempBrd[0][col[0] - 2, row[0] + 2] = 0;
+                                        tempBrd[0][col[0] - 1, row[0] + 1] = originBrd[col[0] - 1, row[0] + 1];
+                                        tempBrd[0][col[0], row[0]] = 1;
                                     }
                                 }
                             }
-                            else if (tempBrd[0][col - 1, row + 1] ==0)
+                            else if (tempBrd[0][col[0] - 1, row[0] + 1] ==0)
                             {
-                                if (row + 1 == BrdSize - 1)
+                                if (row[0] + 1 == BrdSize - 1)
                                 {
-                                    tempBrd[0][col - 1, row + 1] = -1;
+                                    tempBrd[0][col[0] - 1, row[0] + 1] = -1;
                                 }
                                 else
                                 {
-                                    tempBrd[0][col - 1, row + 1] = 1;
+                                    tempBrd[0][col[0] - 1, row[0] + 1] = 1;
                                 }
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] {col,row, (short)(col - 1), (short)(row + 1) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short i = 1; i < row[1] + 1 && i < col[1] + 1; i++)
+                                            {
+                                                if (tempBrd[1][col[1] - i, row[1] - i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - i, row[1] - i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] - i] == 2 || tempBrd[1][col[1] - i, row[1] - i] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] - i] == 1 || tempBrd[1][col[1] - i, row[1] - i] == -1)
+                                                {
+                                                    if (row[1] - i > 0 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] - i - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - i - 1, row[1] - i - 1] = -2;
+                                                        tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - i - 1, row[1] - i - 1] = 0;
+                                                        tempBrd[1][col[1] - i, row[1] - i] = tempBrd[0][col[1] - i, row[1] - i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < row[1] + 1 && i < BrdSize - col[1]; i++)
+                                            {
+                                                if (tempBrd[1][col[1] + i, row[1] - i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + i, row[1] - i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] - i] == 2 || tempBrd[1][col[1] + i, row[1] - i] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] - i] == 1 || tempBrd[1][col[1] + i, row[1] - i] == -1)
+                                                {
+                                                    if (row[1] - i > 0 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] - i - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + i + 1, row[1] - i - 1] = -2;
+                                                        tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + i + 1, row[1] - i - 1] = 0;
+                                                        tempBrd[1][col[1] + i, row[1] - i] = tempBrd[0][col[1] + i, row[1] - i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < BrdSize - row[1] && i < col[1] + 1; i++)
+                                            {
+                                                if (tempBrd[1][col[1] - i, row[1] + i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - i, row[1] + i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] + i] == 1 || tempBrd[1][col[1] - i, row[1] + i] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] + i] == 2 || tempBrd[1][col[1] - i, row[1] + i] == -2)
+                                                {
+                                                    if (row[1] + i < BrdSize - 1 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] + i + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - i - 1, row[1] + i + 1] = -2;
+                                                        tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - i - 1, row[1] + i + 1] = 0;
+                                                        tempBrd[1][col[1] - i, row[1] + i] = tempBrd[0][col[1] - i, row[1] + i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < BrdSize - row[1] && i < BrdSize - col[1]; i++)
+                                            {
+                                                if (tempBrd[1][col[1] + i, row[1] + i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + i, row[1] + i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                {
+                                                    if (row[1] + i < BrdSize - 1 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] + i + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + i + 1, row[1] + i + 1] = -2;
+                                                        tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + i + 1, row[1] + i + 1] = 0;
+                                                        tempBrd[1][col[1] + i, row[1] + i] = tempBrd[0][col[1] + i, row[1] + i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] {col[0],row[0], (short)(col[0] - 1), (short)(row[0] + 1) };
                                 }
 
-                                tempBrd[0][col - 1, row + 1] = 0;
-                                tempBrd[0][col, row] = 1;
+                                tempBrd[0][col[0] - 1, row[0] + 1] = 0;
+                                tempBrd[0][col[0], row[0]] = 1;
                             }
                         }
-                        if (col != BrdSize - 1 && row!=BrdSize-1)
+                        if (col[0] != BrdSize - 1 && row[0]!=BrdSize-1)
                         {
-                            if (tempBrd[0][col + 1, row + 1] == 2 || tempBrd[0][col + 1, row + 1] == -2)
+                            if (tempBrd[0][col[0] + 1, row[0] + 1] == 2 || tempBrd[0][col[0] + 1, row[0] + 1] == -2)
                             {
-                                if (col != BrdSize - 2 && row != BrdSize-2)
+                                if (col[0] != BrdSize - 2 && row[0] != BrdSize-2)
                                 {
-                                    if (tempBrd[0][col + 2, row + 2] == 0)
+                                    if (tempBrd[0][col[0] + 2, row[0] + 2] == 0)
                                     {
-                                        tempBrd[0][col + 2, row + 2] = originBrd[col,row];
-                                        tempBrd[0][col + 1, row + 1] = 0;
-                                        tempBrd[0][col, row] = 0;
+                                        tempBrd[0][col[0] + 2, row[0] + 2] = 1;
+                                        tempBrd[0][col[0] + 1, row[0] + 1] = 0;
+                                        tempBrd[0][col[0], row[0]] = 0;
 
-                                        MoveScore = BrdScore(tempBrd[0]);
-                                        if (MoveScore > Score)
+                                        #region 2-Move-AI
+                                        tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                        for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
-                                            Score = MoveScore;
-                                            ButtonLoc = new short[6] { col, row, (short)(col + 2), (short)(row + 2), (short)(col + 1), (short)(row + 1) };
+                                            for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                            {
+                                                if (tempBrd[1][col[1], row[1]] == 2)
+                                                {
+                                                    if (col[1] != 0 && row[1] != 0)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                        {
+                                                            if (col[1] != 1 && row[1] != 1)
+                                                            {
+                                                                if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                                {
+                                                                    if (row[1] - 2 == 0)
+                                                                    {
+                                                                        tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                    }
+                                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                    if (MoveScore[2] < MoveScore[1])
+                                                                    {
+                                                                        MoveScore[1] = MoveScore[2];
+                                                                    }
+
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                    tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                        {
+                                                            if (row[1] - 1 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                            }
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                    if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                        {
+                                                            if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                            {
+                                                                if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                    if (MoveScore[2] < MoveScore[1])
+                                                                    {
+                                                                        MoveScore[1] = MoveScore[2];
+                                                                    }
+
+                                                                    tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                                }
+                                                            }
+                                                        }
+                                                        else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                        {
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                                {
+                                                    for (short i = 1; i < row[1] + 1 && i < col[1] + 1; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] - i, row[1] - i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - i, row[1] - i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] - i] == 2 || tempBrd[1][col[1] - i, row[1] - i] == -2)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] - i] == 1 || tempBrd[1][col[1] - i, row[1] - i] == -1)
+                                                        {
+                                                            if (row[1] - i > 0 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] - i - 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - i - 1, row[1] - i - 1] = -2;
+                                                                tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[1] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - i - 1, row[1] - i - 1] = 0;
+                                                                tempBrd[1][col[1] - i, row[1] - i] = tempBrd[0][col[1] - i, row[1] - i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < row[1] + 1 && i < BrdSize - col[1]; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] + i, row[1] - i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + i, row[1] - i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] - i] == 2 || tempBrd[1][col[1] + i, row[1] - i] == -2)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] - i] == 1 || tempBrd[1][col[1] + i, row[1] - i] == -1)
+                                                        {
+                                                            if (row[1] - i > 0 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] - i - 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + i + 1, row[1] - i - 1] = -2;
+                                                                tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[1] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + i + 1, row[1] - i - 1] = 0;
+                                                                tempBrd[1][col[1] + i, row[1] - i] = tempBrd[0][col[1] + i, row[1] - i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < BrdSize - row[1] && i < col[1] + 1; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] - i, row[1] + i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - i, row[1] + i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] + i] == 1 || tempBrd[1][col[1] - i, row[1] + i] == -1)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] - i, row[1] + i] == 2 || tempBrd[1][col[1] - i, row[1] + i] == -2)
+                                                        {
+                                                            if (row[1] + i < BrdSize - 1 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] + i + 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - i - 1, row[1] + i + 1] = -2;
+                                                                tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - i - 1, row[1] + i + 1] = 0;
+                                                                tempBrd[1][col[1] - i, row[1] + i] = tempBrd[0][col[1] - i, row[1] + i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+
+                                                    for (short i = 1; i < BrdSize - row[1] && i < BrdSize - col[1]; i++)
+                                                    {
+                                                        if (tempBrd[1][col[1] + i, row[1] + i] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + i, row[1] + i] = -2;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                        {
+                                                            break;
+                                                        }
+                                                        else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                        {
+                                                            if (row[1] + i < BrdSize - 1 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] + i + 1] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + i + 1, row[1] + i + 1] = -2;
+                                                                tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[2] = MoveScore[1];
+                                                                }
+
+                                                                tempBrd[1][col[1] + i + 1, row[1] + i + 1] = 0;
+                                                                tempBrd[1][col[1] + i, row[1] + i] = tempBrd[0][col[1] + i, row[1] + i];
+                                                                tempBrd[1][col[1], row[1]] = -2;
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        #endregion
+
+                                        MoveScore[1] = BrdScore(tempBrd[0]);
+                                        if (MoveScore[1] > MoveScore[0])
+                                        {
+                                            MoveScore[0] = MoveScore[1];
+                                            ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] + 2), (short)(row[0] + 2), (short)(col[0] + 1), (short)(row[0] + 1) };
                                         }
 
-                                        tempBrd[0][col + 2, row + 2] = 0;
-                                        tempBrd[0][col + 1, row + 1] = originBrd[col + 1, row + 1];
-                                        tempBrd[0][col, row] = originBrd[col, row];
+                                        tempBrd[0][col[0] + 2, row[0] + 2] = 0;
+                                        tempBrd[0][col[0] + 1, row[0] + 1] = originBrd[col[0] + 1, row[0] + 1];
+                                        tempBrd[0][col[0], row[0]] = 1;
                                     }
                                 }
                             }
-                            else if (tempBrd[0][col + 1, row + 1] != 1 && tempBrd[0][col + 1, row + 1] != -1)
+                            else if (tempBrd[0][col[0] + 1, row[0] + 1] != 1 && tempBrd[0][col[0] + 1, row[0] + 1] != -1)
                             {
-                                tempBrd[0][col + 1, row + 1] = originBrd[col,row];
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0] + 1, row[0] + 1] = originBrd[col[0],row[0]];
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col + 1), (short)(row + 1) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short i = 1; i < row[1] + 1 && i < col[1] + 1; i++)
+                                            {
+                                                if (tempBrd[1][col[1] - i, row[1] - i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - i, row[1] - i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] - i] == 2 || tempBrd[1][col[1] - i, row[1] - i] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] - i] == 1 || tempBrd[1][col[1] - i, row[1] - i] == -1)
+                                                {
+                                                    if (row[1] - i > 0 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] - i - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - i - 1, row[1] - i - 1] = -2;
+                                                        tempBrd[1][col[1] - i, row[1] - i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - i - 1, row[1] - i - 1] = 0;
+                                                        tempBrd[1][col[1] - i, row[1] - i] = tempBrd[0][col[1] - i, row[1] - i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < row[1] + 1 && i < BrdSize - col[1]; i++)
+                                            {
+                                                if (tempBrd[1][col[1] + i, row[1] - i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + i, row[1] - i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] - i] == 2 || tempBrd[1][col[1] + i, row[1] - i] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] - i] == 1 || tempBrd[1][col[1] + i, row[1] - i] == -1)
+                                                {
+                                                    if (row[1] - i > 0 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] - i - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + i + 1, row[1] - i - 1] = -2;
+                                                        tempBrd[1][col[1] + i, row[1] - i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + i + 1, row[1] - i - 1] = 0;
+                                                        tempBrd[1][col[1] + i, row[1] - i] = tempBrd[0][col[1] + i, row[1] - i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < BrdSize - row[1] && i < col[1] + 1; i++)
+                                            {
+                                                if (tempBrd[1][col[1] - i, row[1] + i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - i, row[1] + i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] + i] == 1 || tempBrd[1][col[1] - i, row[1] + i] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - i, row[1] + i] == 2 || tempBrd[1][col[1] - i, row[1] + i] == -2)
+                                                {
+                                                    if (row[1] + i < BrdSize - 1 && col[1] - i > 0 && tempBrd[1][col[1] - i - 1, row[1] + i + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - i - 1, row[1] + i + 1] = -2;
+                                                        tempBrd[1][col[1] - i, row[1] + i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - i - 1, row[1] + i + 1] = 0;
+                                                        tempBrd[1][col[1] - i, row[1] + i] = tempBrd[0][col[1] - i, row[1] + i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short i = 1; i < BrdSize - row[1] && i < BrdSize - col[1]; i++)
+                                            {
+                                                if (tempBrd[1][col[1] + i, row[1] + i] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + i, row[1] + i] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + i, row[1] + i] == 1 || tempBrd[1][col[1] + i, row[1] + i] == -1)
+                                                {
+                                                    if (row[1] + i < BrdSize - 1 && col[1] + i < BrdSize - 1 && tempBrd[1][col[1] + i + 1, row[1] + i + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + i + 1, row[1] + i + 1] = -2;
+                                                        tempBrd[1][col[1] + i, row[1] + i] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + i + 1, row[1] + i + 1] = 0;
+                                                        tempBrd[1][col[1] + i, row[1] + i] = tempBrd[0][col[1] + i, row[1] + i];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] + 1), (short)(row[0] + 1) };
                                 }
 
-                                tempBrd[0][col + 1, row + 1] = 0;
-                                tempBrd[0][col, row] = originBrd[col, row];
+                                tempBrd[0][col[0] + 1, row[0] + 1] = 0;
+                                tempBrd[0][col[0], row[0]] = originBrd[col[0], row[0]];
                             }
                         }
                     }
-                    else if (tempBrd[0][col, row] == -1)//simulate king checker move
+                    else if (tempBrd[0][col[0], row[0]] == -1)//simulate king checker move
                     {
-                        for (short i = 1; i < row + 1 && i < col + 1; i++)
+                        for (short i = 1; i < row[0] + 1 && i < col[0] + 1; i++)
                         {
-                            if (tempBrd[0][col - i, row - i] == 0)
+                            if (tempBrd[0][col[0] - i, row[0] - i] == 0)
                             {
-                                tempBrd[0][col - i, row - i] = -1;
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0] - i, row[0] - i] = -1;
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col  - i), (short)(row  - i) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0]  - i), (short)(row[0]  - i) };
                                 }
 
-                                tempBrd[0][col - i, row - i] = 0;
-                                tempBrd[0][col, row] = -1;
+                                tempBrd[0][col[0] - i, row[0] - i] = 0;
+                                tempBrd[0][col[0], row[0]] = -1;
                             }
-                            else if (tempBrd[0][col - i, row - i] == 1 || tempBrd[0][col - i, row - i] == -1)
+                            else if (tempBrd[0][col[0] - i, row[0] - i] == 1 || tempBrd[0][col[0] - i, row[0] - i] == -1)
                             {
                                 break;
                             }
-                            else if (tempBrd[0][col - i, row - i] == 2 || tempBrd[0][col - i, row - i] == -2)
+                            else if (tempBrd[0][col[0] - i, row[0] - i] == 2 || tempBrd[0][col[0] - i, row[0] - i] == -2)
                             {
-                                if (row - i > 0 && col - i > 0 && tempBrd[0][col - i - 1, row - i - 1] == 0)
+                                if (row[0] - i > 0 && col[0] - i > 0 && tempBrd[0][col[0] - i - 1, row[0] - i - 1] == 0)
                                 {
-                                    tempBrd[0][col - i - 1, row - i - 1] = -1;
-                                    tempBrd[0][col - i, row - i] = 0;
-                                    tempBrd[0][col, row] = 0;
+                                    tempBrd[0][col[0] - i - 1, row[0] - i - 1] = -1;
+                                    tempBrd[0][col[0] - i, row[0] - i] = 0;
+                                    tempBrd[0][col[0], row[0]] = 0;
 
-                                    MoveScore = BrdScore(tempBrd[0]);
-                                    if (MoveScore > Score)
+                                    #region 2-Move-AI
+                                    tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                    for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        Score = MoveScore;
-                                        ButtonLoc = new short[6] { col, row, (short)(col - i-1), (short)(row - i-1),(short)(col-i),(short)(row-i) };
+                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        {
+                                            if (tempBrd[1][col[1], row[1]] == 2)
+                                            {
+                                                if (col[1] != 0 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != 1 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                            {
+                                                                if (row[1] - 2 == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                }
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                    {
+                                                        if (row[1] - 1 == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                        }
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 2;
+                                                    }
+                                                }
+                                                if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                    {
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                    }
+                                                }
+                                            }
+                                            else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                            {
+                                                for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+                                    MoveScore[1] = BrdScore(tempBrd[0]);
+                                    if (MoveScore[1] > MoveScore[0])
+                                    {
+                                        MoveScore[0] = MoveScore[1];
+                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] - i-1), (short)(row[0] - i-1),(short)(col[0]-i),(short)(row[0]-i) };
                                     }
 
-                                    tempBrd[0][col - i - 1, row - i - 1] = 0;
-                                    tempBrd[0][col - i, row - i] = originBrd[col-i,row-i];
-                                    tempBrd[0][col, row] = -1;
+                                    tempBrd[0][col[0] - i - 1, row[0] - i - 1] = 0;
+                                    tempBrd[0][col[0] - i, row[0] - i] = originBrd[col[0]-i,row[0]-i];
+                                    tempBrd[0][col[0], row[0]] = -1;
                                 }
                                 break;
                             }
                         }
 
-                        for (short i = 1; i < row + 1 && i < BrdSize - col; i++)
+                        for (short i = 1; i < row[0] + 1 && i < BrdSize - col[0]; i++)
                         {
-                            if (tempBrd[0][col + i, row - i] == 0)
+                            if (tempBrd[0][col[0] + i, row[0] - i] == 0)
                             {
-                                tempBrd[0][col + i, row - i] = -1;
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0] + i, row[0] - i] = -1;
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col + i), (short)(row - i) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] + i), (short)(row[0] - i) };
                                 }
 
-                                tempBrd[0][col + i, row - i] = 0;
-                                tempBrd[0][col, row] = -1;
+                                tempBrd[0][col[0] + i, row[0] - i] = 0;
+                                tempBrd[0][col[0], row[0]] = -1;
                             }
-                            else if (tempBrd[0][col + i, row - i] == 1 || tempBrd[0][col + i, row - i] == -1)
+                            else if (tempBrd[0][col[0] + i, row[0] - i] == 1 || tempBrd[0][col[0] + i, row[0] - i] == -1)
                             {
                                 break;
                             }
-                            else if (tempBrd[0][col + i, row - i] == 2 || tempBrd[0][col + i, row - i] == -2)
+                            else if (tempBrd[0][col[0] + i, row[0] - i] == 2 || tempBrd[0][col[0] + i, row[0] - i] == -2)
                             {
-                                if (row - i > 0 && col + i < BrdSize - 1 && tempBrd[0][col + i + 1, row - i - 1] == 0)
+                                if (row[0] - i > 0 && col[0] + i < BrdSize - 1 && tempBrd[0][col[0] + i + 1, row[0] - i - 1] == 0)
                                 {
-                                    tempBrd[0][col + i + 1, row - i - 1] = -1;
-                                    tempBrd[0][col + i, row - i] = 0;
-                                    tempBrd[0][col, row] = 0;
+                                    tempBrd[0][col[0] + i + 1, row[0] - i - 1] = -1;
+                                    tempBrd[0][col[0] + i, row[0] - i] = 0;
+                                    tempBrd[0][col[0], row[0]] = 0;
 
-                                    MoveScore = BrdScore(tempBrd[0]);
-                                    if (MoveScore > Score)
+                                    #region 2-Move-AI
+                                    tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                    for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        Score = MoveScore;
-                                        ButtonLoc = new short[6] { col, row, (short)(col + i + 1), (short)(row - i - 1), (short)(col + i), (short)(row - i) };
+                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        {
+                                            if (tempBrd[1][col[1], row[1]] == 2)
+                                            {
+                                                if (col[1] != 0 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != 1 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                            {
+                                                                if (row[1] - 2 == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                }
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                    {
+                                                        if (row[1] - 1 == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                        }
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 2;
+                                                    }
+                                                }
+                                                if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                    {
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                    }
+                                                }
+                                            }
+                                            else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                            {
+                                                for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+                                    MoveScore[1] = BrdScore(tempBrd[0]);
+                                    if (MoveScore[1] > MoveScore[0])
+                                    {
+                                        MoveScore[0] = MoveScore[1];
+                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] + i + 1), (short)(row[0] - i - 1), (short)(col[0] + i), (short)(row[0] - i) };
                                     }
 
-                                    tempBrd[0][col + i + 1, row - i - 1] = 0;
-                                    tempBrd[0][col + i, row - i] = originBrd[col + i, row - i];
-                                    tempBrd[0][col, row] = -1;
+                                    tempBrd[0][col[0] + i + 1, row[0] - i - 1] = 0;
+                                    tempBrd[0][col[0] + i, row[0] - i] = originBrd[col[0] + i, row[0] - i];
+                                    tempBrd[0][col[0], row[0]] = -1;
                                 }
                                 break;
                             }
                         }
 
-                        for (short i = 1; i < BrdSize - row && i < col + 1; i++)
+                        for (short i = 1; i < BrdSize - row[0] && i < col[0] + 1; i++)
                         {
-                            if (tempBrd[0][col - i, row + i] == 0)
+                            if (tempBrd[0][col[0] - i, row[0] + i] == 0)
                             {
-                                tempBrd[0][col - i, row + i] = -1;
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0] - i, row[0] + i] = -1;
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col - i), (short)(row + i) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] - i), (short)(row[0] + i) };
                                 }
 
-                                tempBrd[0][col - i, row + i] = 0;
-                                tempBrd[0][col, row] = -1;
+                                tempBrd[0][col[0] - i, row[0] + i] = 0;
+                                tempBrd[0][col[0], row[0]] = -1;
                             }
-                            else if (tempBrd[0][col - i, row + i] == 1 || tempBrd[0][col - i, row + i] == -1)
+                            else if (tempBrd[0][col[0] - i, row[0] + i] == 1 || tempBrd[0][col[0] - i, row[0] + i] == -1)
                             {
                                 break;
                             }
-                            else if (tempBrd[0][col - i, row + i] == 2 || tempBrd[0][col - i, row + i] == -2)
+                            else if (tempBrd[0][col[0] - i, row[0] + i] == 2 || tempBrd[0][col[0] - i, row[0] + i] == -2)
                             {
-                                if (row + i < BrdSize - 1 && col - i > 0 && tempBrd[0][col - i - 1, row + i + 1] == 0)
+                                if (row[0] + i < BrdSize - 1 && col[0] - i > 0 && tempBrd[0][col[0] - i - 1, row[0] + i + 1] == 0)
                                 {
-                                    tempBrd[0][col - i - 1, row + i + 1] = -1;
-                                    tempBrd[0][col - i, row + i] = 0;
-                                    tempBrd[0][col, row] = 0;
+                                    tempBrd[0][col[0] - i - 1, row[0] + i + 1] = -1;
+                                    tempBrd[0][col[0] - i, row[0] + i] = 0;
+                                    tempBrd[0][col[0], row[0]] = 0;
 
-                                    MoveScore = BrdScore(tempBrd[0]);
-                                    if (MoveScore > Score)
+                                    #region 2-Move-AI
+                                    tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                    for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        Score = MoveScore;
-                                        ButtonLoc = new short[6] { col, row, (short)(col - i - 1), (short)(row + i + 1), (short)(col - i), (short)(row + i) };
+                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        {
+                                            if (tempBrd[1][col[1], row[1]] == 2)
+                                            {
+                                                if (col[1] != 0 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != 1 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                            {
+                                                                if (row[1] - 2 == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                }
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                    {
+                                                        if (row[1] - 1 == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                        }
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 2;
+                                                    }
+                                                }
+                                                if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                    {
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                    }
+                                                }
+                                            }
+                                            else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                            {
+                                                for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+                                    MoveScore[1] = BrdScore(tempBrd[0]);
+                                    if (MoveScore[1] > MoveScore[0])
+                                    {
+                                        MoveScore[0] = MoveScore[1];
+                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] - i - 1), (short)(row[0] + i + 1), (short)(col[0] - i), (short)(row[0] + i) };
                                     }
 
-                                    tempBrd[0][col - i - 1, row + i + 1] = 0;
-                                    tempBrd[0][col - i, row + i] = originBrd[col - i, row + i];
-                                    tempBrd[0][col, row] = -1;
+                                    tempBrd[0][col[0] - i - 1, row[0] + i + 1] = 0;
+                                    tempBrd[0][col[0] - i, row[0] + i] = originBrd[col[0] - i, row[0] + i];
+                                    tempBrd[0][col[0], row[0]] = -1;
                                 }
                                 break;
                             }
                         }
 
-                        for (short i = 1; i < BrdSize - row && i < BrdSize - col; i++)
+                        for (short i = 1; i < BrdSize - row[0] && i < BrdSize - col[0]; i++)
                         {
-                            if (tempBrd[0][col + i, row + i] == 0)
+                            if (tempBrd[0][col[0] + i, row[0] + i] == 0)
                             {
-                                tempBrd[0][col + i, row + i] = -1;
-                                tempBrd[0][col, row] = 0;
+                                tempBrd[0][col[0] + i, row[0] + i] = -1;
+                                tempBrd[0][col[0], row[0]] = 0;
 
-                                MoveScore = BrdScore(tempBrd[0]);
-                                if (MoveScore > Score)
+                                #region 2-Move-AI
+                                tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    Score = MoveScore;
-                                    ButtonLoc = new short[4] { col, row, (short)(col + i), (short)(row + i) };
+                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    {
+                                        if (tempBrd[1][col[1], row[1]] == 2)
+                                        {
+                                            if (col[1] != 0 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != 1 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                        {
+                                                            if (row[1] - 2 == 0)
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                            }
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                {
+                                                    if (row[1] - 1 == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                    }
+                                                    else
+                                                    {
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                    }
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = 2;
+                                                }
+                                            }
+                                            if (col[1] != BrdSize - 1 && row[1] != 0)
+                                            {
+                                                if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                {
+                                                    if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                    {
+                                                        if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                            tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                            tempBrd[1][col[1], row[1]] = 2;
+                                                        }
+                                                    }
+                                                }
+                                                else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                {
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[2] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[2] = MoveScore[1];
+                                                    }
+
+                                                    tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                    tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                }
+                                            }
+                                        }
+                                        else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                        {
+                                            for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                {
+                                                    if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                            {
+                                                if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                            for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                            {
+                                                if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                {
+                                                    tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                    tempBrd[1][col[1], row[1]] = 0;
+
+                                                    MoveScore[1] = BrdScore(tempBrd[1]);
+                                                    if (MoveScore[2] < MoveScore[1])
+                                                    {
+                                                        MoveScore[1] = MoveScore[2];
+                                                    }
+
+                                                    tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                    tempBrd[1][col[1], row[1]] = -2;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    break;
+                                                }
+                                                else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                {
+                                                    if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                        tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
+
+                                MoveScore[1] = BrdScore(tempBrd[0]);
+                                if (MoveScore[1] > MoveScore[0])
+                                {
+                                    MoveScore[0] = MoveScore[1];
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] + i), (short)(row[0] + i) };
                                 }
 
-                                tempBrd[0][col + i, row + i] = 0;
-                                tempBrd[0][col, row] = -1;
+                                tempBrd[0][col[0] + i, row[0] + i] = 0;
+                                tempBrd[0][col[0], row[0]] = -1;
                             }
-                            else if (tempBrd[0][col + i, row + i] == 1 || tempBrd[0][col + i, row + i] == -1)
+                            else if (tempBrd[0][col[0] + i, row[0] + i] == 1 || tempBrd[0][col[0] + i, row[0] + i] == -1)
                             {
                                 break;
                             }
-                            else if (tempBrd[0][col + i, row + i] == 2 || tempBrd[0][col + i, row + i] == -2)
+                            else if (tempBrd[0][col[0] + i, row[0] + i] == 2 || tempBrd[0][col[0] + i, row[0] + i] == -2)
                             {
-                                if (row + i < BrdSize - 1 && col + i < BrdSize - 1 && tempBrd[0][col + i + 1, row + i + 1] == 0)
+                                if (row[0] + i < BrdSize - 1 && col[0] + i < BrdSize - 1 && tempBrd[0][col[0] + i + 1, row[0] + i + 1] == 0)
                                 {
-                                    tempBrd[0][col + i + 1, row + i + 1] = -1;
-                                    tempBrd[0][col + i, row + i] = 0;
-                                    tempBrd[0][col, row] = 0;
+                                    tempBrd[0][col[0] + i + 1, row[0] + i + 1] = -1;
+                                    tempBrd[0][col[0] + i, row[0] + i] = 0;
+                                    tempBrd[0][col[0], row[0]] = 0;
 
-                                    MoveScore = BrdScore(tempBrd[0]);
-                                    if (MoveScore > Score)
+                                    #region 2-Move-AI
+                                    tempBrd[1] = (short[,])tempBrd[0].Clone();
+                                    for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        Score = MoveScore;
-                                        ButtonLoc = new short[6] { col, row, (short)(col + i + 1), (short)(row + i + 1), (short)(col + i), (short)(row + i) };
+                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        {
+                                            if (tempBrd[1][col[1], row[1]] == 2)
+                                            {
+                                                if (col[1] != 0 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] - 1, row[1] - 1] == 1 || tempBrd[1][col[1] - 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != 1 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] - 2, row[1] - 2] == 0)
+                                                            {
+                                                                if (row[1] - 2 == 0)
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = -2;
+                                                                }
+                                                                else
+                                                                {
+                                                                    tempBrd[1][col[1] - 2, row[1] - 2] = 2;
+                                                                }
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] - 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] - 1, row[1] - 1] = tempBrd[0][col[1] - 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] - 1, row[1] - 1] == 0)
+                                                    {
+                                                        if (row[1] - 1 == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            tempBrd[1][col[1] - 1, row[1] - 1] = 2;
+                                                        }
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = 2;
+                                                    }
+                                                }
+                                                if (col[1] != BrdSize - 1 && row[1] != 0)
+                                                {
+                                                    if (tempBrd[1][col[1] + 1, row[1] - 1] == 1 || tempBrd[1][col[1] + 1, row[1] - 1] == -1)
+                                                    {
+                                                        if (col[1] != BrdSize - 2 && row[1] != 1)
+                                                        {
+                                                            if (tempBrd[1][col[1] + 2, row[1] - 2] == 0)
+                                                            {
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 2;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                                tempBrd[1][col[1], row[1]] = 0;
+
+                                                                MoveScore[2] = BrdScore(tempBrd[1]);
+                                                                if (MoveScore[2] < MoveScore[1])
+                                                                {
+                                                                    MoveScore[1] = MoveScore[2];
+                                                                }
+
+                                                                tempBrd[1][col[1] + 2, row[1] - 2] = 0;
+                                                                tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1] + 1, row[1] - 1];
+                                                                tempBrd[1][col[1], row[1]] = 2;
+                                                            }
+                                                        }
+                                                    }
+                                                    else if (tempBrd[1][col[1] + 1, row[1] - 1] != 1 && tempBrd[1][col[1] + 1, row[1] - 1] != -1)
+                                                    {
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = tempBrd[0][col[1], row[1]];
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[2] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[2] = MoveScore[1];
+                                                        }
+
+                                                        tempBrd[1][col[1] + 1, row[1] - 1] = 0;
+                                                        tempBrd[1][col[1], row[1]] = tempBrd[0][col[1], row[1]];
+                                                    }
+                                                }
+                                            }
+                                            else if (tempBrd[1][col[1], row[1]] == -2)//simulate king checker move
+                                            {
+                                                for (short k = 1; k < row[1] + 1 && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 2 || tempBrd[1][col[1] - k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] - k] == 1 || tempBrd[1][col[1] - k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] - k] = tempBrd[0][col[1] - k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < row[1] + 1 && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] - k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] - k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 2 || tempBrd[1][col[1] + k, row[1] - k] == -2)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] - k] == 1 || tempBrd[1][col[1] + k, row[1] - k] == -1)
+                                                    {
+                                                        if (row[1] - k > 0 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] - k - 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[1] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] - k - 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] - k] = tempBrd[0][col[1] + k, row[1] - k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < col[1] + 1; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] - k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] - k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 1 || tempBrd[1][col[1] - k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] - k, row[1] + k] == 2 || tempBrd[1][col[1] - k, row[1] + k] == -2)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] - k > 0 && tempBrd[1][col[1] - k - 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[1] = MoveScore[2];
+                                                            }
+
+                                                            tempBrd[1][col[1] - k - 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] - k, row[1] + k] = tempBrd[0][col[1] - k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+
+                                                for (short k = 1; k < BrdSize - row[1] && k < BrdSize - col[1]; k++)
+                                                {
+                                                    if (tempBrd[1][col[1] + k, row[1] + k] == 0)
+                                                    {
+                                                        tempBrd[1][col[1] + k, row[1] + k] = -2;
+                                                        tempBrd[1][col[1], row[1]] = 0;
+
+                                                        MoveScore[1] = BrdScore(tempBrd[1]);
+                                                        if (MoveScore[2] < MoveScore[1])
+                                                        {
+                                                            MoveScore[1] = MoveScore[2];
+                                                        }
+
+                                                        tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                        tempBrd[1][col[1], row[1]] = -2;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        break;
+                                                    }
+                                                    else if (tempBrd[1][col[1] + k, row[1] + k] == 1 || tempBrd[1][col[1] + k, row[1] + k] == -1)
+                                                    {
+                                                        if (row[1] + k < BrdSize - 1 && col[1] + k < BrdSize - 1 && tempBrd[1][col[1] + k + 1, row[1] + k + 1] == 0)
+                                                        {
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = -2;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = 0;
+                                                            tempBrd[1][col[1], row[1]] = 0;
+
+                                                            MoveScore[2] = BrdScore(tempBrd[1]);
+                                                            if (MoveScore[2] < MoveScore[1])
+                                                            {
+                                                                MoveScore[2] = MoveScore[1];
+                                                            }
+
+                                                            tempBrd[1][col[1] + k + 1, row[1] + k + 1] = 0;
+                                                            tempBrd[1][col[1] + k, row[1] + k] = tempBrd[0][col[1] + k, row[1] + k];
+                                                            tempBrd[1][col[1], row[1]] = -2;
+                                                        }
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    #endregion
+
+                                    MoveScore[1] = BrdScore(tempBrd[0]);
+                                    if (MoveScore[1] > MoveScore[0])
+                                    {
+                                        MoveScore[0] = MoveScore[1];
+                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] + i + 1), (short)(row[0] + i + 1), (short)(col[0] + i), (short)(row[0] + i) };
                                     }
 
-                                    tempBrd[0][col + i + 1, row + i + 1] = 0;
-                                    tempBrd[0][col + i, row + i] = originBrd[col + i, row + i];
-                                    tempBrd[0][col, row] = -1;
+                                    tempBrd[0][col[0] + i + 1, row[0] + i + 1] = 0;
+                                    tempBrd[0][col[0] + i, row[0] + i] = originBrd[col[0] + i, row[0] + i];
+                                    tempBrd[0][col[0], row[0]] = -1;
                                 }
                                 break;
                             }
