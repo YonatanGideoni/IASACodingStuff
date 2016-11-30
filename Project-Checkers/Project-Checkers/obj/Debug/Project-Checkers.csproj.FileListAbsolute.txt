@@ -25,3 +25,12 @@ C:\Users\Yonatan\Desktop\Project-Checkers\Project-Checkers\obj\Debug\Project-Che
 C:\Users\Yonatan\Desktop\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Form1.resources
 C:\Users\Yonatan\Desktop\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Properties.Resources.resources
 C:\Users\Yonatan\Desktop\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csproj.GenerateResource.Cache
+V:\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.exe.config
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.exe
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.pdb
+V:\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.exe
+V:\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.pdb
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csprojResolveAssemblyReference.cache
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Form1.resources
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Properties.Resources.resources
+V:\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csproj.GenerateResource.Cache

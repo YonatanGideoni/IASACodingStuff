@@ -43886,8 +43886,7 @@ namespace Project_Checkers
                 }
                 else
                 {
-
-                    if (ButtonLoc[3] < BrdSize - 1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -2)
+                    if (ButtonLoc[3] < BrdSize-1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -1)
                     {
                         intBrd[ButtonLoc[2], ButtonLoc[3]] = 1;
                         Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.DarkOrchid;
