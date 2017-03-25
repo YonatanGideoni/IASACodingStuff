@@ -28,12 +28,12 @@ namespace Project_Checkers
 
         static short BrdScore(short[,] OriginBrd)
         {
-            short BrdSize=(short)(OriginBrd.GetLength(0));
+            short BrdSize = (short)(OriginBrd.GetLength(0));
             short Score = 0;
 
             for (short i = 0; i < BrdSize; i++)
             {
-                for (short k = (short)(i % 2); k < BrdSize; k+=2)
+                for (short k = (short)(i % 2); k < BrdSize; k += 2)
                 {
                     if (OriginBrd[i, k] == 0)
                     {
@@ -41,7 +41,7 @@ namespace Project_Checkers
                     }
                     else if (OriginBrd[i, k] == 2)
                     {
-                        Score += (short)(k+1-BrdSize);
+                        Score += (short)(k + 1 - BrdSize);
                     }
                     else if (OriginBrd[i, k] == 1)
                     {
@@ -60,27 +60,59 @@ namespace Project_Checkers
             return Score;
         }
 
+        public void CleanYellow()
+        {
+            short BrdSize = (short)(intBrd.GetLength(0));
+            for (short i = 0; i < BrdSize; i++)
+            {
+                for (short k = 0; k < BrdSize; k++)
+                {
+                    if (intBrd[i, k] != 3)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        Board[i, k].BackColor = Color.Black;
+                        intBrd[i, k] = 0;
+                    }
+                }
+            }
+        }
+
+        public void winCheck()
+        {
+            if (BlackCheckers == 1)
+            {
+                MessageBox.Show("White Wins!");
+            }
+            else if (WhiteCheckers == 1)
+            {
+                MessageBox.Show("Black Wins!");
+            }
+        }
+
         static short[] CompMove(short[,] originBrd)
         {
             short[][,] tempBrd = new short[3][,];
-            tempBrd[0]= (short[,])originBrd.Clone();
-            short BrdSize=(short)(originBrd.GetLength(0));
-            short[] MoveScore=new short[4]{-100,100,-100,100};
-            short[] ButtonLoc=null;
+            tempBrd[0] = (short[,])originBrd.Clone();
+            short BrdSize = (short)(originBrd.GetLength(0));
+            short[] MoveScore = new short[4] { -1000, 1000, -1000, 1000 };
+            short[] ButtonLoc = null;
             short[] col = new short[3];
             short[] row = new short[3];
 
             for (row[0] = 0; row[0] < BrdSize; row[0]++)
             {
-                for (col[0] = (short)(row[0] % 2); col[0] < BrdSize; col[0]+=2)
+                for (col[0] = (short)(row[0] % 2); col[0] < BrdSize; col[0] += 2)
                 {
                     if (tempBrd[0][col[0], row[0]] == 1)//simulate normal checker move
                     {
-                        if (col[0] != 0 && row[0]!=BrdSize-1)
+                        if (col[0] != 0 && row[0] != BrdSize - 1)
                         {
                             if (tempBrd[0][col[0] - 1, row[0] + 1] == 2 || tempBrd[0][col[0] - 1, row[0] + 1] == -2)
                             {
-                                if (col[0] != 1 && row[0] != BrdSize-2)
+                                if (col[0] != 1 && row[0] != BrdSize - 2)
                                 {
                                     if (tempBrd[0][col[0] - 2, row[0] + 2] == 0)
                                     {
@@ -723,7 +755,7 @@ namespace Project_Checkers
                                                                     {
                                                                         tempBrd[1][col[1] + 2, row[1] - 2] = 2;
                                                                     }
-                                                                    
+
                                                                     tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                     tempBrd[1][col[1], row[1]] = 0;
 
@@ -3684,12 +3716,12 @@ namespace Project_Checkers
                                                 }
                                             }
                                         }
-                                                    #endregion
+                                        #endregion
 
                                         if (MoveScore[1] > MoveScore[0])
                                         {
                                             MoveScore[0] = MoveScore[1];
-                                            ButtonLoc = new short[6] {col[0],row[0], (short)(col[0] - 2), (short)(row[0] + 2), (short)(col[0] - 1), (short)(row[0] + 1) };
+                                            ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] - 2), (short)(row[0] + 2), (short)(col[0] - 1), (short)(row[0] + 1) };
                                         }
 
                                         tempBrd[0][col[0] - 2, row[0] + 2] = 0;
@@ -3698,7 +3730,7 @@ namespace Project_Checkers
                                     }
                                 }
                             }
-                            else if (tempBrd[0][col[0] - 1, row[0] + 1] ==0)
+                            else if (tempBrd[0][col[0] - 1, row[0] + 1] == 0)
                             {
                                 if (row[0] + 1 == BrdSize - 1)
                                 {
@@ -7304,18 +7336,18 @@ namespace Project_Checkers
                                 if (MoveScore[1] > MoveScore[0])
                                 {
                                     MoveScore[0] = MoveScore[1];
-                                    ButtonLoc = new short[4] {col[0],row[0], (short)(col[0] - 1), (short)(row[0] + 1) };
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] - 1), (short)(row[0] + 1) };
                                 }
 
                                 tempBrd[0][col[0] - 1, row[0] + 1] = 0;
                                 tempBrd[0][col[0], row[0]] = 1;
                             }
                         }
-                        if (col[0] != BrdSize - 1 && row[0]!=BrdSize-1)
+                        if (col[0] != BrdSize - 1 && row[0] != BrdSize - 1)
                         {
                             if (tempBrd[0][col[0] + 1, row[0] + 1] == 2 || tempBrd[0][col[0] + 1, row[0] + 1] == -2)
                             {
-                                if (col[0] != BrdSize - 2 && row[0] != BrdSize-2)
+                                if (col[0] != BrdSize - 2 && row[0] != BrdSize - 2)
                                 {
                                     if (tempBrd[0][col[0] + 2, row[0] + 2] == 0)
                                     {
@@ -10928,7 +10960,7 @@ namespace Project_Checkers
                             }
                             else if (tempBrd[0][col[0] + 1, row[0] + 1] != 1 && tempBrd[0][col[0] + 1, row[0] + 1] != -1)
                             {
-                                tempBrd[0][col[0] + 1, row[0] + 1] = originBrd[col[0],row[0]];
+                                tempBrd[0][col[0] + 1, row[0] + 1] = originBrd[col[0], row[0]];
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
@@ -18136,7 +18168,7 @@ namespace Project_Checkers
                                 if (MoveScore[1] > MoveScore[0])
                                 {
                                     MoveScore[0] = MoveScore[1];
-                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0]  - i), (short)(row[0]  - i) };
+                                    ButtonLoc = new short[4] { col[0], row[0], (short)(col[0] - i), (short)(row[0] - i) };
                                 }
 
                                 tempBrd[0][col[0] - i, row[0] - i] = 0;
@@ -21748,11 +21780,11 @@ namespace Project_Checkers
                                     if (MoveScore[1] > MoveScore[0])
                                     {
                                         MoveScore[0] = MoveScore[1];
-                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] - i-1), (short)(row[0] - i-1),(short)(col[0]-i),(short)(row[0]-i) };
+                                        ButtonLoc = new short[6] { col[0], row[0], (short)(col[0] - i - 1), (short)(row[0] - i - 1), (short)(col[0] - i), (short)(row[0] - i) };
                                     }
 
                                     tempBrd[0][col[0] - i - 1, row[0] - i - 1] = 0;
-                                    tempBrd[0][col[0] - i, row[0] - i] = originBrd[col[0]-i,row[0]-i];
+                                    tempBrd[0][col[0] - i, row[0] - i] = originBrd[col[0] - i, row[0] - i];
                                     tempBrd[0][col[0], row[0]] = -1;
                                 }
                                 break;
@@ -43433,65 +43465,8 @@ namespace Project_Checkers
                     }
                 }
             }
-                        
+
             return ButtonLoc;
-        }
-
-        private void RestartButton_Click(object sender, EventArgs e)
-        {
-            BrdSize = (short)(BrdSizeBox.Value);
-            Board = new Button[BrdSize, BrdSize];
-            intBrd = new short[BrdSize, BrdSize];
-            short ButtonSize = 40;
-
-            panel1.Size = new Size(BrdSize * ButtonSize, BrdSize * ButtonSize);//sets panel and window sizes
-            this.Size = new Size(BrdSize * ButtonSize + 100, BrdSize * ButtonSize + 150);
-
-            for (short i = 0; i < BrdSize; i++)//creates board and inputs buttons
-            {
-                for (short k = 0; k < BrdSize; k++)//sets button properties
-                {
-                    Board[i, k] = new Button();
-
-                    Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
-                    Board[i, k].Size = new Size(ButtonSize, ButtonSize);
-                    Board[i, k].Tag = new short[2] { i, k };
-
-                    Board[i, k].Click += Form1_Click;
-
-                    if ((i + k) % 2 == 0)//sets the buttons color and type
-                    {
-                        if (k < 3)
-                        {
-                            Board[i, k].BackColor = Color.DarkOrchid;
-                            intBrd[i, k] = 1;
-                            BlackCheckers++;
-                        }
-                        else if (k > BrdSize - 4)
-                        {
-                            Board[i, k].BackColor = Color.SandyBrown;
-                            intBrd[i, k] = 2;
-                            WhiteCheckers++;
-                        }
-                        else
-                        {
-                            Board[i, k].BackColor = Color.Black;
-                            intBrd[i, k] = 0;
-                        }
-                    }
-                    else
-                    {
-                        Board[i, k].BackColor = Color.White;
-                        Board[i, k].Enabled = false;
-                        intBrd[i, k] = 0;
-                    }
-
-                    panel1.Controls.Add(Board[i, k]);
-                }
-            }
-
-            WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
-            BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
         }
 
         void Form1_Click(object sender, EventArgs e)
@@ -43586,21 +43561,7 @@ namespace Project_Checkers
                 DyingButtons[2] = null;
                 DyingButtons[3] = null;
 
-                for (short i = 0; i < BrdSize; i++)//clean yellow
-                {
-                    for (short k = 0; k < BrdSize; k++)
-                    {
-                        if (intBrd[i, k] != 3)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Board[i, k].BackColor = Color.Black;
-                            intBrd[i, k] = 0;
-                        }
-                    }
-                }
+                CleanYellow();
 
                 bool CanPlace = false;
 
@@ -43752,21 +43713,7 @@ namespace Project_Checkers
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
                     intBrd[PressedButton[0], PressedButton[1]] = 0;
 
-                    for (short i = 0; i < BrdSize; i++)//cleans yellow tiles
-                    {
-                        for (short k = 0; k < BrdSize; k++)
-                        {
-                            if (intBrd[i, k] != 3)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                Board[i, k].BackColor = Color.Black;
-                                intBrd[i, k] = 0;
-                            }
-                        }
-                    }
+                    CleanYellow();
 
                     PressedButton = null;
 
@@ -43774,10 +43721,7 @@ namespace Project_Checkers
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
                     TurnBox.Text = "White Turn";
 
-                    if (WhiteCheckers == 1)//win condition
-                    {
-                        MessageBox.Show("Black Wins!");
-                    }
+                    winCheck();
 
                     turnVal = rivalTurnVal;
                 }
@@ -43862,10 +43806,7 @@ namespace Project_Checkers
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
                     TurnBox.Text = "Black Turn";
 
-                    if (BlackCheckers == 1)
-                    {
-                        MessageBox.Show("White Wins!");
-                    }
+                    winCheck();
 
                     turnVal = rivalTurnVal;
                 }
@@ -43874,6 +43815,8 @@ namespace Project_Checkers
 
         private void CompButton_Click(object sender, EventArgs e)
         {
+            CleanYellow();
+
             if (turnVal == 1)
             {
                 short[] ButtonLoc = CompMove(intBrd);
@@ -43886,7 +43829,7 @@ namespace Project_Checkers
                 }
                 else
                 {
-                    if (ButtonLoc[3] < BrdSize-1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -1)
+                    if (ButtonLoc[3] < BrdSize - 1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -1)
                     {
                         intBrd[ButtonLoc[2], ButtonLoc[3]] = 1;
                         Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.DarkOrchid;
@@ -43912,12 +43855,77 @@ namespace Project_Checkers
                     turnVal = 2;
 
                     TurnBox.Text = "Black Turn";
+
+                    winCheck();
                 }
             }
             else
             {
                 MessageBox.Show("It's currently your turn");
             }
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            BrdSize = (short)(BrdSizeBox.Value);
+            Board = new Button[BrdSize, BrdSize];
+            intBrd = new short[BrdSize, BrdSize];
+            short ButtonSize = 50;
+
+            panel1.Size = new Size(BrdSize * ButtonSize, BrdSize * ButtonSize);//sets panel and window sizes
+            this.Size = new Size(BrdSize * ButtonSize + 100, BrdSize * ButtonSize + 150);
+
+            for (short i = 0; i < BrdSize; i++)//creates board and inputs buttons
+            {
+                for (short k = 0; k < BrdSize; k++)//sets button properties
+                {
+                    Board[i, k] = new Button();
+
+                    Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
+                    Board[i, k].Size = new Size(ButtonSize, ButtonSize);
+                    Board[i, k].Tag = new short[2] { i, k };
+
+                    Board[i, k].Click += Form1_Click;
+
+                    if ((i + k) % 2 == 0)//sets the buttons color and type
+                    {
+                        if (k < 3)
+                        {
+                            Board[i, k].BackColor = Color.DarkOrchid;
+                            intBrd[i, k] = 1;
+                            BlackCheckers++;
+                        }
+                        else if (k > BrdSize - 4)
+                        {
+                            Board[i, k].BackColor = Color.SandyBrown;
+                            intBrd[i, k] = 2;
+                            WhiteCheckers++;
+                        }
+                        else
+                        {
+                            Board[i, k].BackColor = Color.Black;
+                            intBrd[i, k] = 0;
+                        }
+                    }
+                    else
+                    {
+                        Board[i, k].BackColor = Color.White;
+                        Board[i, k].Enabled = false;
+                        intBrd[i, k] = 0;
+                    }
+
+                    panel1.Controls.Add(Board[i, k]);
+                }
+            }
+
+            WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
+            BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
+
+            TurnBox.Text = "Black Turn";
+
+            StartButton.Enabled = false;
+            BrdSizeBox.Enabled = false;
+            CompButton.Enabled = true;
         }
     }
 }
