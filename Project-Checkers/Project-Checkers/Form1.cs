@@ -98,7 +98,7 @@ namespace Project_Checkers
             short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
             short BrdSize = (short)(originBrd.GetLength(0));
-            short[] MoveScore = new short[3] { -1000, 1000, -1000};
+            short[] MoveScore = new short[3] { -1000, 1000, -1000 };
             short[] ButtonLoc = null;
             short[] col = new short[2];
             short[] row = new short[2];
@@ -154,7 +154,7 @@ namespace Project_Checkers
                                                                         tempBrd[1][col[1] - 2, row[1] - 2] = 2;
                                                                     }
                                                                     tempBrd[1][col[1] - 1, row[1] - 1] = 0;
-                                                                    tempBrd[1][col[1], row[1]] = 0;                                                                    
+                                                                    tempBrd[1][col[1], row[1]] = 0;
 
                                                                     MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                     if (MoveScore[2] < MoveScore[1])
@@ -3872,8 +3872,8 @@ namespace Project_Checkers
 
         static short CompMoveCont(short[,] originBrd)
         {
-            short[] MoveScore = new short[3]{-1000,1000, -1000};
-            short[][,] tempBrd=new short[2][,];
+            short[] MoveScore = new short[3] { -1000, 1000, -1000 };
+            short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
             short[] col = new short[2];
             short[] row = new short[2];
@@ -7883,14 +7883,15 @@ namespace Project_Checkers
 
                     WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();//updates textboxes
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
-                    TurnBox.Text = "White Turn";
 
                     winCheck();
 
                     turnVal = rivalTurnVal;
 
+                    turnBoxTextUpdate();
+
                     if (compActive)
-                    {                        
+                    {
                         compTurn();
                     }
                 }
@@ -7973,18 +7974,309 @@ namespace Project_Checkers
 
                     WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
-                    TurnBox.Text = "Black Turn";
-
+                    
                     winCheck();
 
                     turnVal = rivalTurnVal;
+
+                    turnBoxTextUpdate();
                 }
             }
         }
 
-        static short forceCompMove(short[,] originBrd)
+        static short[] forceCompMove(short[,] originBrd)
         {
+            short[,] tempBrd; ;
+            tempBrd = (short[,])originBrd.Clone();
+            short BrdSize = (short)(originBrd.GetLength(0));
+            short Score = -100;
+            short MoveScore;
+            short[] ButtonLoc = null;
 
+            for (short row = 0; row < BrdSize; row++)
+            {
+                for (short col = (short)(row % 2); col < BrdSize; col += 2)
+                {
+                    if (tempBrd[col, row] == 1)//simulate normal checker move
+                    {
+                        if (col != 0 && row != BrdSize - 1)
+                        {
+                            if (tempBrd[col - 1, row + 1] == 2 || tempBrd[col - 1, row + 1] == -2)
+                            {
+                                if (col != 1 && row != BrdSize - 2)
+                                {
+                                    if (tempBrd[col - 2, row + 2] == 0)
+                                    {
+                                        if (row + 2 == BrdSize - 1)
+                                        {
+                                            tempBrd[col - 2, row + 2] = -1;
+                                        }
+                                        else
+                                        {
+                                            tempBrd[col - 2, row + 2] = 1;
+                                        }
+                                        tempBrd[col - 1, row + 1] = 0;
+                                        tempBrd[col, row] = 0;
+
+                                        MoveScore = BrdScore(tempBrd);
+                                        if (MoveScore > Score)
+                                        {
+                                            Score = MoveScore;
+                                            ButtonLoc = new short[6] { col, row, (short)(col - 2), (short)(row + 2), (short)(col - 1), (short)(row + 1) };
+                                        }
+
+                                        tempBrd[col - 2, row + 2] = 0;
+                                        tempBrd[col - 1, row + 1] = originBrd[col - 1, row + 1];
+                                        tempBrd[col, row] = 1;
+                                    }
+                                }
+                            }
+                            else if (tempBrd[col - 1, row + 1] == 0)
+                            {
+                                if (row + 1 == BrdSize - 1)
+                                {
+                                    tempBrd[col - 1, row + 1] = -1;
+                                }
+                                else
+                                {
+                                    tempBrd[col - 1, row + 1] = 1;
+                                }
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col - 1), (short)(row + 1) };
+                                }
+
+                                tempBrd[col - 1, row + 1] = 0;
+                                tempBrd[col, row] = 1;
+                            }
+                        }
+                        if (col != BrdSize - 1 && row != BrdSize - 1)
+                        {
+                            if (tempBrd[col + 1, row + 1] == 2 || tempBrd[col + 1, row + 1] == -2)
+                            {
+                                if (col != BrdSize - 2 && row != BrdSize - 2)
+                                {
+                                    if (tempBrd[col + 2, row + 2] == 0)
+                                    {
+                                        tempBrd[col + 2, row + 2] = originBrd[col, row];
+                                        tempBrd[col + 1, row + 1] = 0;
+                                        tempBrd[col, row] = 0;
+
+                                        MoveScore = BrdScore(tempBrd);
+                                        if (MoveScore > Score)
+                                        {
+                                            Score = MoveScore;
+                                            ButtonLoc = new short[6] { col, row, (short)(col + 2), (short)(row + 2), (short)(col + 1), (short)(row + 1) };
+                                        }
+
+                                        tempBrd[col + 2, row + 2] = 0;
+                                        tempBrd[col + 1, row + 1] = originBrd[col + 1, row + 1];
+                                        tempBrd[col, row] = originBrd[col, row];
+                                    }
+                                }
+                            }
+                            else if (tempBrd[col + 1, row + 1] != 1 && tempBrd[col + 1, row + 1] != -1)
+                            {
+                                tempBrd[col + 1, row + 1] = originBrd[col, row];
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col + 1), (short)(row + 1) };
+                                }
+
+                                tempBrd[col + 1, row + 1] = 0;
+                                tempBrd[col, row] = originBrd[col, row];
+                            }
+                        }
+                    }
+                    else if (tempBrd[col, row] == -1)//simulate king checker move
+                    {
+                        for (short i = 1; i < row + 1 && i < col + 1; i++)
+                        {
+                            if (tempBrd[col - i, row - i] == 0)
+                            {
+                                tempBrd[col - i, row - i] = -1;
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col - i), (short)(row - i) };
+                                }
+
+                                tempBrd[col - i, row - i] = 0;
+                                tempBrd[col, row] = -1;
+                            }
+                            else if (tempBrd[col - i, row - i] == 1 || tempBrd[col - i, row - i] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[col - i, row - i] == 2 || tempBrd[col - i, row - i] == -2)
+                            {
+                                if (row - i > 0 && col - i > 0 && tempBrd[col - i - 1, row - i - 1] == 0)
+                                {
+                                    tempBrd[col - i - 1, row - i - 1] = -1;
+                                    tempBrd[col - i, row - i] = 0;
+                                    tempBrd[col, row] = 0;
+
+                                    MoveScore = BrdScore(tempBrd);
+                                    if (MoveScore > Score)
+                                    {
+                                        Score = MoveScore;
+                                        ButtonLoc = new short[6] { col, row, (short)(col - i - 1), (short)(row - i - 1), (short)(col - i), (short)(row - i) };
+                                    }
+
+                                    tempBrd[col - i - 1, row - i - 1] = 0;
+                                    tempBrd[col - i, row - i] = originBrd[col - i, row - i];
+                                    tempBrd[col, row] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short i = 1; i < row + 1 && i < BrdSize - col; i++)
+                        {
+                            if (tempBrd[col + i, row - i] == 0)
+                            {
+                                tempBrd[col + i, row - i] = -1;
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col + i), (short)(row - i) };
+                                }
+
+                                tempBrd[col + i, row - i] = 0;
+                                tempBrd[col, row] = -1;
+                            }
+                            else if (tempBrd[col + i, row - i] == 1 || tempBrd[col + i, row - i] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[col + i, row - i] == 2 || tempBrd[col + i, row - i] == -2)
+                            {
+                                if (row - i > 0 && col + i < BrdSize - 1 && tempBrd[col + i + 1, row - i - 1] == 0)
+                                {
+                                    tempBrd[col + i + 1, row - i - 1] = -1;
+                                    tempBrd[col + i, row - i] = 0;
+                                    tempBrd[col, row] = 0;
+
+                                    MoveScore = BrdScore(tempBrd);
+                                    if (MoveScore > Score)
+                                    {
+                                        Score = MoveScore;
+                                        ButtonLoc = new short[6] { col, row, (short)(col + i + 1), (short)(row - i - 1), (short)(col + i), (short)(row - i) };
+                                    }
+
+                                    tempBrd[col + i + 1, row - i - 1] = 0;
+                                    tempBrd[col + i, row - i] = originBrd[col + i, row - i];
+                                    tempBrd[col, row] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short i = 1; i < BrdSize - row && i < col + 1; i++)
+                        {
+                            if (tempBrd[col - i, row + i] == 0)
+                            {
+                                tempBrd[col - i, row + i] = -1;
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col - i), (short)(row + i) };
+                                }
+
+                                tempBrd[col - i, row + i] = 0;
+                                tempBrd[col, row] = -1;
+                            }
+                            else if (tempBrd[col - i, row + i] == 1 || tempBrd[col - i, row + i] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[col - i, row + i] == 2 || tempBrd[col - i, row + i] == -2)
+                            {
+                                if (row + i < BrdSize - 1 && col - i > 0 && tempBrd[col - i - 1, row + i + 1] == 0)
+                                {
+                                    tempBrd[col - i - 1, row + i + 1] = -1;
+                                    tempBrd[col - i, row + i] = 0;
+                                    tempBrd[col, row] = 0;
+
+                                    MoveScore = BrdScore(tempBrd);
+                                    if (MoveScore > Score)
+                                    {
+                                        Score = MoveScore;
+                                        ButtonLoc = new short[6] { col, row, (short)(col - i - 1), (short)(row + i + 1), (short)(col - i), (short)(row + i) };
+                                    }
+
+                                    tempBrd[col - i - 1, row + i + 1] = 0;
+                                    tempBrd[col - i, row + i] = originBrd[col - i, row + i];
+                                    tempBrd[col, row] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short i = 1; i < BrdSize - row && i < BrdSize - col; i++)
+                        {
+                            if (tempBrd[col + i, row + i] == 0)
+                            {
+                                tempBrd[col + i, row + i] = -1;
+                                tempBrd[col, row] = 0;
+
+                                MoveScore = BrdScore(tempBrd);
+                                if (MoveScore > Score)
+                                {
+                                    Score = MoveScore;
+                                    ButtonLoc = new short[4] { col, row, (short)(col + i), (short)(row + i) };
+                                }
+
+                                tempBrd[col + i, row + i] = 0;
+                                tempBrd[col, row] = -1;
+                            }
+                            else if (tempBrd[col + i, row + i] == 1 || tempBrd[col + i, row + i] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[col + i, row + i] == 2 || tempBrd[col + i, row + i] == -2)
+                            {
+                                if (row + i < BrdSize - 1 && col + i < BrdSize - 1 && tempBrd[col + i + 1, row + i + 1] == 0)
+                                {
+                                    tempBrd[col + i + 1, row + i + 1] = -1;
+                                    tempBrd[col + i, row + i] = 0;
+                                    tempBrd[col, row] = 0;
+
+                                    MoveScore = BrdScore(tempBrd);
+                                    if (MoveScore > Score)
+                                    {
+                                        Score = MoveScore;
+                                        ButtonLoc = new short[6] { col, row, (short)(col + i + 1), (short)(row + i + 1), (short)(col + i), (short)(row + i) };
+                                    }
+
+                                    tempBrd[col + i + 1, row + i + 1] = 0;
+                                    tempBrd[col + i, row + i] = originBrd[col + i, row + i];
+                                    tempBrd[col, row] = -1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return ButtonLoc;
         }
 
         public void compTurn()
@@ -7995,15 +8287,18 @@ namespace Project_Checkers
 
             if (turnVal == 1)
             {
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(1500);
 
                 short[] ButtonLoc = CompMove(intBrd);
 
                 if (ButtonLoc == null)
                 {
-                    MessageBox.Show("Turn skipped. No possible move.");
-                    turnVal = 2;
-                    TurnBox.Text = "Black Turn";
+                    ButtonLoc = forceCompMove(intBrd);
+                    if (ButtonLoc == null)
+                    {
+                        MessageBox.Show("White has no possible moves, White loses");
+                    }
+
                 }
                 else
                 {
@@ -8032,10 +8327,26 @@ namespace Project_Checkers
 
                     turnVal = 2;
 
-                    TurnBox.Text = "Black Turn";
+                    turnBoxTextUpdate();
 
                     winCheck();
                 }
+            }
+        }
+
+        public void turnBoxTextUpdate()
+        {
+            if (turnVal == 1)
+            {
+                TurnBox.BackColor = Color.White;
+                TurnBox.ForeColor = Color.Black;
+                TurnBox.Text = "White Turn";
+            }
+            else
+            {
+                TurnBox.ForeColor = Color.White;
+                TurnBox.BackColor = Color.Black;
+                TurnBox.Text = "Black Turn";
             }
         }
 
@@ -8045,12 +8356,14 @@ namespace Project_Checkers
             {
                 compActive = false;
                 CompButton.Text = "Turn Computer ON?";
+                CompButton.BackColor = Color.GreenYellow;
             }
             else
             {
                 compActive = true;
                 compTurn();
                 CompButton.Text = "Turn Computer OFF?";
+                CompButton.BackColor = Color.Red;
             }
         }
 
@@ -8110,11 +8423,12 @@ namespace Project_Checkers
             WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
             BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
 
-            TurnBox.Text = "Black Turn";
+            turnBoxTextUpdate();
 
             StartButton.Enabled = false;
             BrdSizeBox.Enabled = false;
             CompButton.Enabled = true;
+            CompButton.BackColor = Color.GreenYellow;
         }
     }
 }
