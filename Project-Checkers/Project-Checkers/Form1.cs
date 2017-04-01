@@ -129,7 +129,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 2-Move-AI
-                                        MoveScore[1] = 100;
+                                        MoveScore[1] = 1000;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -156,7 +156,7 @@ namespace Project_Checkers
                                                                     tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                     tempBrd[1][col[1], row[1]] = 0;                                                                    
 
-                                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                     if (MoveScore[2] < MoveScore[1])
                                                                     {
                                                                         MoveScore[1] = MoveScore[2];
@@ -180,7 +180,7 @@ namespace Project_Checkers
                                                             }
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -210,7 +210,7 @@ namespace Project_Checkers
                                                                     tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                     if (MoveScore[2] < MoveScore[1])
                                                                     {
                                                                         MoveScore[1] = MoveScore[2];
@@ -234,7 +234,7 @@ namespace Project_Checkers
                                                             }
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -254,7 +254,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -275,7 +275,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -296,7 +296,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -317,7 +317,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -338,7 +338,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -359,7 +359,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -380,7 +380,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -401,7 +401,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[2] = MoveScore[1];
@@ -444,7 +444,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -471,7 +471,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -495,7 +495,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -525,7 +525,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -549,7 +549,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -569,7 +569,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -590,7 +590,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -611,7 +611,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -632,7 +632,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -653,7 +653,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -674,7 +674,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -695,7 +695,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -716,7 +716,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -757,7 +757,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 2-Move-AI
-                                        MoveScore[1] = 100;
+                                        MoveScore[1] = 1000;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -784,7 +784,7 @@ namespace Project_Checkers
                                                                     tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                     if (MoveScore[2] < MoveScore[1])
                                                                     {
                                                                         MoveScore[1] = MoveScore[2];
@@ -808,7 +808,7 @@ namespace Project_Checkers
                                                             }
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -838,7 +838,7 @@ namespace Project_Checkers
                                                                     tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                     if (MoveScore[2] < MoveScore[1])
                                                                     {
                                                                         MoveScore[1] = MoveScore[2];
@@ -862,7 +862,7 @@ namespace Project_Checkers
                                                             }
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -882,7 +882,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -903,7 +903,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -924,7 +924,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -945,7 +945,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -966,7 +966,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -987,7 +987,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -1008,7 +1008,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1029,7 +1029,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[2] = MoveScore[1];
@@ -1065,7 +1065,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -1092,7 +1092,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1116,7 +1116,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1146,7 +1146,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1170,7 +1170,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -1190,7 +1190,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1211,7 +1211,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1232,7 +1232,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1253,7 +1253,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1274,7 +1274,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1295,7 +1295,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1316,7 +1316,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1337,7 +1337,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -1376,7 +1376,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -1403,7 +1403,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1427,7 +1427,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1457,7 +1457,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1481,7 +1481,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -1501,7 +1501,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1522,7 +1522,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1543,7 +1543,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1564,7 +1564,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1585,7 +1585,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1606,7 +1606,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1627,7 +1627,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -1648,7 +1648,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -1688,7 +1688,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 100;
+                                    MoveScore[1] = 1000;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -1715,7 +1715,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -1739,7 +1739,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1769,7 +1769,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -1793,7 +1793,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -1813,7 +1813,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1834,7 +1834,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1855,7 +1855,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1876,7 +1876,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1897,7 +1897,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1918,7 +1918,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -1939,7 +1939,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -1960,7 +1960,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -2000,7 +2000,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -2027,7 +2027,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2051,7 +2051,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2081,7 +2081,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2105,7 +2105,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -2125,7 +2125,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2146,7 +2146,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2167,7 +2167,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2188,7 +2188,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2209,7 +2209,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2230,7 +2230,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2251,7 +2251,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2272,7 +2272,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -2312,7 +2312,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 100;
+                                    MoveScore[1] = 1000;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -2339,7 +2339,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -2363,7 +2363,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2393,7 +2393,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -2417,7 +2417,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -2437,7 +2437,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2458,7 +2458,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2479,7 +2479,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2500,7 +2500,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2521,7 +2521,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2542,7 +2542,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2563,7 +2563,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2584,7 +2584,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -2624,7 +2624,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -2651,7 +2651,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2675,7 +2675,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2705,7 +2705,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -2729,7 +2729,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -2749,7 +2749,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2770,7 +2770,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2791,7 +2791,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2812,7 +2812,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2833,7 +2833,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2854,7 +2854,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -2875,7 +2875,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -2896,7 +2896,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -2936,7 +2936,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 100;
+                                    MoveScore[1] = 1000;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -2963,7 +2963,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -2987,7 +2987,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3017,7 +3017,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -3041,7 +3041,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -3061,7 +3061,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3082,7 +3082,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3103,7 +3103,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3124,7 +3124,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3145,7 +3145,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3166,7 +3166,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3187,7 +3187,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3208,7 +3208,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -3248,7 +3248,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 100;
+                                MoveScore[1] = 1000;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -3275,7 +3275,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3299,7 +3299,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -3329,7 +3329,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3353,7 +3353,7 @@ namespace Project_Checkers
                                                     }
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[2] = MoveScore[1];
@@ -3373,7 +3373,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -3394,7 +3394,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3415,7 +3415,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -3436,7 +3436,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3457,7 +3457,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -3478,7 +3478,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3499,7 +3499,7 @@ namespace Project_Checkers
                                                     tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                     tempBrd[1][col[1], row[1]] = 0;
 
-                                                    MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                    MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                     if (MoveScore[2] < MoveScore[1])
                                                     {
                                                         MoveScore[1] = MoveScore[2];
@@ -3520,7 +3520,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -3560,7 +3560,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 100;
+                                    MoveScore[1] = 1000;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -3587,7 +3587,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] - 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -3611,7 +3611,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3641,7 +3641,7 @@ namespace Project_Checkers
                                                                 tempBrd[1][col[1] + 1, row[1] - 1] = 0;
                                                                 tempBrd[1][col[1], row[1]] = 0;
 
-                                                                MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                                MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                                 if (MoveScore[2] < MoveScore[1])
                                                                 {
                                                                     MoveScore[1] = MoveScore[2];
@@ -3665,7 +3665,7 @@ namespace Project_Checkers
                                                         }
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[2] = MoveScore[1];
@@ -3685,7 +3685,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3706,7 +3706,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3727,7 +3727,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] - m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3748,7 +3748,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] - m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3769,7 +3769,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] - m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3790,7 +3790,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] - m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[1] = MoveScore[2];
@@ -3811,7 +3811,7 @@ namespace Project_Checkers
                                                         tempBrd[1][col[1] + m, row[1] + m] = -2;
                                                         tempBrd[1][col[1], row[1]] = 0;
 
-                                                        MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                        MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                         if (MoveScore[2] < MoveScore[1])
                                                         {
                                                             MoveScore[1] = MoveScore[2];
@@ -3832,7 +3832,7 @@ namespace Project_Checkers
                                                             tempBrd[1][col[1] + m, row[1] + m] = 0;
                                                             tempBrd[1][col[1], row[1]] = 0;
 
-                                                            MoveScore[2] = CompMoveCont(tempBrd[1], MoveScore[2]);
+                                                            MoveScore[2] = CompMoveCont(tempBrd[1]);
                                                             if (MoveScore[2] < MoveScore[1])
                                                             {
                                                                 MoveScore[2] = MoveScore[1];
@@ -3870,7 +3870,7 @@ namespace Project_Checkers
             return ButtonLoc;
         }
 
-        static short CompMoveCont(short[,] originBrd, short minmaxScore)
+        static short CompMoveCont(short[,] originBrd)
         {
             short[] MoveScore = new short[3]{-1000,1000, -1000};
             short[][,] tempBrd=new short[2][,];
@@ -3878,7 +3878,6 @@ namespace Project_Checkers
             short[] col = new short[2];
             short[] row = new short[2];
             short BrdSize = (short)(originBrd.GetLength(0));
-            short retScore = minmaxScore;
 
             for (row[0] = 0; row[0] < BrdSize; row[0]++)
             {
@@ -7631,7 +7630,7 @@ namespace Project_Checkers
                     }
                 }
             }
-            return retScore;
+            return MoveScore[0];
         }
 
         void Form1_Click(object sender, EventArgs e)
@@ -7981,6 +7980,11 @@ namespace Project_Checkers
                     turnVal = rivalTurnVal;
                 }
             }
+        }
+
+        static short forceCompMove(short[,] originBrd)
+        {
+
         }
 
         public void compTurn()
