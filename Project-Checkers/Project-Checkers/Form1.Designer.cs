@@ -125,9 +125,9 @@
             this.CompButton.Enabled = false;
             this.CompButton.Location = new System.Drawing.Point(13, 39);
             this.CompButton.Name = "CompButton";
-            this.CompButton.Size = new System.Drawing.Size(85, 23);
+            this.CompButton.Size = new System.Drawing.Size(114, 23);
             this.CompButton.TabIndex = 7;
-            this.CompButton.Text = "Computer Turn";
+            this.CompButton.Text = "Turn Computer ON?";
             this.CompButton.UseVisualStyleBackColor = true;
             this.CompButton.Click += new System.EventHandler(this.CompButton_Click);
             // 

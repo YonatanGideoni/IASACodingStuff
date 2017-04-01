@@ -37,3 +37,9 @@ V:\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csproj.GenerateR
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.exe.config
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.exe
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\bin\Debug\Project-Checkers.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Form1.resources
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project_Checkers.Properties.Resources.resources
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Project-Checkers\Project-Checkers\obj\Debug\Project-Checkers.csproj.GenerateResource.Cache

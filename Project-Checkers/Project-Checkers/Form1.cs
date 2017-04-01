@@ -20,6 +20,7 @@ namespace Project_Checkers
         short[] PressedButton = new short[2];
         short[][] DyingButtons = new short[4][];
         short turnVal = 2;
+        bool compActive = false;
 
         public Form1()
         {
@@ -33,7 +34,7 @@ namespace Project_Checkers
 
             for (short i = 0; i < BrdSize; i++)
             {
-                for (short k = (short)(i % 2); k < BrdSize; k += 2)
+                for (short k = (short)(i % 2 + 1); k < BrdSize; k += 2)
                 {
                     if (OriginBrd[i, k] == 0)
                     {
@@ -104,7 +105,7 @@ namespace Project_Checkers
 
             for (row[0] = 0; row[0] < BrdSize; row[0]++)
             {
-                for (col[0] = (short)(row[0] % 2); col[0] < BrdSize; col[0] += 2)
+                for (col[0] = (short)(row[0] % 2 + 1); col[0] < BrdSize; col[0] += 2)
                 {
                     if (tempBrd[0][col[0], row[0]] == 1)//simulate normal checker move
                     {
@@ -132,7 +133,7 @@ namespace Project_Checkers
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
-                                            for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                            for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                             {
                                                 if (tempBrd[1][col[1], row[1]] == 2)
                                                 {
@@ -160,7 +161,7 @@ namespace Project_Checkers
                                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                     {
-                                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                         {
                                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                                             {
@@ -459,7 +460,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -764,7 +765,7 @@ namespace Project_Checkers
                                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                     {
-                                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                         {
                                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                                             {
@@ -1063,7 +1064,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -1358,7 +1359,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -1654,7 +1655,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -1950,7 +1951,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -2246,7 +2247,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -2542,7 +2543,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -2838,7 +2839,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -3134,7 +3135,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -3430,7 +3431,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -3747,7 +3748,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -3775,7 +3776,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -4074,7 +4075,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -4379,7 +4380,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -4678,7 +4679,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -4973,7 +4974,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -5269,7 +5270,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -5565,7 +5566,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -5861,7 +5862,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -6157,7 +6158,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -6453,7 +6454,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -6749,7 +6750,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -7045,7 +7046,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -7360,7 +7361,7 @@ namespace Project_Checkers
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
-                                            for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                            for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                             {
                                                 if (tempBrd[1][col[1], row[1]] == 2)
                                                 {
@@ -7388,7 +7389,7 @@ namespace Project_Checkers
                                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                     {
-                                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                         {
                                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                                             {
@@ -7687,7 +7688,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -7992,7 +7993,7 @@ namespace Project_Checkers
                                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                     {
-                                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                         {
                                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                                             {
@@ -8291,7 +8292,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -8586,7 +8587,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -8882,7 +8883,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -9178,7 +9179,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -9474,7 +9475,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -9770,7 +9771,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -10066,7 +10067,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -10362,7 +10363,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -10658,7 +10659,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -10968,7 +10969,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -10996,7 +10997,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -11295,7 +11296,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -11600,7 +11601,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -11899,7 +11900,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -12194,7 +12195,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -12490,7 +12491,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -12786,7 +12787,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -13082,7 +13083,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -13378,7 +13379,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -13674,7 +13675,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -13970,7 +13971,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -14266,7 +14267,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -14579,7 +14580,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -14607,7 +14608,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -14906,7 +14907,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -15211,7 +15212,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -15510,7 +15511,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -15805,7 +15806,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -16101,7 +16102,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -16397,7 +16398,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -16693,7 +16694,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -16989,7 +16990,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -17285,7 +17286,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -17581,7 +17582,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -17877,7 +17878,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -18191,7 +18192,7 @@ namespace Project_Checkers
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                         {
                                             if (tempBrd[1][col[1], row[1]] == 2)
                                             {
@@ -18219,7 +18220,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -18518,7 +18519,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -18823,7 +18824,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -19122,7 +19123,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -19417,7 +19418,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -19713,7 +19714,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -20009,7 +20010,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -20305,7 +20306,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -20601,7 +20602,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -20897,7 +20898,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -21193,7 +21194,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -21489,7 +21490,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -21803,7 +21804,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -21831,7 +21832,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -22130,7 +22131,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -22435,7 +22436,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -22734,7 +22735,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -23029,7 +23030,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -23325,7 +23326,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -23621,7 +23622,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -23917,7 +23918,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -24213,7 +24214,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -24509,7 +24510,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -24805,7 +24806,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -25101,7 +25102,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -25415,7 +25416,7 @@ namespace Project_Checkers
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                         {
                                             if (tempBrd[1][col[1], row[1]] == 2)
                                             {
@@ -25443,7 +25444,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -25742,7 +25743,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -26047,7 +26048,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -26346,7 +26347,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -26641,7 +26642,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -26937,7 +26938,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -27233,7 +27234,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -27529,7 +27530,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -27825,7 +27826,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -28121,7 +28122,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -28417,7 +28418,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -28713,7 +28714,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -29027,7 +29028,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -29055,7 +29056,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -29354,7 +29355,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -29659,7 +29660,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -29958,7 +29959,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -30253,7 +30254,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -30549,7 +30550,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -30845,7 +30846,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -31141,7 +31142,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -31437,7 +31438,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -31733,7 +31734,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -32029,7 +32030,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -32325,7 +32326,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -32639,7 +32640,7 @@ namespace Project_Checkers
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                         {
                                             if (tempBrd[1][col[1], row[1]] == 2)
                                             {
@@ -32667,7 +32668,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -32966,7 +32967,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -33271,7 +33272,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -33570,7 +33571,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -33865,7 +33866,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -34161,7 +34162,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -34457,7 +34458,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -34753,7 +34754,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -35049,7 +35050,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -35345,7 +35346,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -35641,7 +35642,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -35937,7 +35938,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -36251,7 +36252,7 @@ namespace Project_Checkers
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
-                                    for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                    for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                     {
                                         if (tempBrd[1][col[1], row[1]] == 2)
                                         {
@@ -36279,7 +36280,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -36578,7 +36579,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -36883,7 +36884,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -37182,7 +37183,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -37477,7 +37478,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -37773,7 +37774,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -38069,7 +38070,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -38365,7 +38366,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -38661,7 +38662,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -38957,7 +38958,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -39253,7 +39254,7 @@ namespace Project_Checkers
                                                     tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                     for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                     {
-                                                        for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                        for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                         {
                                                             if (tempBrd[2][col[2], row[2]] == 1)
                                                             {
@@ -39549,7 +39550,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -39863,7 +39864,7 @@ namespace Project_Checkers
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
-                                        for (col[1] = (short)(row[1] % 2); col[1] < BrdSize; col[1] += 2)
+                                        for (col[1] = (short)(row[1] % 2 + 1); col[1] < BrdSize; col[1] += 2)
                                         {
                                             if (tempBrd[1][col[1], row[1]] == 2)
                                             {
@@ -39891,7 +39892,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -40190,7 +40191,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -40495,7 +40496,7 @@ namespace Project_Checkers
                                                                 tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                                 for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                                 {
-                                                                    for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                    for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                     {
                                                                         if (tempBrd[2][col[2], row[2]] == 1)
                                                                         {
@@ -40794,7 +40795,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -41089,7 +41090,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -41385,7 +41386,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -41681,7 +41682,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -41977,7 +41978,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -42273,7 +42274,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -42569,7 +42570,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -42865,7 +42866,7 @@ namespace Project_Checkers
                                                         tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                         for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                         {
-                                                            for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                            for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                             {
                                                                 if (tempBrd[2][col[2], row[2]] == 1)
                                                                 {
@@ -43161,7 +43162,7 @@ namespace Project_Checkers
                                                             tempBrd[2] = (short[,])tempBrd[1].Clone();
                                                             for (row[2] = 0; row[2] < BrdSize; row[2]++)
                                                             {
-                                                                for (col[2] = (short)(row[2] % 2); col[2] < BrdSize; col[2] += 2)
+                                                                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
                                                                 {
                                                                     if (tempBrd[2][col[2], row[2]] == 1)
                                                                     {
@@ -43469,6 +43470,287 @@ namespace Project_Checkers
             return ButtonLoc;
         }
 
+        static short CompMoveCont(short[,] originBrd, short minmaxScore)
+        {
+            short[] MoveScore = new short[2]{-100,100};
+            short[][,] tempBrd=new short[2][,];
+            tempBrd[0] = (short[,])originBrd.Clone();
+            short[] col = new short[2];
+            short[] row = new short[2];
+            short BrdSize = (short)(originBrd.GetLength(0));
+            for (row[2] = 0; row[2] < BrdSize; row[2]++)
+            {
+                for (col[2] = (short)(row[2] % 2 + 1); col[2] < BrdSize; col[2] += 2)
+                {
+                    if (tempBrd[2][col[2], row[2]] == 1)
+                    {
+                        if (col[2] != 0 && row[2] != BrdSize - 1)
+                        {
+                            if (tempBrd[2][col[2] - 1, row[2] + 1] == 2 || tempBrd[2][col[2] - 1, row[2] + 1] == -2)
+                            {
+                                if (col[2] != 1 && row[2] != BrdSize - 2)
+                                {
+                                    if (tempBrd[2][col[2] - 2, row[2] + 2] == 0)
+                                    {
+                                        if (row[2] + 2 == BrdSize - 1)
+                                        {
+                                            tempBrd[2][col[2] - 2, row[2] + 2] = -1;
+                                        }
+                                        else
+                                        {
+                                            tempBrd[2][col[2] - 2, row[2] + 2] = 1;
+                                        }
+                                        tempBrd[2][col[2] - 1, row[2] + 1] = 0;
+                                        tempBrd[2][col[2], row[2]] = 0;
+
+                                        MoveScore[3] = BrdScore(tempBrd[2]);
+                                        if (MoveScore[3] > MoveScore[2])
+                                        {
+                                            MoveScore[2] = MoveScore[3];
+                                        }
+
+                                        tempBrd[2][col[2] - 2, row[2] + 2] = 0;
+                                        tempBrd[2][col[2] - 1, row[2] + 1] = tempBrd[1][col[2] - 1, row[2] + 1];
+                                        tempBrd[2][col[2], row[2]] = 1;
+                                    }
+                                }
+                            }
+                            else if (tempBrd[2][col[2] - 1, row[2] + 1] == 0)
+                            {
+                                if (row[2] + 1 == BrdSize - 1)
+                                {
+                                    tempBrd[2][col[2] - 1, row[2] + 1] = -1;
+                                }
+                                else
+                                {
+                                    tempBrd[2][col[2] - 1, row[2] + 1] = 1;
+                                }
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] - 1, row[2] + 1] = 0;
+                                tempBrd[2][col[2], row[2]] = 1;
+                            }
+                        }
+                        if (col[2] != BrdSize - 1 && row[2] != BrdSize - 1)
+                        {
+                            if (tempBrd[2][col[2] + 1, row[2] + 1] == 2 || tempBrd[2][col[2] + 1, row[2] + 1] == -2)
+                            {
+                                if (col[2] != BrdSize - 2 && row[2] != BrdSize - 2)
+                                {
+                                    if (tempBrd[2][col[2] + 2, row[2] + 2] == 0)
+                                    {
+                                        tempBrd[2][col[2] + 2, row[2] + 2] = tempBrd[1][col[2], row[2]];
+                                        tempBrd[2][col[2] + 1, row[2] + 1] = 0;
+                                        tempBrd[2][col[2], row[2]] = 0;
+
+                                        MoveScore[3] = BrdScore(tempBrd[2]);
+                                        if (MoveScore[3] > MoveScore[2])
+                                        {
+                                            MoveScore[2] = MoveScore[3];
+                                        }
+
+                                        tempBrd[2][col[2] + 2, row[2] + 2] = 0;
+                                        tempBrd[2][col[2] + 1, row[2] + 1] = tempBrd[1][col[2] + 1, row[2] + 1];
+                                        tempBrd[2][col[2], row[2]] = tempBrd[1][col[2], row[2]];
+                                    }
+                                }
+                            }
+                            else if (tempBrd[2][col[2] + 1, row[2] + 1] != 1 && tempBrd[2][col[2] + 1, row[2] + 1] != -1)
+                            {
+                                tempBrd[2][col[2] + 1, row[2] + 1] = tempBrd[1][col[2], row[2]];
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] + 1, row[2] + 1] = 0;
+                                tempBrd[2][col[2], row[2]] = tempBrd[1][col[2], row[2]];
+                            }
+                        }
+                    }
+                    else if (tempBrd[2][col[2], row[2]] == -1)
+                    {
+                        for (short n = 1; n < row[2] + 1 && n < col[2] + 1; n++)
+                        {
+                            if (tempBrd[2][col[2] - n, row[2] - n] == 0)
+                            {
+                                tempBrd[2][col[2] - n, row[2] - n] = -1;
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] - n, row[2] - n] = 0;
+                                tempBrd[2][col[2], row[2]] = -1;
+                            }
+                            else if (tempBrd[2][col[2] - n, row[2] - n] == 1 || tempBrd[2][col[2] - n, row[2] - n] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[2][col[2] - n, row[2] - n] == 2 || tempBrd[2][col[2] - n, row[2] - n] == -2)
+                            {
+                                if (row[2] - n > 0 && col[2] - n > 0 && tempBrd[2][col[2] - n - 1, row[2] - n - 1] == 0)
+                                {
+                                    tempBrd[2][col[2] - n - 1, row[2] - n - 1] = -1;
+                                    tempBrd[2][col[2] - n, row[2] - n] = 0;
+                                    tempBrd[2][col[2], row[2]] = 0;
+
+                                    MoveScore[3] = BrdScore(tempBrd[2]);
+                                    if (MoveScore[3] > MoveScore[2])
+                                    {
+                                        MoveScore[2] = MoveScore[3];
+                                    }
+
+                                    tempBrd[2][col[2] - n - 1, row[2] - n - 1] = 0;
+                                    tempBrd[2][col[2] - n, row[2] - n] = tempBrd[1][col[2] - n, row[2] - n];
+                                    tempBrd[2][col[2], row[2]] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short n = 1; n < row[2] + 1 && n < BrdSize - col[2]; n++)
+                        {
+                            if (tempBrd[2][col[2] + n, row[2] - n] == 0)
+                            {
+                                tempBrd[2][col[2] + n, row[2] - n] = -1;
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] + n, row[2] - n] = 0;
+                                tempBrd[2][col[2], row[2]] = -1;
+                            }
+                            else if (tempBrd[2][col[2] + n, row[2] - n] == 1 || tempBrd[2][col[2] + n, row[2] - n] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[2][col[2] + n, row[2] - n] == 2 || tempBrd[2][col[2] + n, row[2] - n] == -2)
+                            {
+                                if (row[2] - n > 0 && col[2] + n < BrdSize - 1 && tempBrd[2][col[2] + n + 1, row[2] - n - 1] == 0)
+                                {
+                                    tempBrd[2][col[2] + n + 1, row[2] - n - 1] = -1;
+                                    tempBrd[2][col[2] + n, row[2] - n] = 0;
+                                    tempBrd[2][col[2], row[2]] = 0;
+
+                                    MoveScore[3] = BrdScore(tempBrd[2]);
+                                    if (MoveScore[3] > MoveScore[2])
+                                    {
+                                        MoveScore[2] = MoveScore[3];
+                                    }
+
+                                    tempBrd[2][col[2] + n + 1, row[2] - n - 1] = 0;
+                                    tempBrd[2][col[2] + n, row[2] - n] = tempBrd[1][col[2] + n, row[2] - n];
+                                    tempBrd[2][col[2], row[2]] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short n = 1; n < BrdSize - row[2] && n < col[2] + 1; n++)
+                        {
+                            if (tempBrd[2][col[2] - n, row[2] + n] == 0)
+                            {
+                                tempBrd[2][col[2] - n, row[2] + n] = -1;
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] - n, row[2] + n] = 0;
+                                tempBrd[2][col[2], row[2]] = -1;
+                            }
+                            else if (tempBrd[2][col[2] - n, row[2] + n] == 1 || tempBrd[2][col[2] - n, row[2] + n] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[2][col[2] - n, row[2] + n] == 2 || tempBrd[2][col[2] - n, row[2] + n] == -2)
+                            {
+                                if (row[2] + n < BrdSize - 1 && col[2] - n > 0 && tempBrd[2][col[2] - n - 1, row[2] + n + 1] == 0)
+                                {
+                                    tempBrd[2][col[2] - n - 1, row[2] + n + 1] = -1;
+                                    tempBrd[2][col[2] - n, row[2] + n] = 0;
+                                    tempBrd[2][col[2], row[2]] = 0;
+
+                                    MoveScore[3] = BrdScore(tempBrd[2]);
+                                    if (MoveScore[3] > MoveScore[2])
+                                    {
+                                        MoveScore[2] = MoveScore[3];
+                                    }
+
+                                    tempBrd[2][col[2] - n - 1, row[2] + n + 1] = 0;
+                                    tempBrd[2][col[2] - n, row[2] + n] = tempBrd[1][col[2] - n, row[2] + n];
+                                    tempBrd[2][col[2], row[2]] = -1;
+                                }
+                                break;
+                            }
+                        }
+
+                        for (short n = 1; n < BrdSize - row[2] && n < BrdSize - col[2]; n++)
+                        {
+                            if (tempBrd[2][col[2] + n, row[2] + n] == 0)
+                            {
+                                tempBrd[2][col[2] + n, row[2] + n] = -1;
+                                tempBrd[2][col[2], row[2]] = 0;
+
+                                MoveScore[3] = BrdScore(tempBrd[2]);
+                                if (MoveScore[3] > MoveScore[2])
+                                {
+                                    MoveScore[2] = MoveScore[3];
+                                }
+
+                                tempBrd[2][col[2] + n, row[2] + n] = 0;
+                                tempBrd[2][col[2], row[2]] = -1;
+                            }
+                            else if (tempBrd[2][col[2] + n, row[2] + n] == 1 || tempBrd[2][col[2] + n, row[2] + n] == -1)
+                            {
+                                break;
+                            }
+                            else if (tempBrd[2][col[2] + n, row[2] + n] == 2 || tempBrd[2][col[2] + n, row[2] + n] == -2)
+                            {
+                                if (row[2] + n < BrdSize - 1 && col[2] + n < BrdSize - 1 && tempBrd[2][col[2] + n + 1, row[2] + n + 1] == 0)
+                                {
+                                    tempBrd[2][col[2] + n + 1, row[2] + n + 1] = -1;
+                                    tempBrd[2][col[2] + n, row[2] + n] = 0;
+                                    tempBrd[2][col[2], row[2]] = 0;
+
+                                    MoveScore[3] = BrdScore(tempBrd[2]);
+                                    if (MoveScore[3] > MoveScore[2])
+                                    {
+                                        MoveScore[2] = MoveScore[3];
+                                    }
+
+                                    tempBrd[2][col[2] + n + 1, row[2] + n + 1] = 0;
+                                    tempBrd[2][col[2] + n, row[2] + n] = tempBrd[1][col[2] + n, row[2] + n];
+                                    tempBrd[2][col[2], row[2]] = -1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         void Form1_Click(object sender, EventArgs e)
         {
             short[] ButtonLoc = (short[])(((Button)(sender)).Tag);
@@ -43724,6 +44006,11 @@ namespace Project_Checkers
                     winCheck();
 
                     turnVal = rivalTurnVal;
+
+                    if (compActive)
+                    {                        
+                        compTurn();
+                    }
                 }
                 else
                 {
@@ -43813,12 +44100,16 @@ namespace Project_Checkers
             }
         }
 
-        private void CompButton_Click(object sender, EventArgs e)
+        public void compTurn()
         {
+            this.Update();
+
             CleanYellow();
 
             if (turnVal == 1)
             {
+                System.Threading.Thread.Sleep(1000);
+
                 short[] ButtonLoc = CompMove(intBrd);
 
                 if (ButtonLoc == null)
@@ -43859,9 +44150,20 @@ namespace Project_Checkers
                     winCheck();
                 }
             }
+        }
+
+        private void CompButton_Click(object sender, EventArgs e)
+        {
+            if (compActive)
+            {
+                compActive = false;
+                CompButton.Text = "Turn Computer ON?";
+            }
             else
             {
-                MessageBox.Show("It's currently your turn");
+                compActive = true;
+                compTurn();
+                CompButton.Text = "Turn Computer OFF?";
             }
         }
 
@@ -43887,7 +44189,7 @@ namespace Project_Checkers
 
                     Board[i, k].Click += Form1_Click;
 
-                    if ((i + k) % 2 == 0)//sets the buttons color and type
+                    if ((i + k) % 2 == 1)//sets the buttons color and type
                     {
                         if (k < 3)
                         {
