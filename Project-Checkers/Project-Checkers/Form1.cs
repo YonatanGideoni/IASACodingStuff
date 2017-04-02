@@ -61,7 +61,7 @@ namespace Project_Checkers
             return Score;
         }
 
-        public void CleanYellow()
+        public void CleanSelected()
         {
             short BrdSize = (short)(intBrd.GetLength(0));
             for (short i = 0; i < BrdSize; i++)
@@ -74,7 +74,7 @@ namespace Project_Checkers
                     }
                     else
                     {
-                        Board[i, k].BackColor = Color.Black;
+                        Board[i, k].BackgroundImage = null;
                         intBrd[i, k] = 0;
                     }
                 }
@@ -7659,7 +7659,7 @@ namespace Project_Checkers
                 DyingButtons[2] = null;
                 DyingButtons[3] = null;
 
-                CleanYellow();
+                CleanSelected();
 
                 if (col != 0)//checks that the button isn't on an edge
                 {
@@ -7669,7 +7669,7 @@ namespace Project_Checkers
                         {
                             if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
                             {
-                                Board[col - 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                Board[col - 2, row - 2 * moveDir].BackgroundImage = Properties.Resources.selectMark;
                                 intBrd[col - 2, row - 2 * moveDir] = 3;
                                 DyingButtons[0] = new short[2] { (short)(col - 1), (short)(row - moveDir) };
                                 PressedButton = new short[2] { col, row };
@@ -7678,7 +7678,7 @@ namespace Project_Checkers
                     }
                     else if (intBrd[col - 1, row - moveDir] != turnVal && intBrd[col - 1, row - moveDir] != -turnVal)
                     {
-                        Board[col - 1, row - moveDir].BackColor = Color.Yellow;
+                        Board[col - 1, row - moveDir].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col - 1, row - moveDir] = 3;
                         PressedButton = new short[2] { col, row };
                     }
@@ -7691,7 +7691,7 @@ namespace Project_Checkers
                         {
                             if (intBrd[col + 2, row - 2 * moveDir] == 0)
                             {
-                                Board[col + 2, row - 2 * moveDir].BackColor = Color.Yellow;
+                                Board[col + 2, row - 2 * moveDir].BackgroundImage = Properties.Resources.selectMark;
                                 intBrd[col + 2, row - 2 * moveDir] = 3;
                                 DyingButtons[1] = new short[2] { (short)(col + 1), (short)(row - moveDir) };
                                 PressedButton = new short[2] { col, row };
@@ -7700,7 +7700,7 @@ namespace Project_Checkers
                     }
                     else if (intBrd[col + 1, row - moveDir] != turnVal && intBrd[col + 1, row - moveDir] != -turnVal)
                     {
-                        Board[col + 1, row - moveDir].BackColor = Color.Yellow;
+                        Board[col + 1, row - moveDir].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col + 1, row - moveDir] = 3;
                         PressedButton = new short[2] { col, row };
                     }
@@ -7713,7 +7713,7 @@ namespace Project_Checkers
                 DyingButtons[2] = null;
                 DyingButtons[3] = null;
 
-                CleanYellow();
+                CleanSelected();
 
                 bool CanPlace = false;
 
@@ -7721,7 +7721,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col - i, row - i] == 0)
                     {
-                        Board[col - i, row - i].BackColor = Color.Yellow;
+                        Board[col - i, row - i].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col - i, row - i] = 3;
                         CanPlace = true;
                     }
@@ -7733,7 +7733,7 @@ namespace Project_Checkers
                     {
                         if (row - i > 0 && col - i > 0 && intBrd[col - i - 1, row - i - 1] == 0)
                         {
-                            Board[col - i - 1, row - i - 1].BackColor = Color.Yellow;
+                            Board[col - i - 1, row - i - 1].BackgroundImage = Properties.Resources.selectMark;
                             intBrd[col - i - 1, row - i - 1] = 3;
                             DyingButtons[0] = new short[2] { (short)(col - i), (short)(row - i) };
                             CanPlace = true;
@@ -7746,7 +7746,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col + i, row - i] == 0)
                     {
-                        Board[col + i, row - i].BackColor = Color.Yellow;
+                        Board[col + i, row - i].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col + i, row - i] = 3;
                         CanPlace = true;
                     }
@@ -7758,7 +7758,7 @@ namespace Project_Checkers
                     {
                         if (row - i > 0 && col + i < BrdSize - 1 && intBrd[col + i + 1, row - i - 1] == 0)
                         {
-                            Board[col + i + 1, row - i - 1].BackColor = Color.Yellow;
+                            Board[col + i + 1, row - i - 1].BackgroundImage = Properties.Resources.selectMark;
                             intBrd[col + i + 1, row - i - 1] = 3;
                             DyingButtons[1] = new short[2] { (short)(col + i), (short)(row - i) };
                             CanPlace = true;
@@ -7771,7 +7771,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col - i, row + i] == 0)
                     {
-                        Board[col - i, row + i].BackColor = Color.Yellow;
+                        Board[col - i, row + i].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col - i, row + i] = 3;
                         CanPlace = true;
                     }
@@ -7783,7 +7783,7 @@ namespace Project_Checkers
                     {
                         if (row + i < BrdSize - 1 && col - i > 0 && intBrd[col - i - 1, row + i + 1] == 0)
                         {
-                            Board[col - i - 1, row + i + 1].BackColor = Color.Yellow;
+                            Board[col - i - 1, row + i + 1].BackgroundImage = Properties.Resources.selectMark;
                             intBrd[col - i - 1, row + i + 1] = 3;
                             DyingButtons[2] = new short[2] { (short)(col - i), (short)(row + i) };
                             CanPlace = true;
@@ -7796,7 +7796,7 @@ namespace Project_Checkers
                 {
                     if (intBrd[col + i, row + i] == 0)
                     {
-                        Board[col + i, row + i].BackColor = Color.Yellow;
+                        Board[col + i, row + i].BackgroundImage = Properties.Resources.selectMark;
                         intBrd[col + i, row + i] = 3;
                         CanPlace = true;
                     }
@@ -7808,7 +7808,7 @@ namespace Project_Checkers
                     {
                         if (row + i < BrdSize - 1 && col + i < BrdSize - 1 && intBrd[col + i + 1, row + i + 1] == 0)
                         {
-                            Board[col + i + 1, row + i + 1].BackColor = Color.Yellow;
+                            Board[col + i + 1, row + i + 1].BackgroundImage = Properties.Resources.selectMark;
                             intBrd[col + i + 1, row + i + 1] = 3;
                             DyingButtons[3] = new short[2] { (short)(col + i), (short)(row + i) };
                             CanPlace = true;
@@ -7865,7 +7865,7 @@ namespace Project_Checkers
                     Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
                     intBrd[PressedButton[0], PressedButton[1]] = 0;
 
-                    CleanYellow();
+                    CleanSelected();
 
                     PressedButton = null;
 
@@ -8271,7 +8271,7 @@ namespace Project_Checkers
         {
             this.Update();
 
-            CleanYellow();
+            CleanSelected();
 
             if (turnVal == 1)
             {
@@ -8374,6 +8374,8 @@ namespace Project_Checkers
                     Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
                     Board[i, k].Size = new Size(ButtonSize, ButtonSize);
                     Board[i, k].Tag = new short[2] { i, k };
+                    Board[i, k].BackgroundImageLayout = ImageLayout.Stretch;
+                    Board[i, k].BackColor = Color.Black;
 
                     Board[i, k].Click += Form1_Click;
 
@@ -8381,19 +8383,18 @@ namespace Project_Checkers
                     {
                         if (k < 3)
                         {
-                            Board[i, k].BackColor = Color.DarkOrchid;
+                            Board[i, k].BackgroundImage = Properties.Resources.whiteChecker;
                             intBrd[i, k] = 1;
                             BlackCheckers++;
                         }
                         else if (k > BrdSize - 4)
                         {
-                            Board[i, k].BackColor = Color.SandyBrown;
+                            Board[i, k].BackgroundImage = Properties.Resources.blackChecker;
                             intBrd[i, k] = 2;
                             WhiteCheckers++;
                         }
                         else
-                        {
-                            Board[i, k].BackColor = Color.Black;
+                        {                            
                             intBrd[i, k] = 0;
                         }
                     }
