@@ -7824,48 +7824,48 @@ namespace Project_Checkers
             }
             else if (intBrd[col, row] == 3)
             {
+                CleanSelected();
+
                 if (turnVal == 2)//Move Black Checkers
                 {
                     if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row + 1)
                     {//check if a checker is eaten via this move
                         intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
-                        Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
+                        Board[DyingButtons[0][0], DyingButtons[0][1]].BackgroundImage = null;
                         WhiteCheckers--;
                     }
                     else if (DyingButtons[1] != null && DyingButtons[1][0] == col - 1 && DyingButtons[1][1] == row + 1)
                     {
                         intBrd[DyingButtons[1][0], DyingButtons[1][1]] = 0;
-                        Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
+                        Board[DyingButtons[1][0], DyingButtons[1][1]].BackgroundImage = null;
                         WhiteCheckers--;
                     }
                     else if (DyingButtons[2] != null && DyingButtons[2][0] == col + 1 && DyingButtons[2][1] == row - 1)
                     {
                         intBrd[DyingButtons[2][0], DyingButtons[2][1]] = 0;
-                        Board[DyingButtons[2][0], DyingButtons[2][1]].BackColor = Color.Black;
+                        Board[DyingButtons[2][0], DyingButtons[2][1]].BackgroundImage = null;
                         WhiteCheckers--;
                     }
                     else if (DyingButtons[3] != null && DyingButtons[3][0] == col - 1 && DyingButtons[3][1] == row - 1)
                     {
                         intBrd[DyingButtons[3][0], DyingButtons[3][1]] = 0;
-                        Board[DyingButtons[3][0], DyingButtons[3][1]].BackColor = Color.Black;
+                        Board[DyingButtons[3][0], DyingButtons[3][1]].BackgroundImage = null;
                         WhiteCheckers--;
                     }
 
                     if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row > 0)//check if it's a king or becomes one
                     {
-                        Board[col, row].BackColor = Color.SandyBrown;
+                        Board[col, row].BackgroundImage = Properties.Resources.blackChecker;
                         intBrd[col, row] = 2;
                     }
                     else
                     {
-                        Board[col, row].BackColor = Color.Brown;
+                        Board[col, row].BackgroundImage = Properties.Resources.blackKing;
                         intBrd[col, row] = -2;
                     }
 
-                    Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
-                    intBrd[PressedButton[0], PressedButton[1]] = 0;
-
-                    CleanSelected();
+                    Board[PressedButton[0], PressedButton[1]].BackgroundImage = null;
+                    intBrd[PressedButton[0], PressedButton[1]] = 0;                    
 
                     PressedButton = null;
 
@@ -7890,13 +7890,13 @@ namespace Project_Checkers
                         if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row - 1)
                         {
                             intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
-                            Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
+                            Board[DyingButtons[0][0], DyingButtons[0][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                         else if (DyingButtons[1] != null && DyingButtons[1][0] == col - 1 && DyingButtons[1][1] == row - 1)
                         {
                             intBrd[DyingButtons[1][0], DyingButtons[1][1]] = 0;
-                            Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
+                            Board[DyingButtons[1][0], DyingButtons[1][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                     }//here because the DyingButtons[] array doesn't perfectly line up there is a difference between kings and non-kings
@@ -7905,58 +7905,43 @@ namespace Project_Checkers
                         if (DyingButtons[0] != null && DyingButtons[0][0] == col + 1 && DyingButtons[0][1] == row + 1)
                         {
                             intBrd[DyingButtons[0][0], DyingButtons[0][1]] = 0;
-                            Board[DyingButtons[0][0], DyingButtons[0][1]].BackColor = Color.Black;
+                            Board[DyingButtons[0][0], DyingButtons[0][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                         else if (DyingButtons[1] != null && DyingButtons[1][0] == col - 1 && DyingButtons[1][1] == row + 1)
                         {
                             intBrd[DyingButtons[1][0], DyingButtons[1][1]] = 0;
-                            Board[DyingButtons[1][0], DyingButtons[1][1]].BackColor = Color.Black;
+                            Board[DyingButtons[1][0], DyingButtons[1][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                         else if (DyingButtons[0] != null && DyingButtons[2][0] == col + 1 && DyingButtons[2][1] == row - 1)
                         {
                             intBrd[DyingButtons[2][0], DyingButtons[2][1]] = 0;
-                            Board[DyingButtons[2][0], DyingButtons[2][1]].BackColor = Color.Black;
+                            Board[DyingButtons[2][0], DyingButtons[2][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                         else if (DyingButtons[3] != null && DyingButtons[3][0] == col - 1 && DyingButtons[3][1] == row - 1)
                         {
                             intBrd[DyingButtons[3][0], DyingButtons[3][1]] = 0;
-                            Board[DyingButtons[3][0], DyingButtons[3][1]].BackColor = Color.Black;
+                            Board[DyingButtons[3][0], DyingButtons[3][1]].BackgroundImage = null;
                             BlackCheckers--;
                         }
                     }
 
                     if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row < BrdSize - 1)
                     {
-                        Board[col, row].BackColor = Color.DarkOrchid;
+                        Board[col, row].BackgroundImage = Properties.Resources.whiteChecker;
                         intBrd[col, row] = 1;
                     }
                     else
                     {
-                        Board[col, row].BackColor = Color.Purple;
+                        Board[col, row].BackgroundImage = Properties.Resources.whiteKing;
                         intBrd[col, row] = -1;
                     }
 
-                    Board[PressedButton[0], PressedButton[1]].BackColor = Color.Black;
+                    Board[PressedButton[0], PressedButton[1]].BackgroundImage = null;
                     intBrd[PressedButton[0], PressedButton[1]] = 0;
 
-                    for (short i = 0; i < BrdSize; i++)
-                    {
-                        for (short k = 0; k < BrdSize; k++)
-                        {
-                            if (intBrd[i, k] != 3)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                Board[i, k].BackColor = Color.Black;
-                                intBrd[i, k] = 0;
-                            }
-                        }
-                    }
 
                     PressedButton = null;
 
@@ -8293,25 +8278,25 @@ namespace Project_Checkers
                     if (ButtonLoc[3] < BrdSize - 1 && intBrd[ButtonLoc[0], ButtonLoc[1]] != -1)
                     {
                         intBrd[ButtonLoc[2], ButtonLoc[3]] = 1;
-                        Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.DarkOrchid;
+                        Board[ButtonLoc[2], ButtonLoc[3]].BackgroundImage = Properties.Resources.whiteChecker;
                     }
                     else
                     {
                         intBrd[ButtonLoc[2], ButtonLoc[3]] = -1;
-                        Board[ButtonLoc[2], ButtonLoc[3]].BackColor = Color.Purple;
+                        Board[ButtonLoc[2], ButtonLoc[3]].BackgroundImage = Properties.Resources.whiteKing;
                     }
 
                     if (ButtonLoc.Length == 6)
                     {
                         intBrd[ButtonLoc[4], ButtonLoc[5]] = 0;
-                        Board[ButtonLoc[4], ButtonLoc[5]].BackColor = Color.Black;
+                        Board[ButtonLoc[4], ButtonLoc[5]].BackgroundImage = null;
                         BlackCheckers--;
 
                         BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
                     }
 
                     intBrd[ButtonLoc[0], ButtonLoc[1]] = 0;
-                    Board[ButtonLoc[0], ButtonLoc[1]].BackColor = Color.Black;
+                    Board[ButtonLoc[0], ButtonLoc[1]].BackgroundImage = null;
 
                     turnVal = 2;
 
