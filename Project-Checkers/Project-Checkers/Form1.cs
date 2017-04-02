@@ -8287,7 +8287,7 @@ namespace Project_Checkers
 
             if (turnVal == 1)
             {
-                System.Threading.Thread.Sleep(1500);
+                System.Threading.Thread.Sleep(1000);
 
                 short[] ButtonLoc = CompMove(intBrd);
 
@@ -8428,6 +8428,9 @@ namespace Project_Checkers
             StartButton.Enabled = false;
             BrdSizeBox.Enabled = false;
             CompButton.Enabled = true;
+            CompButton.Visible = true;
+            BlackCheckerBox.Visible = true;
+            WhiteCheckerBox.Visible = true;
             CompButton.BackColor = Color.GreenYellow;
         }
     }

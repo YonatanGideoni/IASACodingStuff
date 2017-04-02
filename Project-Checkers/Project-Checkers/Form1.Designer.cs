@@ -80,6 +80,7 @@
             // 
             // textBox1
             // 
+            this.textBox1.BackColor = System.Drawing.Color.ForestGreen;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Location = new System.Drawing.Point(126, 15);
             this.textBox1.Name = "textBox1";
@@ -90,26 +91,33 @@
             // 
             // BlackCheckerBox
             // 
+            this.BlackCheckerBox.BackColor = System.Drawing.Color.Black;
             this.BlackCheckerBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.BlackCheckerBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.BlackCheckerBox.ForeColor = System.Drawing.Color.White;
             this.BlackCheckerBox.Location = new System.Drawing.Point(254, 7);
             this.BlackCheckerBox.Name = "BlackCheckerBox";
             this.BlackCheckerBox.ReadOnly = true;
             this.BlackCheckerBox.Size = new System.Drawing.Size(100, 13);
             this.BlackCheckerBox.TabIndex = 4;
+            this.BlackCheckerBox.Visible = false;
             // 
             // WhiteCheckerBox
             // 
+            this.WhiteCheckerBox.BackColor = System.Drawing.Color.White;
             this.WhiteCheckerBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.WhiteCheckerBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.WhiteCheckerBox.ForeColor = System.Drawing.Color.Black;
             this.WhiteCheckerBox.Location = new System.Drawing.Point(254, 27);
             this.WhiteCheckerBox.Name = "WhiteCheckerBox";
             this.WhiteCheckerBox.ReadOnly = true;
             this.WhiteCheckerBox.Size = new System.Drawing.Size(100, 13);
             this.WhiteCheckerBox.TabIndex = 5;
+            this.WhiteCheckerBox.Visible = false;
             // 
             // TurnBox
             // 
+            this.TurnBox.BackColor = System.Drawing.Color.ForestGreen;
             this.TurnBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.TurnBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.TurnBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -129,12 +137,14 @@
             this.CompButton.TabIndex = 7;
             this.CompButton.Text = "Turn Computer ON?";
             this.CompButton.UseVisualStyleBackColor = true;
+            this.CompButton.Visible = false;
             this.CompButton.Click += new System.EventHandler(this.CompButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(479, 347);
             this.Controls.Add(this.CompButton);
             this.Controls.Add(this.TurnBox);
@@ -145,7 +155,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.StartButton);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Checkers";
             ((System.ComponentModel.ISupportInitialize)(this.BrdSizeBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
