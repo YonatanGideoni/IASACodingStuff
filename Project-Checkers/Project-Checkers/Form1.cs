@@ -8333,10 +8333,11 @@ namespace Project_Checkers
             }
             else
             {
-                compActive = true;
-                compTurn();
+                compActive = true;                
                 CompButton.Text = "Turn Computer OFF?";
                 CompButton.BackColor = Color.Red;
+
+                compTurn();
             }
         }
 
@@ -8345,7 +8346,7 @@ namespace Project_Checkers
             BrdSize = (short)(BrdSizeBox.Value);
             Board = new Button[BrdSize, BrdSize];
             intBrd = new short[BrdSize, BrdSize];
-            short ButtonSize = 50;
+            short ButtonSize = Math.Max((short)(80 - Math.Pow(BrdSize/2,2)),(short)(30));
 
             panel1.Size = new Size(BrdSize * ButtonSize, BrdSize * ButtonSize);//sets panel and window sizes
             this.Size = new Size(BrdSize * ButtonSize + 100, BrdSize * ButtonSize + 150);
