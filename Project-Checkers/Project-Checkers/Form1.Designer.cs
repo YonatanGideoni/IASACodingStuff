@@ -36,6 +36,7 @@
             this.WhiteCheckerBox = new System.Windows.Forms.TextBox();
             this.TurnBox = new System.Windows.Forms.TextBox();
             this.CompButton = new System.Windows.Forms.Button();
+            this.NoMoveButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.BrdSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,10 +83,11 @@
             // 
             this.textBox1.BackColor = System.Drawing.Color.ForestGreen;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(126, 15);
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(114, 12);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(63, 13);
+            this.textBox1.Size = new System.Drawing.Size(63, 14);
             this.textBox1.TabIndex = 3;
             this.textBox1.Text = "Board Size:";
             // 
@@ -140,12 +142,27 @@
             this.CompButton.Visible = false;
             this.CompButton.Click += new System.EventHandler(this.CompButton_Click);
             // 
+            // NoMoveButton
+            // 
+            this.NoMoveButton.BackColor = System.Drawing.SystemColors.Control;
+            this.NoMoveButton.CausesValidation = false;
+            this.NoMoveButton.Enabled = false;
+            this.NoMoveButton.Location = new System.Drawing.Point(281, 46);
+            this.NoMoveButton.Name = "NoMoveButton";
+            this.NoMoveButton.Size = new System.Drawing.Size(73, 20);
+            this.NoMoveButton.TabIndex = 8;
+            this.NoMoveButton.Text = "No Moves?";
+            this.NoMoveButton.UseVisualStyleBackColor = false;
+            this.NoMoveButton.Visible = false;
+            this.NoMoveButton.Click += new System.EventHandler(this.NoMoveButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(479, 347);
+            this.Controls.Add(this.NoMoveButton);
             this.Controls.Add(this.CompButton);
             this.Controls.Add(this.TurnBox);
             this.Controls.Add(this.WhiteCheckerBox);
@@ -172,6 +189,7 @@
         private System.Windows.Forms.TextBox TurnBox;
         private System.Windows.Forms.Button CompButton;
         private System.Windows.Forms.TextBox BlackCheckerBox;
+        private System.Windows.Forms.Button NoMoveButton;
     }
 }
 

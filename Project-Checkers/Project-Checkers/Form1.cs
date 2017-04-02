@@ -86,10 +86,12 @@ namespace Project_Checkers
             if (BlackCheckers == 1)
             {
                 MessageBox.Show("White Wins!");
+                this.Close();
             }
             else if (WhiteCheckers == 1)
             {
                 MessageBox.Show("Black Wins!");
+                this.Close();
             }
         }
 
@@ -7657,21 +7659,7 @@ namespace Project_Checkers
                 DyingButtons[2] = null;
                 DyingButtons[3] = null;
 
-                for (short i = 0; i < BrdSize; i++)
-                {
-                    for (short k = 0; k < BrdSize; k++)
-                    {
-                        if (intBrd[i, k] != 3)
-                        {
-                            continue;
-                        }
-                        else
-                        {
-                            Board[i, k].BackColor = Color.Black;
-                            intBrd[i, k] = 0;
-                        }
-                    }
-                }
+                CleanYellow();
 
                 if (col != 0)//checks that the button isn't on an edge
                 {
@@ -7974,7 +7962,7 @@ namespace Project_Checkers
 
                     WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
-                    
+
                     winCheck();
 
                     turnVal = rivalTurnVal;
@@ -7989,13 +7977,13 @@ namespace Project_Checkers
             short[,] tempBrd; ;
             tempBrd = (short[,])originBrd.Clone();
             short BrdSize = (short)(originBrd.GetLength(0));
-            short Score = -100;
+            short Score = -1000;
             short MoveScore;
             short[] ButtonLoc = null;
 
             for (short row = 0; row < BrdSize; row++)
             {
-                for (short col = (short)(row % 2); col < BrdSize; col += 2)
+                for (short col = (short)(row % 2 + 1); col < BrdSize; col += 2)
                 {
                     if (tempBrd[col, row] == 1)//simulate normal checker move
                     {
@@ -8431,7 +8419,180 @@ namespace Project_Checkers
             CompButton.Visible = true;
             BlackCheckerBox.Visible = true;
             WhiteCheckerBox.Visible = true;
+            NoMoveButton.Enabled = true;
+            NoMoveButton.Visible = true;
             CompButton.BackColor = Color.GreenYellow;
+        }
+
+        private void NoMoveButton_Click(object sender, EventArgs e)
+        {
+            bool CanMove = false;
+            short rivalTurnVal = (short)(turnVal % 2 + 1);
+            short moveDir;
+
+            if (turnVal == 2)
+            {
+                moveDir = 1;
+            }
+            else
+            {
+                moveDir = -1;
+            }
+
+            for (short row = 0; row < BrdSize; row++)
+            {
+                for (short col = (short)(row % 2 + 1); col < BrdSize; col += 2)
+                {
+                    if (intBrd[col, row] == turnVal)
+                    {
+                        if (col != 0)
+                        {
+                            if (intBrd[col - 1, row - moveDir] == rivalTurnVal || intBrd[col - 1, row - moveDir] == -rivalTurnVal)
+                            {
+                                if (col != 1 && row != rivalTurnVal / 2 * (BrdSize - 3) + 1)
+                                {
+                                    if (intBrd[col - 2, row - 2 * moveDir] == 0)
+                                    {
+                                        CanMove = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (intBrd[col - 1, row - moveDir] != turnVal && intBrd[col - 1, row - moveDir] != -turnVal)
+                            {
+                                CanMove = true;
+                                break;                                    
+                            }
+                        }
+                        if (col != BrdSize - 1)
+                        {
+                            if (intBrd[col + 1, row - moveDir] == rivalTurnVal || intBrd[col + 1, row - moveDir] == -rivalTurnVal)
+                            {
+                                if (col != BrdSize - 2 && row != rivalTurnVal / 2 * (BrdSize - 3) + 1)
+                                {
+                                    if (intBrd[col + 2, row - 2 * moveDir] == 0)
+                                    {
+                                        CanMove = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            else if (intBrd[col + 1, row - moveDir] != turnVal && intBrd[col + 1, row - moveDir] != -turnVal)
+                            {
+                                CanMove = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (intBrd[col, row] == -turnVal)
+                    {
+                        for (short i = 1; i < row + 1 && i < col + 1; i++)
+                        {
+                            if (intBrd[col - i, row - i] == 0)
+                            {
+                                CanMove = true;
+                                break;
+                            }
+                            else if (intBrd[col - i, row - i] == turnVal || intBrd[col - i, row - i] == -turnVal)
+                            {
+                                break;
+                            }
+                            else if (intBrd[col - i, row - i] == rivalTurnVal || intBrd[col - i, row - i] == -rivalTurnVal)
+                            {
+                                if (row - i > 0 && col - i > 0 && intBrd[col - i - 1, row - i - 1] == 0)
+                                {
+                                    CanMove = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        for (short i = 1; i < row + 1 && i < BrdSize - col; i++)
+                        {
+                            if (intBrd[col + i, row - i] == 0)
+                            {
+                                CanMove = true;
+                                break;
+                            }
+                            else if (intBrd[col + i, row - i] == turnVal || intBrd[col + i, row - i] == -turnVal)
+                            {
+                                break;
+                            }
+                            else if (intBrd[col + i, row - i] == rivalTurnVal || intBrd[col + i, row - i] == -rivalTurnVal)
+                            {
+                                if (row - i > 0 && col + i < BrdSize - 1 && intBrd[col + i + 1, row - i - 1] == 0)
+                                {
+                                    CanMove = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        for (short i = 1; i < BrdSize - row && i < col + 1; i++)
+                        {
+                            if (intBrd[col - i, row + i] == 0)
+                            {
+                                CanMove = true;
+                                break;
+                            }
+                            else if (intBrd[col - i, row + i] == turnVal || intBrd[col - i, row + i] == -turnVal)
+                            {
+                                break;
+                            }
+                            else if (intBrd[col - i, row + i] == rivalTurnVal || intBrd[col - i, row + i] == -rivalTurnVal)
+                            {
+                                if (row + i < BrdSize - 1 && col - i > 0 && intBrd[col - i - 1, row + i + 1] == 0)
+                                {
+                                    CanMove = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        for (short i = 1; i < BrdSize - row && i < BrdSize - col; i++)
+                        {
+                            if (intBrd[col + i, row + i] == 0)
+                            {
+                                CanMove = true;
+                                break;
+                            }
+                            else if (intBrd[col + i, row + i] == turnVal || intBrd[col + i, row + i] == -turnVal)
+                            {
+                                break;
+                            }
+                            else if (intBrd[col + i, row + i] == rivalTurnVal || intBrd[col + i, row + i] == -rivalTurnVal)
+                            {
+                                if (row + i < BrdSize - 1 && col + i < BrdSize - 1 && intBrd[col + i + 1, row + i + 1] == 0)
+                                {
+                                    CanMove = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (CanMove)
+                {
+                    break;
+                }
+            }
+            if (CanMove)
+            {
+                MessageBox.Show("There are still possible moves.");                
+            }
+            else
+            {
+                if (turnVal == 1)
+                {
+                    MessageBox.Show("White has no more possible moves, White loses.");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Black has no more possible moves, Black loses.");
+                    this.Close();
+                }
+            }
         }
     }
 }
