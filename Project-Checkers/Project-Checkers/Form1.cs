@@ -7658,19 +7658,19 @@ namespace Project_Checkers
             short col = ButtonLoc[0];
             short row = ButtonLoc[1];
             short rivalTurnVal = (short)(turnVal % 2 + 1);
-            short moveDir;
-
-            if (turnVal == 2)
-            {
-                moveDir = 1;
-            }
-            else
-            {
-                moveDir = -1;
-            }
+            short moveDir;            
 
             if (intBrd[col, row] == turnVal)
             {
+                if (turnVal == 2)//black checker case
+                {
+                    moveDir = 1;
+                }
+                else//white checker case
+                {
+                    moveDir = -1;
+                }
+
                 DyingButtons[0] = null;
                 DyingButtons[1] = null;
                 DyingButtons[2] = null;
@@ -7680,12 +7680,12 @@ namespace Project_Checkers
 
                 if (col != 0)//checks that the button isn't on an edge
                 {
-                    if (intBrd[col - 1, row - moveDir] == rivalTurnVal || intBrd[col - 1, row - moveDir] == -rivalTurnVal)//checks if there is a rival in this direction
-                    {
+                    if (intBrd[col - 1, row - moveDir] == rivalTurnVal || intBrd[col - 1, row - moveDir] == -rivalTurnVal)
+                    {                                                    //checks if there is a rival in this direction
                         if (col != 1 && row != rivalTurnVal / 2 * (BrdSize - 3) + 1)
                         {
-                            if (intBrd[col - 2, row - 2 * moveDir] == 0)//checks to see if the enemy is in a position where he can be eaten
-                            {
+                            if (intBrd[col - 2, row - 2 * moveDir] == 0)
+                            {                     //checks to see if the enemy is in a position where he can be eaten
                                 Board[col - 2, row - 2 * moveDir].BackgroundImage = Properties.Resources.selectMark;
                                 intBrd[col - 2, row - 2 * moveDir] = 3;
                                 DyingButtons[0] = new short[2] { (short)(col - 1), (short)(row - moveDir) };
@@ -7734,8 +7734,8 @@ namespace Project_Checkers
 
                 bool CanPlace = false;
 
-                for (short i = 1; i < row + 1 && i < col + 1; i++)//create yellow tiles in all directions
-                {
+                for (short i = 1; i < row + 1 && i < col + 1; i++)
+                {   //select tiles in all directions
                     if (intBrd[col - i, row - i] == 0)
                     {
                         Board[col - i, row - i].BackgroundImage = Properties.Resources.selectMark;
@@ -7870,8 +7870,8 @@ namespace Project_Checkers
                         WhiteCheckers--;
                     }
 
-                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row > 0)//check if it's a king or becomes one
-                    {
+                    if (intBrd[PressedButton[0], PressedButton[1]] == turnVal && row > 0)
+                    {       //check if it's a king or becomes one
                         Board[col, row].BackgroundImage = Properties.Resources.blackChecker;
                         intBrd[col, row] = 2;
                     }
@@ -7886,8 +7886,7 @@ namespace Project_Checkers
 
                     PressedButton = null;
 
-                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();//updates textboxes
-                    BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
+                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();//updates textbox
 
                     winCheck();
 
@@ -7962,7 +7961,6 @@ namespace Project_Checkers
 
                     PressedButton = null;
 
-                    WhiteCheckerBox.Text = "White Checkers: " + WhiteCheckers.ToString();
                     BlackCheckerBox.Text = "Black Checkers: " + BlackCheckers.ToString();
 
                     winCheck();
@@ -7985,7 +7983,7 @@ namespace Project_Checkers
 
             for (short row = 0; row < BrdSize; row++)
             {
-                for (short col = (short)(row % 2 + 1); col < BrdSize; col += 2)
+                for (short col = 0; col < BrdSize; col++)
                 {
                     if (tempBrd[col, row] == 1)//simulate normal checker move
                     {
