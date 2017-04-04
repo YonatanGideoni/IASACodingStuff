@@ -29,10 +29,10 @@ namespace Project_Checkers
 
         static short BrdScore(short[,] OriginBrd)
         {
-            short BrdSize = (short)(OriginBrd.GetLength(0));
             short Score = 0;
             short whiteCheckers = 0;
             short blackCheckers = 0;
+            short BrdSize = (short)(OriginBrd.GetLength(0));
 
             for (short i = 0; i < BrdSize; i++)
             {
@@ -112,11 +112,10 @@ namespace Project_Checkers
             }
         }
 
-        static short[] CompMove(short[,] originBrd)
+        public short[] CompMove(short[,] originBrd)
         {
             short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
-            short BrdSize = (short)(originBrd.GetLength(0));
             short[] MoveScore = new short[3] { -1000, 1000, -1000 };
             short[] ButtonLoc = null;
             short[] col = new short[2];
@@ -3885,18 +3884,16 @@ namespace Project_Checkers
                     }
                 }
             }
-
             return ButtonLoc;
         }
 
-        static short CompMoveCont(short[,] originBrd)
+        public short CompMoveCont(short[,] originBrd)
         {
             short[] MoveScore = new short[3] { -1000, 1000, -1000 };
             short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
             short[] col = new short[2];
             short[] row = new short[2];
-            short BrdSize = (short)(originBrd.GetLength(0));
 
             for (row[0] = 0; row[0] < BrdSize; row[0]++)
             {
