@@ -65,7 +65,7 @@ namespace Project_Checkers
                 }
             }
 
-            if (whiteCheckers <= 1)
+            if (whiteCheckers <= 1)//check if loss condition
             {
                 Score -= 9999;
             }
@@ -74,7 +74,7 @@ namespace Project_Checkers
                 Score += 9999;
             }
 
-            Score += (short)((blackCheckers - whiteCheckers) * 4);
+            Score += (short)((whiteCheckers - blackCheckers) * 4);
             return Score;
         }
 
