@@ -67,11 +67,11 @@ namespace Project_Checkers
 
             if (whiteCheckers <= 1)
             {
-                Score -= 9999;
+                Score += 9999;
             }
             else if (blackCheckers <= 1)
             {
-                Score += 9999;
+                Score -= 9999;
             }
 
             Score += (short)((blackCheckers - whiteCheckers) * 4);
