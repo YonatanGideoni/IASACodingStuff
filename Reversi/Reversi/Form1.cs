@@ -1275,58 +1275,6 @@ namespace Reversi
             return ButtonLoc;
         }
 
-        private void RestartButton_Click(object sender, EventArgs e)
-        {
-            short GridLength = Convert.ToInt16(GridSizeBox.Value + 2);
-            short ButtonSize = 35;
-
-            Board = new Button[GridLength, GridLength];//sets the int and Button array sizes
-            intBrd = new short[GridLength, GridLength];
-
-            BoardPanel.Size = new Size(GridLength * ButtonSize, GridLength * ButtonSize);//sets the panel and window sizes
-            this.Size = new Size(Math.Max(BoardPanel.Width + BoardPanel.Location.X + 50, 400), BoardPanel.Height + BoardPanel.Location.Y + 100);
-
-            for (short i = 0; i < GridLength; i++)
-            {
-                for (short k = 0; k < GridLength; k++)//assigns the Buttons values and adds them to the panel
-                {
-                    Board[i, k] = new Button();
-                    Board[i, k].Size = new Size(ButtonSize, ButtonSize);
-                    Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
-                    intBrd[i, k] = 0;
-                    Board[i, k].BackColor = default(Color);
-                    Board[i, k].Tag = new short[2] { i, k };
-
-                    BoardPanel.Controls.Add(Board[i, k]);
-                    Board[i, k].Click += Form1_Click;
-
-                    if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)//if it is a frame button, make it invisible and inactive
-                    {
-                        Board[i, k].Enabled = false;
-                        Board[i, k].Visible = false;
-                    }
-                }
-            }
-
-            Board[GridLength / 2, GridLength / 2].BackColor = Color.Black;//create the center starting buttons
-            Board[GridLength / 2 - 1, GridLength / 2].BackColor = Color.Blue;
-            Board[GridLength / 2, GridLength / 2 - 1].BackColor = Color.Blue;
-            Board[GridLength / 2 - 1, GridLength / 2 - 1].BackColor = Color.Black;
-            Board[GridLength / 2, GridLength / 2].Enabled = false;
-            Board[GridLength / 2 - 1, GridLength / 2].Enabled = false;
-            Board[GridLength / 2, GridLength / 2 - 1].Enabled = false;
-            Board[GridLength / 2 - 1, GridLength / 2 - 1].Enabled = false;
-
-            intBrd[GridLength / 2, GridLength / 2] = 1;
-            intBrd[GridLength / 2 - 1, GridLength / 2] = 2;
-            intBrd[GridLength / 2, GridLength / 2 - 1] = 2;
-            intBrd[GridLength / 2 - 1, GridLength / 2 - 1] = 1;
-
-            turnType = 1;//black starts
-            TurnTextBox.Text = "Black's Turn";//inputs the necessary text in the textboxes
-            TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
-        }
-
         void Form1_Click(object sender, EventArgs e)
         {
             short[] ButtonLoc = (short[])((Array)(((Button)(sender)).Tag));//retrieves the pressed button's location
@@ -1939,21 +1887,8 @@ namespace Reversi
                     Board[row, col].Enabled = false;
                     intBrd[row, col] = 2;
 
-                    if (BlackTile + BlueTile == (BrdLength - 2) * (BrdHeight - 2))//Win condition
-                    {
-                        if (BlackTile > BlueTile)
-                        {
-                            MessageBox.Show("Black Wins!");
-                        }
-                        else if (BlackTile == BlueTile)
-                        {
-                            MessageBox.Show("It's a Tie!");
-                        }
-                        else
-                        {
-                            MessageBox.Show("Blue Wins!");
-                        }
-                    }
+                    winCheck();
+
                     turnType = 1;
                 }
             }
@@ -1961,6 +1896,83 @@ namespace Reversi
             {
                 MessageBox.Show("This is currently your turn");
             }
+        }
+
+        public void winCheck()
+        {
+            short BrdLength = (short)Board.GetLength(0);
+            short BrdHeight = (short)Board.GetLength(1);
+
+            if (BlackTile + BlueTile == (BrdLength - 2) * (BrdHeight - 2))//Win condition
+            {
+                if (BlackTile > BlueTile)
+                {
+                    MessageBox.Show("Black Wins!");                   
+                }
+                else if (BlackTile == BlueTile)
+                {
+                    MessageBox.Show("It's a Tie!");
+                }
+                else
+                {
+                    MessageBox.Show("Blue Wins!");
+                }                
+            }
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            short GridLength = Convert.ToInt16(GridSizeBox.Value + 2);
+            short ButtonSize = 35;
+
+            Board = new Button[GridLength, GridLength];//sets the int and Button array sizes
+            intBrd = new short[GridLength, GridLength];
+
+            BoardPanel.Size = new Size(GridLength * ButtonSize, GridLength * ButtonSize);//sets the panel and window sizes
+            this.Size = new Size(Math.Max(BoardPanel.Width + BoardPanel.Location.X + 50, 400), BoardPanel.Height + BoardPanel.Location.Y + 100);
+
+            for (short i = 0; i < GridLength; i++)
+            {
+                for (short k = 0; k < GridLength; k++)//assigns the Buttons values and adds them to the panel
+                {
+                    Board[i, k] = new Button();
+                    Board[i, k].Size = new Size(ButtonSize, ButtonSize);
+                    Board[i, k].Location = new Point(ButtonSize * i, ButtonSize * k);
+                    intBrd[i, k] = 0;
+                    Board[i, k].BackColor = default(Color);
+                    Board[i, k].Tag = new short[2] { i, k };
+
+                    BoardPanel.Controls.Add(Board[i, k]);
+                    Board[i, k].Click += Form1_Click;
+
+                    if (i == 0 || i == GridLength - 1 || k == 0 || k == GridLength - 1)//if it is a frame button, make it invisible and inactive
+                    {
+                        Board[i, k].Enabled = false;
+                        Board[i, k].Visible = false;
+                    }
+                }
+            }
+
+            Board[GridLength / 2, GridLength / 2].BackColor = Color.Black;//create the center starting buttons
+            Board[GridLength / 2 - 1, GridLength / 2].BackColor = Color.Blue;
+            Board[GridLength / 2, GridLength / 2 - 1].BackColor = Color.Blue;
+            Board[GridLength / 2 - 1, GridLength / 2 - 1].BackColor = Color.Black;
+            Board[GridLength / 2, GridLength / 2].Enabled = false;
+            Board[GridLength / 2 - 1, GridLength / 2].Enabled = false;
+            Board[GridLength / 2, GridLength / 2 - 1].Enabled = false;
+            Board[GridLength / 2 - 1, GridLength / 2 - 1].Enabled = false;
+
+            intBrd[GridLength / 2, GridLength / 2] = 1;
+            intBrd[GridLength / 2 - 1, GridLength / 2] = 2;
+            intBrd[GridLength / 2, GridLength / 2 - 1] = 2;
+            intBrd[GridLength / 2 - 1, GridLength / 2 - 1] = 1;
+
+            turnType = 1;//black starts
+            TurnTextBox.Text = "Black's Turn";//inputs the necessary text in the textboxes
+            TileCountBox.Text = "Black Tiles:" + BlackTile.ToString() + " Blue Tiles:" + BlueTile.ToString();
+
+            StartButton.Enabled = false;
+            GridSizeBox.Enabled = false;
         }
     }
 }
