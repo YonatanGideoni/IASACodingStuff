@@ -1,0 +1,9 @@
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\bin\Debug\MatrixLinearEquationsSolver.exe.config
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\bin\Debug\MatrixLinearEquationsSolver.exe
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\bin\Debug\MatrixLinearEquationsSolver.pdb
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.csprojResolveAssemblyReference.cache
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.Properties.Resources.resources
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.csproj.GenerateResource.Cache
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.exe
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.pdb
+C:\Users\chais\Desktop\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.Form1.resources
