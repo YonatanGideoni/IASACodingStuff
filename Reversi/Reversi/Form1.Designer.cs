@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.RestartButton = new System.Windows.Forms.Button();
+            this.StartButton = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.GridSizeBox = new System.Windows.Forms.NumericUpDown();
             this.BoardPanel = new System.Windows.Forms.Panel();
@@ -39,15 +39,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // RestartButton
+            // StartButton
             // 
-            this.RestartButton.Location = new System.Drawing.Point(13, 13);
-            this.RestartButton.Name = "RestartButton";
-            this.RestartButton.Size = new System.Drawing.Size(75, 23);
-            this.RestartButton.TabIndex = 0;
-            this.RestartButton.Text = "New Game";
-            this.RestartButton.UseVisualStyleBackColor = true;
-            this.RestartButton.Click += new System.EventHandler(this.RestartButton_Click);
+            this.StartButton.Location = new System.Drawing.Point(13, 13);
+            this.StartButton.Name = "StartButton";
+            this.StartButton.Size = new System.Drawing.Size(75, 23);
+            this.StartButton.TabIndex = 0;
+            this.StartButton.Text = "Start Game";
+            this.StartButton.UseVisualStyleBackColor = true;
+            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
             // textBox1
             // 
@@ -148,7 +148,7 @@
             this.Controls.Add(this.BoardPanel);
             this.Controls.Add(this.GridSizeBox);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.RestartButton);
+            this.Controls.Add(this.StartButton);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeBox)).EndInit();
@@ -159,7 +159,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Button RestartButton;
+        private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.NumericUpDown GridSizeBox;
         private System.Windows.Forms.Panel BoardPanel;
