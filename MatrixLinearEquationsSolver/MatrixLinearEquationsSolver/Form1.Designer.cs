@@ -51,9 +51,9 @@
             // 
             this.EquationNumTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.EquationNumTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.EquationNumTextBox.Enabled = false;
             this.EquationNumTextBox.Location = new System.Drawing.Point(119, 13);
             this.EquationNumTextBox.Name = "EquationNumTextBox";
+            this.EquationNumTextBox.ReadOnly = true;
             this.EquationNumTextBox.Size = new System.Drawing.Size(102, 13);
             this.EquationNumTextBox.TabIndex = 1;
             this.EquationNumTextBox.Text = "Number of Equations:";
@@ -62,9 +62,9 @@
             // 
             this.VarNumTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.VarNumTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.VarNumTextBox.Enabled = false;
             this.VarNumTextBox.Location = new System.Drawing.Point(119, 42);
             this.VarNumTextBox.Name = "VarNumTextBox";
+            this.VarNumTextBox.ReadOnly = true;
             this.VarNumTextBox.Size = new System.Drawing.Size(102, 13);
             this.VarNumTextBox.TabIndex = 2;
             this.VarNumTextBox.Text = "Number of Variables:";
@@ -74,6 +74,11 @@
             this.NumEquationBox.Location = new System.Drawing.Point(228, 13);
             this.NumEquationBox.Maximum = new decimal(new int[] {
             10,
+            0,
+            0,
+            0});
+            this.NumEquationBox.Minimum = new decimal(new int[] {
+            2,
             0,
             0,
             0});
@@ -91,6 +96,11 @@
             this.NumVarBox.Location = new System.Drawing.Point(227, 40);
             this.NumVarBox.Maximum = new decimal(new int[] {
             10,
+            0,
+            0,
+            0});
+            this.NumVarBox.Minimum = new decimal(new int[] {
+            2,
             0,
             0,
             0});
@@ -114,7 +124,7 @@
             this.Controls.Add(this.EquationNumTextBox);
             this.Controls.Add(this.StartButton);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Linear Equations Solver";
             ((System.ComponentModel.ISupportInitialize)(this.NumEquationBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumVarBox)).EndInit();
             this.ResumeLayout(false);
