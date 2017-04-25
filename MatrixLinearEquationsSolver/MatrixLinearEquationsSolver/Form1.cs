@@ -179,6 +179,18 @@ namespace MatrixLinearEquationsSolver
         {
             float[,] tempMatrice = (float[,])(matrice.Clone());
 
+            for (byte i = 0; i < matrice.GetLength(0); i++)
+            {
+                matrice[i, row] = tempMatrice[i, row] * scalar;
+            }
+        }
+
+        static void addRows(float[,] matrice, byte rowAddedTo, byte rowAdded)
+        {
+            for (byte i = 0; i < matrice.GetLength(0); i++)
+            {
+                matrice[i, rowAddedTo] += matrice[i, rowAdded];
+            }
         }
 
         public void arrangeMatrice()
@@ -200,10 +212,73 @@ namespace MatrixLinearEquationsSolver
                         swapRows(equationMatrice, sorter, (byte)(sorter + 1));
                         byte tempVar = lineVarsCount[sorter];
                         lineVarsCount[sorter] = lineVarsCount[sorter + 1];
-                        lineVarsCount[sorter + 1] = tempVar;                        
+                        lineVarsCount[sorter + 1] = tempVar;
                     }
                 }
             }
+        }
+
+        public void eliminateVar(float[,] matrice, byte varElim, byte startRow)
+        {
+            byte row = startRow;
+
+            for (; row < matrice.GetLength(1) - 1; row++)
+            {
+                for (byte i = 0; i < matrice.GetLength(0) - 1 && i < varElim + 1; i++)
+                {
+                    if (matrice[i, row] != 0 && i != varElim)
+                    {
+                        break;
+                    }
+                    else if (i == varElim)
+                    {
+                        for (byte j = (byte)(row + 1); j < matrice.GetLength(1); j++)
+                        {
+                            if (matrice[i, j] != 0)
+                            {
+                                scaleRow(matrice, row, -matrice[i, j] / matrice[varElim, row]);
+                                addRows(matrice, j, row);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        static bool solvable(float[,] matrice, byte[] lineVarsCount)
+        {
+            byte isSolvable = 0;
+            for (byte i = 0; i < matrice.GetLength(1); i++)
+            {
+                if (lineVarsCount[i] == 0)
+                {
+                    if (matrice[matrice.GetLength(0)-1, i] == 0)
+                    {
+                        isSolvable = 1;
+                    }
+                    else
+                    {
+                        isSolvable = 2;
+                        break;
+                    }
+                }
+            }
+
+            if (isSolvable != 0)
+            {
+                if (isSolvable == 1)
+                {
+                    MessageBox.Show("Sorry, there is no unique solution to this set of equations.");
+                }
+                else if (isSolvable == 2)
+                {
+                    MessageBox.Show("Sorry, there is no solution to this set of equations.");
+                }
+                return false;
+            }
+            return true;
         }
 
         void solveButton_Click(object sender, EventArgs e)
@@ -211,7 +286,7 @@ namespace MatrixLinearEquationsSolver
             byte varNum = (byte)(varBox.GetLength(0));
             byte eqNum = (byte)(varBox.GetLength(1));
             float[] solutionMatrice = new float[varList.Length];
-            for (byte i = 0; i < solutionMatrice.Length-1; i++, solutionMatrice[i] = float.MaxValue) { }
+            for (byte i = 0; i < solutionMatrice.Length - 1; i++, solutionMatrice[i] = float.MaxValue) { }
             equationMatrice = new float[varNum + 1, eqNum];
 
             for (byte i = 0; i < eqNum; i++)
@@ -231,13 +306,35 @@ namespace MatrixLinearEquationsSolver
                 }
             }
 
-            showMatrice(equationMatrice);
-
             arrangeMatrice();
 
             showMatrice(equationMatrice);
 
+            for (byte row = 0; row < eqNum; row++)
+            {
+                for (byte i = 0; i < varNum; i++)
+                {
+                    eliminateVar(equationMatrice, i, row);
+                    showMatrice(equationMatrice);
+                    for (byte j = row; j < eqNum; j++)
+                    {
+                        lineVarsCount[j] = numVarsPerLine(j, equationMatrice);
+                    }
+                }
+            }
 
+            if (!solvable(equationMatrice, lineVarsCount))
+            {
+                return;
+            }
+
+            for (sbyte row = (sbyte)(eqNum - 1); row > -1; row--)
+            {
+                for (byte col = 0; col < varNum; col++)
+                {
+
+                }
+            }
         }
 
         private void StartButton_Click(object sender, EventArgs e)
