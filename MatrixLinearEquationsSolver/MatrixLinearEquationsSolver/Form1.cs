@@ -24,6 +24,7 @@ namespace MatrixLinearEquationsSolver
         char[] varList;
         float[,] equationMatrice;
         byte[] lineVarsCount;
+        bool debug = false;
 
         public void hideStartGUI()
         {
@@ -36,6 +37,30 @@ namespace MatrixLinearEquationsSolver
             NumEquationBox.Visible = false;
             NumVarBox.Visible = false;
             StartButton.Visible = false;
+        }
+
+        public void showStartGUI()
+        {
+            NumEquationBox.Enabled = true;
+            NumVarBox.Enabled = true;
+            StartButton.Enabled = true;
+
+            VarNumTextBox.Visible = true;
+            EquationNumTextBox.Visible = true;
+            NumEquationBox.Visible = true;
+            NumVarBox.Visible = true;
+            StartButton.Visible = true;
+
+            this.Size = new Size(300, 300);
+            EquationPanel.Controls.Clear();
+            EquationPanel.Hide();
+
+            lineVarsCount = null;
+            equationMatrice = null;
+            varList = null;
+            varBox = null;
+            coefficientBox = null;
+            answerBox = null;
         }
 
         public void insertEquationsToPanel(Panel eqPanel, List<char> varList, byte numEq, byte numVars)
@@ -135,20 +160,23 @@ namespace MatrixLinearEquationsSolver
             EquationPanel.Controls.Add(solveButton);
         }
 
-        static void showMatrice(float[,] matrice)
+        public void showMatrice(float[,] matrice, string title)
         {
-            string matriceString = "";
-
-            for (byte i = 0; i < matrice.GetLength(1); i++)
+            if (debug)
             {
-                for (byte j = 0; j < matrice.GetLength(0); j++)
-                {
-                    matriceString += matrice[j, i].ToString() + " ";
-                }
-                matriceString += Environment.NewLine;
-            }
+                string matriceString = title + Environment.NewLine;
 
-            MessageBox.Show(matriceString);
+                for (byte i = 0; i < matrice.GetLength(1); i++)
+                {
+                    for (byte j = 0; j < matrice.GetLength(0); j++)
+                    {
+                        matriceString += matrice[j, i].ToString() + " ";
+                    }
+                    matriceString += Environment.NewLine;
+                }
+
+                MessageBox.Show(matriceString);
+            }
         }
 
         public byte numVarsPerLine(byte lineToCount, float[,] matrice)
@@ -181,7 +209,21 @@ namespace MatrixLinearEquationsSolver
 
             for (byte i = 0; i < matrice.GetLength(0); i++)
             {
-                matrice[i, row] = tempMatrice[i, row] * scalar;
+                matrice[i, row] = tempMatrice[i, row] * scalar;                
+            }
+        }
+
+        static void nullifyErrors(float[,] matrice)
+        {
+            for (byte i = 0; i < matrice.GetLength(0); i++)
+            {
+                for (byte j = 0; j < matrice.GetLength(1); j++)
+                {
+                    if (Math.Abs(matrice[i, j]) < 0.0001)
+                    {
+                        matrice[i, j] = 0;
+                    }
+                }
             }
         }
 
@@ -245,18 +287,24 @@ namespace MatrixLinearEquationsSolver
                 }
             }
 
+            nullifyErrors(matrice);
         }
 
         static bool solvable(float[,] matrice, byte[] lineVarsCount)
         {
             byte isSolvable = 0;
+            byte equationsLost = 0;
             for (byte i = 0; i < matrice.GetLength(1); i++)
             {
                 if (lineVarsCount[i] == 0)
                 {
                     if (matrice[matrice.GetLength(0) - 1, i] == 0)
                     {
-                        isSolvable = 1;
+                        equationsLost++;
+                        if (matrice.GetLength(1) - equationsLost < matrice.GetLength(0) - 1)
+                        {
+                            isSolvable = 1;
+                        }
                     }
                     else
                     {
@@ -308,18 +356,21 @@ namespace MatrixLinearEquationsSolver
 
             arrangeMatrice();
 
-            showMatrice(equationMatrice);
+            showMatrice(equationMatrice, "Matrice Arranged");
 
             //make matrice echelon form
             for (byte row = 0; row < eqNum; row++)
             {
                 for (byte i = 0; i < varNum; i++)
                 {
-                    eliminateVar(equationMatrice, i, row);
-                    showMatrice(equationMatrice);
-                    for (byte j = row; j < eqNum; j++)
+                    if (equationMatrice[i, row] != 0)
                     {
-                        lineVarsCount[j] = numVarsPerLine(j, equationMatrice);
+                        eliminateVar(equationMatrice, i, row);
+                        showMatrice(equationMatrice, (i+1).ToString()+" variables eliminated");
+                        for (byte j = row; j < eqNum; j++)
+                        {
+                            lineVarsCount[j] = numVarsPerLine(j, equationMatrice);
+                        }
                     }
                 }
             }
@@ -346,15 +397,14 @@ namespace MatrixLinearEquationsSolver
                             equationMatrice[col, i] = 0;
                         }
 
-                        showMatrice(equationMatrice);
+                        showMatrice(equationMatrice, (eqNum-row).ToString() + " variables solved");
 
                         break;
                     }
                 }
             }
 
-            string answers = "Solutions:";
-            answers += Environment.NewLine;
+            string answers = "Solutions:"+ Environment.NewLine;
 
             for (byte i = 0; i < varNum; i++)
             {
@@ -362,6 +412,23 @@ namespace MatrixLinearEquationsSolver
                 answers += Environment.NewLine;
             }
             MessageBox.Show(answers);
+        }
+
+        public void addResetButton()
+        {
+            Button resetButton = new Button();
+            resetButton.Size = new Size(200, 30);
+            resetButton.Location = new Point((EquationPanel.Width - resetButton.Width) / 2 - 35, answerBox[0].Location.Y -50);
+            resetButton.Click += resetButton_Click;
+            resetButton.Text = "I want different equations!";
+            resetButton.Font = new Font(resetButton.Text, (float)(9));
+
+            EquationPanel.Controls.Add(resetButton);
+        }
+
+        void resetButton_Click(object sender, EventArgs e)
+        {
+            showStartGUI();
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -380,6 +447,8 @@ namespace MatrixLinearEquationsSolver
                 addEquationPanel(numEquations, numVars);
 
                 addSolveButton();
+
+                addResetButton();
             }
         }
     }
