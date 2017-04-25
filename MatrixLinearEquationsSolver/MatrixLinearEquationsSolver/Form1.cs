@@ -254,7 +254,7 @@ namespace MatrixLinearEquationsSolver
             {
                 if (lineVarsCount[i] == 0)
                 {
-                    if (matrice[matrice.GetLength(0)-1, i] == 0)
+                    if (matrice[matrice.GetLength(0) - 1, i] == 0)
                     {
                         isSolvable = 1;
                     }
@@ -310,6 +310,7 @@ namespace MatrixLinearEquationsSolver
 
             showMatrice(equationMatrice);
 
+            //make matrice echelon form
             for (byte row = 0; row < eqNum; row++)
             {
                 for (byte i = 0; i < varNum; i++)
@@ -323,18 +324,44 @@ namespace MatrixLinearEquationsSolver
                 }
             }
 
+            //check if there's a solution, unqie or at all
             if (!solvable(equationMatrice, lineVarsCount))
             {
                 return;
             }
 
+            //back-substitue and show answers
             for (sbyte row = (sbyte)(eqNum - 1); row > -1; row--)
             {
                 for (byte col = 0; col < varNum; col++)
                 {
+                    if (equationMatrice[col, row] != 0)
+                    {
+                        scaleRow(equationMatrice, (byte)(row), 1 / equationMatrice[col, row]);
 
+                        solutionMatrice[col] = equationMatrice[varNum, row];
+                        for (byte i = 0; i < row; i++)
+                        {
+                            equationMatrice[varNum, i] -= solutionMatrice[col] * equationMatrice[col, i];
+                            equationMatrice[col, i] = 0;
+                        }
+
+                        showMatrice(equationMatrice);
+
+                        break;
+                    }
                 }
             }
+
+            string answers = "Solutions:";
+            answers += Environment.NewLine;
+
+            for (byte i = 0; i < varNum; i++)
+            {
+                answers += varList[i] + " = " + solutionMatrice[i].ToString();
+                answers += Environment.NewLine;
+            }
+            MessageBox.Show(answers);
         }
 
         private void StartButton_Click(object sender, EventArgs e)
