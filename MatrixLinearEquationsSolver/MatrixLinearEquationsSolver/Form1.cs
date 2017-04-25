@@ -24,6 +24,7 @@ namespace MatrixLinearEquationsSolver
         char[] varList;
         float[,] equationMatrice;
         byte[] lineVarsCount;
+        bool debug = false;
 
         public void hideStartGUI()
         {
@@ -135,20 +136,23 @@ namespace MatrixLinearEquationsSolver
             EquationPanel.Controls.Add(solveButton);
         }
 
-        static void showMatrice(float[,] matrice, string title)
+        public void showMatrice(float[,] matrice, string title)
         {
-            string matriceString = title + Environment.NewLine;
-
-            for (byte i = 0; i < matrice.GetLength(1); i++)
+            if (debug)
             {
-                for (byte j = 0; j < matrice.GetLength(0); j++)
-                {
-                    matriceString += matrice[j, i].ToString() + " ";
-                }
-                matriceString += Environment.NewLine;
-            }
+                string matriceString = title + Environment.NewLine;
 
-            MessageBox.Show(matriceString);
+                for (byte i = 0; i < matrice.GetLength(1); i++)
+                {
+                    for (byte j = 0; j < matrice.GetLength(0); j++)
+                    {
+                        matriceString += matrice[j, i].ToString() + " ";
+                    }
+                    matriceString += Environment.NewLine;
+                }
+
+                MessageBox.Show(matriceString);
+            }
         }
 
         public byte numVarsPerLine(byte lineToCount, float[,] matrice)
