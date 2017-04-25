@@ -23,6 +23,7 @@ namespace MatrixLinearEquationsSolver
         Panel EquationPanel;
         char[] varList;
         float[,] equationMatrice;
+        byte[] lineVarsCount;
 
         public void hideStartGUI()
         {
@@ -39,8 +40,8 @@ namespace MatrixLinearEquationsSolver
 
         public void insertEquationsToPanel(Panel eqPanel, List<char> varList, byte numEq, byte numVars)
         {
-            Size varBoxSize = new Size(25, 10);
-            Size coefficientBoxSize = new Size(20, 10);
+            Size coefficientBoxSize = new Size(25, 10);
+            Size varBoxSize = new Size(20, 10);
             Size answerBoxSize = new Size(35, 10);
 
             varBox = new TextBox[numVars, numEq];
@@ -95,7 +96,7 @@ namespace MatrixLinearEquationsSolver
         {
             List<char> varList = new List<char>() { 'x', 'y', 'z' };
 
-            List<char> extraVarList = new List<char> { 'a', 'b', 'c','w', 't', 'n', 'm' };
+            List<char> extraVarList = new List<char> { 'a', 'b', 'c', 'w', 't', 'n', 'm' };
 
             while (varList.Count < numVars)
             {
@@ -126,19 +127,115 @@ namespace MatrixLinearEquationsSolver
         {
             Button solveButton = new Button();
             solveButton.Size = new Size(100, 50);
-            solveButton.Location = new Point((EquationPanel.Width - solveButton.Width) / 2 - 35, answerBox[answerBox.Length - 1].Location.Y+50);
+            solveButton.Location = new Point((EquationPanel.Width - solveButton.Width) / 2 - 35, answerBox[answerBox.Length - 1].Location.Y + 50);
             solveButton.Click += solveButton_Click;
             solveButton.Text = "Solve!";
-            solveButton.Font = new Font(solveButton.Text, (float)(15));          
+            solveButton.Font = new Font(solveButton.Text, (float)(15));
 
             EquationPanel.Controls.Add(solveButton);
         }
 
+        static void showMatrice(float[,] matrice)
+        {
+            string matriceString = "";
+
+            for (byte i = 0; i < matrice.GetLength(1); i++)
+            {
+                for (byte j = 0; j < matrice.GetLength(0); j++)
+                {
+                    matriceString += matrice[j, i].ToString() + " ";
+                }
+                matriceString += Environment.NewLine;
+            }
+
+            MessageBox.Show(matriceString);
+        }
+
+        public byte numVarsPerLine(byte lineToCount, float[,] matrice)
+        {
+            byte numVars = 0;
+            for (byte i = 0; i < matrice.GetLength(0) - 1; i++)
+            {
+                if (matrice[i, lineToCount] != 0)
+                {
+                    numVars++;
+                }
+            }
+            return numVars;
+        }
+
+        static void swapRows(float[,] matrice, byte row1, byte row2)
+        {
+            float[,] tempMatrice = (float[,])(matrice.Clone());
+
+            for (byte i = 0; i < matrice.GetLength(0); i++)
+            {
+                matrice[i, row1] = tempMatrice[i, row2];
+                matrice[i, row2] = tempMatrice[i, row1];
+            }
+        }
+
+        static void scaleRow(float[,] matrice, byte row, float scalar)
+        {
+            float[,] tempMatrice = (float[,])(matrice.Clone());
+
+        }
+
+        public void arrangeMatrice()
+        {
+            lineVarsCount = new byte[equationMatrice.GetLength(1)];
+
+            for (byte i = 0; i < equationMatrice.GetLength(1); i++)
+            {
+                lineVarsCount[i] = numVarsPerLine(i, equationMatrice);
+            }
+
+            //bubble sort
+            for (byte amountSorted = 0; amountSorted < equationMatrice.GetLength(1); amountSorted++)
+            {
+                for (byte sorter = 0; sorter < equationMatrice.GetLength(1) - amountSorted - 1; sorter++)
+                {
+                    if (lineVarsCount[sorter] > lineVarsCount[sorter + 1])
+                    {
+                        swapRows(equationMatrice, sorter, (byte)(sorter + 1));
+                        byte tempVar = lineVarsCount[sorter];
+                        lineVarsCount[sorter] = lineVarsCount[sorter + 1];
+                        lineVarsCount[sorter + 1] = tempVar;                        
+                    }
+                }
+            }
+        }
+
         void solveButton_Click(object sender, EventArgs e)
         {
-            byte varNum = (byte)(varBox.GetLength(0)+1);
-            byte eqNum = (byte)(varBox.GetLength(1)+1);
+            byte varNum = (byte)(varBox.GetLength(0));
+            byte eqNum = (byte)(varBox.GetLength(1));
+            float[] solutionMatrice = new float[varList.Length];
+            for (byte i = 0; i < solutionMatrice.Length-1; i++, solutionMatrice[i] = float.MaxValue) { }
             equationMatrice = new float[varNum + 1, eqNum];
+
+            for (byte i = 0; i < eqNum; i++)
+            {
+                for (byte j = 0; j < varNum; j++)
+                {
+                    if (!float.TryParse(varBox[j, i].Text, out equationMatrice[j, i]))
+                    {
+                        MessageBox.Show("Please enter numbers as coefficients, not text!");
+                        return;
+                    }
+                }
+                if (!float.TryParse(answerBox[i].Text, out equationMatrice[varNum, i]))
+                {
+                    MessageBox.Show("Please enter numbers as answers, not text!");
+                    return;
+                }
+            }
+
+            showMatrice(equationMatrice);
+
+            arrangeMatrice();
+
+            showMatrice(equationMatrice);
 
 
         }
