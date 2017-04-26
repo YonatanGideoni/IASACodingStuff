@@ -203,8 +203,13 @@ namespace MatrixLinearEquationsSolver
             }
         }
 
-        static void scaleRow(float[,] matrice, byte row, float scalar)
+        public void scaleRow(float[,] matrice, byte row, float scalar)
         {
+            if (Single.IsNaN(scalar) && debug)
+            {
+                MessageBox.Show("NaN acquired while scaling rows.");
+                showMatrice(matrice, "Matrice which leads to NaN");
+            }
             float[,] tempMatrice = (float[,])(matrice.Clone());
 
             for (byte i = 0; i < matrice.GetLength(0); i++)
@@ -249,7 +254,7 @@ namespace MatrixLinearEquationsSolver
             {
                 for (byte sorter = 0; sorter < equationMatrice.GetLength(1) - amountSorted - 1; sorter++)
                 {
-                    if (lineVarsCount[sorter] > lineVarsCount[sorter + 1])
+                    if (lineVarsCount[sorter] < lineVarsCount[sorter + 1])
                     {
                         swapRows(equationMatrice, sorter, (byte)(sorter + 1));
                         byte tempVar = lineVarsCount[sorter];
@@ -274,12 +279,15 @@ namespace MatrixLinearEquationsSolver
                     }
                     else if (i == varElim)
                     {
-                        for (byte j = (byte)(row + 1); j < matrice.GetLength(1); j++)
+                        if (matrice[varElim, row] != 0)
                         {
-                            if (matrice[i, j] != 0)
+                            for (byte j = (byte)(row + 1); j < matrice.GetLength(1); j++)
                             {
-                                scaleRow(matrice, row, -matrice[i, j] / matrice[varElim, row]);
-                                addRows(matrice, j, row);
+                                if (matrice[i, j] != 0)
+                                {
+                                    scaleRow(matrice, row, -matrice[i, j] / matrice[varElim, row]);
+                                    addRows(matrice, j, row);
+                                }
                             }
                         }
                         break;
@@ -359,18 +367,22 @@ namespace MatrixLinearEquationsSolver
             showMatrice(equationMatrice, "Matrice Arranged");
 
             //make matrice echelon form
-            for (byte row = 0; row < eqNum; row++)
+            for (byte row = 0; row < eqNum - 1; row++)
             {
                 for (byte i = 0; i < varNum; i++)
                 {
                     if (equationMatrice[i, row] != 0)
-                    {
-                        eliminateVar(equationMatrice, i, row);
-                        showMatrice(equationMatrice, (i+1).ToString()+" variables eliminated");
+                    {                        
                         for (byte j = row; j < eqNum; j++)
                         {
-                            lineVarsCount[j] = numVarsPerLine(j, equationMatrice);
+                            if (equationMatrice[i, j] != 0)
+                            {
+                                eliminateVar(equationMatrice, i, row);
+                                showMatrice(equationMatrice, (row + 1).ToString() + " variables eliminated");
+                                lineVarsCount[j] = numVarsPerLine(j, equationMatrice);
+                            }
                         }
+                        break;
                     }
                 }
             }
