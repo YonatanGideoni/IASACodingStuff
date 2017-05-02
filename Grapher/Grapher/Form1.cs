@@ -39,11 +39,49 @@ namespace Grapher
             }            
         }
 
-        
+        static float calcTree(ParseTree<string> node)
+        {
+            if (node == null)
+            {
+                return 0;
+            }
+            if (node.operation.Length==1)
+            {
+                if (baseOperand(node.operation))
+                {
+                    if (node.operation == "+")
+                    {
+                        return calcTree(node.left) + calcTree(node.right);
+                    }
+                    else if (node.operation == "-")
+                    {
+                        return calcTree(node.left) - calcTree(node.right);
+                    }
+                    else if (node.operation == "*")
+                    {
+                        return calcTree(node.left) * calcTree(node.right);
+                    }
+                    else if (node.operation == "/")
+                    {
+                        return calcTree(node.left) / calcTree(node.right);
+                    }
+                }
+            }
+            return float.Parse(node.operation);
+        }
 
         static bool baseOperand(char charCheck)
         {
             if (charCheck == '+' || charCheck == '-' || charCheck == '*' || charCheck == '/')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        static bool baseOperand(string stringCheck)
+        {
+            if (stringCheck == "+" || stringCheck == "-" || stringCheck == "*" || stringCheck == "/")
             {
                 return true;
             }
@@ -140,7 +178,7 @@ namespace Grapher
                     }                    
                 }
             }
-            MessageBox.Show(printTree(branch));
+            MessageBox.Show(calcTree(branch).ToString());
         }
     }
 }
