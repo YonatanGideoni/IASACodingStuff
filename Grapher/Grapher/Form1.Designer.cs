@@ -38,7 +38,6 @@
             this.FunctionText.Name = "FunctionText";
             this.FunctionText.Size = new System.Drawing.Size(100, 20);
             this.FunctionText.TabIndex = 1;
-            this.FunctionText.TextChanged += new System.EventHandler(this.TextTyped);
             // 
             // ParseButton
             // 
@@ -48,6 +47,7 @@
             this.ParseButton.TabIndex = 2;
             this.ParseButton.Text = "Parse";
             this.ParseButton.UseVisualStyleBackColor = true;
+            this.ParseButton.Click += new System.EventHandler(this.ParseButton_Click);
             // 
             // Form1
             // 

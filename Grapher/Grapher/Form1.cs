@@ -17,12 +17,130 @@ namespace Grapher
             InitializeComponent();
         }
 
-        private void TextTyped(object sender, EventArgs e)
+        static string printTree(ParseTree<string> node)
         {
-            if (FunctionText.ToString().LastIndexOf('(') == FunctionText.ToString().Length)
+            if (node.left != null && node.right != null)
             {
-
+                return node.operation + Environment.NewLine + printTree(node.left) + " " + printTree(node.right);
             }
+            else
+            {
+                if (node.left != null)
+                {
+                    return node.operation + Environment.NewLine + printTree(node.left);
+                }
+
+                if (node.right != null)
+                {
+                    return node.operation + Environment.NewLine + printTree(node.right);
+                }
+
+                return node.operation;
+            }            
+        }
+
+        
+
+        static bool baseOperand(char charCheck)
+        {
+            if (charCheck == '+' || charCheck == '-' || charCheck == '*' || charCheck == '/')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        static float createFloat(long whole, long deci)
+        {
+            byte deciLength = (byte)(deci.ToString().Length);
+            float retFloat = whole;
+            retFloat += (float)(deci * Math.Pow(10, -deciLength));
+            return retFloat;
+        }
+
+        static void insertFloatBranch(ParseTree<string> insBranch, float insFloat)
+        {
+            if (insBranch.left == null)
+            {
+                insBranch.left = new ParseTree<string>(insFloat.ToString());
+            }
+            else
+            {
+                insBranch.right = new ParseTree<string>(insFloat.ToString());
+            }
+        }
+
+        private void ParseButton_Click(object sender, EventArgs e)
+        {
+            char[] function = FunctionText.Text.ToCharArray();
+
+            ParseTree<string> root = new ParseTree<string>("");
+            ParseTree<string> branch = root;
+
+            byte numIndex;
+            long intNum = 0;
+            long deciNum = 0;
+            bool isNum = false;
+            bool isFloat = false;
+
+            for (short i = 0; i < function.Length; i++)
+            {
+                if (byte.TryParse(function[i].ToString(), out numIndex))
+                {
+                    isNum = true;
+
+                    while (isNum && i < function.Length)
+                    {
+                        if (byte.TryParse(function[i].ToString(), out numIndex))
+                        {
+                            if (!isFloat)
+                            {
+                                intNum = intNum * 10 + numIndex;
+                            }
+                            else
+                            {
+                                deciNum = deciNum * 10 + numIndex;
+                            }
+                            i++;
+                        }
+                        else if (function[i] == '.' && !isFloat)
+                        {
+                            isFloat = true;
+                            i++;
+                        }
+                        else
+                        {
+                            insertFloatBranch(branch, createFloat(intNum, deciNum));
+                            isNum = false;
+                            isFloat = false;
+                            intNum = 0;
+                            deciNum = 0;
+                        }
+                    }
+                    i--;
+
+                    if (isNum)
+                    {
+                        insertFloatBranch(branch, createFloat(intNum, deciNum));
+                        isNum = false;
+                        isFloat = false;
+                        intNum = 0;
+                        deciNum = 0;
+                    }
+                }
+                else if (baseOperand(function[i]))
+                {
+                    if (branch.operation == null || branch.operation == "")
+                    {
+                        branch.operation = function[i].ToString();
+                    }
+                    else
+                    {
+                        branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                    }                    
+                }
+            }
+            MessageBox.Show(printTree(branch));
         }
     }
 }

@@ -8,35 +8,33 @@ namespace Grapher
 {
     public class ParseTree<T>
     {
-        private ParseTree<T> left;
-        private T operation;
-        private ParseTree<T> right;
-
+        /// <summary>
+        /// Creates a new tree branch with an operand and null left and right nodes.
+        /// </summary>
         public ParseTree(T operand)
-        {
+        {            
             this.left = null;
             this.right = null;
             this.operation = operand;
         }
 
-        public T getOperand()
+        /// <summary>
+        /// Creates a new tree branch with an operand, left, and right nodes.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="operand"></param>
+        /// <param name="right"></param>
+        public ParseTree(ParseTree<T> left, T operand, ParseTree<T> right)
         {
-            return this.operation;
-        }
-
-        public void setOperand(T operand)
-        {
+            this.left = left;
+            this.right = right;
             this.operation = operand;
         }
 
-        public void setRight(ParseTree<T> newRight)
-        {
-            this.right = newRight;
-        }
+        public T operation { get; set; }
 
-        public void setLeft(ParseTree<T> newLeft)
-        {
-            this.left = newLeft;
-        }
+        public ParseTree<T> right { get; set; }
+
+        public ParseTree<T> left{ get; set; }        
     }
 }
