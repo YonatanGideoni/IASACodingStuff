@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parser_Grapher
+namespace Grapher
 {
     public class ParseTree<T>
     {
@@ -38,6 +38,5 @@ namespace Parser_Grapher
         {
             this.left = newLeft;
         }
-    }
     }
 }

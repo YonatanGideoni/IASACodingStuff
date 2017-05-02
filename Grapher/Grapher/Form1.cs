@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Parser_Grapher
+namespace Grapher
 {
     public partial class Form1 : Form
     {
@@ -17,15 +17,12 @@ namespace Parser_Grapher
             InitializeComponent();
         }
 
-        private void FunctionText_TextChanged(object sender, EventArgs e)
+        private void TextTyped(object sender, EventArgs e)
         {
+            if (FunctionText.ToString().LastIndexOf('(') == FunctionText.ToString().Length)
+            {
 
+            }
         }
-
-        private void ParseButton_Click(object sender, EventArgs e)
-        {
-
-        }
-        
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Parser_Grapher
+﻿namespace Grapher
 {
     partial class Form1
     {
@@ -34,21 +34,20 @@
             // 
             // FunctionText
             // 
-            this.FunctionText.Location = new System.Drawing.Point(76, 57);
+            this.FunctionText.Location = new System.Drawing.Point(74, 98);
             this.FunctionText.Name = "FunctionText";
             this.FunctionText.Size = new System.Drawing.Size(100, 20);
-            this.FunctionText.TabIndex = 0;
-            this.FunctionText.TextChanged += new System.EventHandler(this.FunctionText_TextChanged);
+            this.FunctionText.TabIndex = 1;
+            this.FunctionText.TextChanged += new System.EventHandler(this.TextTyped);
             // 
             // ParseButton
             // 
-            this.ParseButton.Location = new System.Drawing.Point(76, 13);
+            this.ParseButton.Location = new System.Drawing.Point(88, 35);
             this.ParseButton.Name = "ParseButton";
             this.ParseButton.Size = new System.Drawing.Size(75, 23);
-            this.ParseButton.TabIndex = 1;
+            this.ParseButton.TabIndex = 2;
             this.ParseButton.Text = "Parse";
             this.ParseButton.UseVisualStyleBackColor = true;
-            this.ParseButton.Click += new System.EventHandler(this.ParseButton_Click);
             // 
             // Form1
             // 
