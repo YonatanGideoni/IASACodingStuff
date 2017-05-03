@@ -98,7 +98,10 @@ namespace Grapher
 
         static void insertFloatBranch(ParseTree<string> insBranch, float insFloat)
         {
-            if (insBranch.left == null)
+            if (insBranch.operation == null || insBranch.operation == "")
+            {
+                insBranch.operation = insFloat.ToString();
+            }else if (insBranch.left == null)
             {
                 insBranch.left = new ParseTree<string>(insFloat.ToString());
             }
@@ -148,11 +151,34 @@ namespace Grapher
                         }
                         else
                         {
-                            insertFloatBranch(branch, createFloat(intNum, deciNum));
-                            isNum = false;
-                            isFloat = false;
-                            intNum = 0;
-                            deciNum = 0;
+                            if (i < function.Length && function[i] == 'x')
+                            {
+                                if (i < function.Length -2 && function[i + 1] == '^')
+                                {
+
+                                }
+                                else
+                                {
+                                   insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                   branch=new ParseTree<string>(new ParseTree<string>("x"),"*",branch);
+                                   i++;
+                                   isNum = false;
+                                   isFloat = false;
+                                   intNum = 0;
+                                   deciNum = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (isNum)
+                                {
+                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                    isNum = false;
+                                    isFloat = false;
+                                    intNum = 0;
+                                    deciNum = 0;
+                                }                               
+                            }                            
                         }
                     }
                     i--;
