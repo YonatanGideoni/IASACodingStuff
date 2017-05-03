@@ -139,7 +139,7 @@ namespace Grapher
                 }
                 else
                 {
-                    return float.Parse((new string(numArr).Substring(0,i)));
+                    return float.Parse((new string(numArr).Substring(0, i)));
                 }
             }
             return float.Parse(new string(numArr));
@@ -206,22 +206,18 @@ namespace Grapher
                                 if (i < function.Length - 2 && function[i + 1] == '^')
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    branch = new ParseTree<string>(branch,"*",(new ParseTree<string>("x^" + getPow(new string(function), (short)(i + 2)).ToString())));                          
+                                    branch = new ParseTree<string>(branch.left, branch.operation, 
+                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>("x^" + getPow(new string(function), (short)(i + 2)).ToString()))));
                                     i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 2);
                                     isNum = false;
-                                    isFloat = false;
-                                    intNum = 0;
-                                    deciNum = 0;
                                 }
                                 else
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    branch = new ParseTree<string>(new ParseTree<string>("x"), "*", branch);
+                                    branch = new ParseTree<string>(branch.left, branch.operation, 
+                                                new ParseTree<string>(branch.right, "*", new ParseTree<string>("x")));
                                     i++;
                                     isNum = false;
-                                    isFloat = false;
-                                    intNum = 0;
-                                    deciNum = 0;
                                 }
                             }
                             else
@@ -230,9 +226,6 @@ namespace Grapher
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
                                     isNum = false;
-                                    isFloat = false;
-                                    intNum = 0;
-                                    deciNum = 0;
                                 }
                             }
                         }
@@ -243,10 +236,10 @@ namespace Grapher
                     {
                         insertFloatBranch(branch, createFloat(intNum, deciNum));
                         isNum = false;
-                        isFloat = false;
-                        intNum = 0;
-                        deciNum = 0;
                     }
+                    isFloat = false;
+                    intNum = 0;
+                    deciNum = 0;
                 }
                 else if (baseOperand(function[i]))
                 {
@@ -259,19 +252,19 @@ namespace Grapher
                         }
                     }
                     else
-                    {
+                    {                        
+                        branch = new ParseTree<string>(branch, function[i].ToString(), null);
                         if (function[i] == '-' && branch.left == null)
                         {
                             branch.left = new ParseTree<string>("0");
                         }
-                        branch = new ParseTree<string>(branch, function[i].ToString(), null);
                     }
                 }
                 else if (function[i] == 'x')
                 {
                     if (i < function.Length - 2 && function[i + 1] == '^')
                     {
-                        insertXBranch(branch,"x^" + getPow(new string(function), (short)(i+2)).ToString());
+                        insertXBranch(branch, "x^" + getPow(new string(function), (short)(i + 2)).ToString());
                         i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
                     }
                     else
