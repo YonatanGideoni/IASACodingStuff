@@ -36,7 +36,7 @@ namespace Grapher
                 }
 
                 return node.operation;
-            }            
+            }
         }
 
         static float calcTree(ParseTree<string> node)
@@ -45,27 +45,32 @@ namespace Grapher
             {
                 return 0;
             }
-            if (node.operation.Length==1)
+            if (node.operation.Length == 1 && baseOperand(node.operation))
             {
-                if (baseOperand(node.operation))
+                if (node.operation == "+")
                 {
-                    if (node.operation == "+")
-                    {
-                        return calcTree(node.left) + calcTree(node.right);
-                    }
-                    else if (node.operation == "-")
-                    {
-                        return calcTree(node.left) - calcTree(node.right);
-                    }
-                    else if (node.operation == "*")
-                    {
-                        return calcTree(node.left) * calcTree(node.right);
-                    }
-                    else if (node.operation == "/")
-                    {
-                        return calcTree(node.left) / calcTree(node.right);
-                    }
+                    return calcTree(node.left) + calcTree(node.right);
                 }
+                else if (node.operation == "-")
+                {
+                    return calcTree(node.left) - calcTree(node.right);
+                }
+                else if (node.operation == "*")
+                {
+                    return calcTree(node.left) * calcTree(node.right);
+                }
+                else if (node.operation == "/")
+                {
+                    return calcTree(node.left) / calcTree(node.right);
+                }
+            }
+            else if (node.operation == "x")
+            {
+                return 10;
+            }
+            else if (node.operation.ToCharArray()[0] == 'x' && node.operation.ToCharArray()[1] == '^')
+            {
+                return (float)(Math.Pow(10, getPow(node.operation, 2)));
             }
             return float.Parse(node.operation);
         }
@@ -96,12 +101,57 @@ namespace Grapher
             return retFloat;
         }
 
+        static void insertXBranch(ParseTree<string> insBranch, string insX)
+        {
+            if (insBranch.operation == null || insBranch.operation == "")
+            {
+                insBranch.operation = insX;
+            }
+            else if (insBranch.left == null)
+            {
+                insBranch.left = new ParseTree<string>(insX);
+            }
+            else
+            {
+                insBranch.right = new ParseTree<string>(insX);
+            }
+        }
+
+        static float getPow(string num, short startPow)
+        {
+            char[] numArr = num.Substring(startPow).ToCharArray();
+            byte rubbish;
+
+            byte i;
+            if (numArr[0] == '-')
+            {
+                i = 1;
+            }
+            else
+            {
+                i = 0;
+            }
+            for (; i < numArr.Length; i++)
+            {
+                if (byte.TryParse(numArr[i].ToString(), out rubbish) || numArr[i] == '.')
+                {
+                    continue;
+                }
+                else
+                {
+                    return float.Parse((new string(numArr).Substring(0,i)));
+                }
+            }
+            return float.Parse(new string(numArr));
+        }
+
         static void insertFloatBranch(ParseTree<string> insBranch, float insFloat)
         {
             if (insBranch.operation == null || insBranch.operation == "")
             {
                 insBranch.operation = insFloat.ToString();
-            }else if (insBranch.left == null)
+            }
+            else if (insBranch.left == null)
             {
                 insBranch.left = new ParseTree<string>(insFloat.ToString());
             }
@@ -153,19 +203,25 @@ namespace Grapher
                         {
                             if (i < function.Length && function[i] == 'x')
                             {
-                                if (i < function.Length -2 && function[i + 1] == '^')
+                                if (i < function.Length - 2 && function[i + 1] == '^')
                                 {
-
+                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                    branch = new ParseTree<string>(branch,"*",(new ParseTree<string>("x^" + getPow(new string(function), (short)(i + 2)).ToString())));                          
+                                    i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 2);
+                                    isNum = false;
+                                    isFloat = false;
+                                    intNum = 0;
+                                    deciNum = 0;
                                 }
                                 else
                                 {
-                                   insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                   branch=new ParseTree<string>(new ParseTree<string>("x"),"*",branch);
-                                   i++;
-                                   isNum = false;
-                                   isFloat = false;
-                                   intNum = 0;
-                                   deciNum = 0;
+                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                    branch = new ParseTree<string>(new ParseTree<string>("x"), "*", branch);
+                                    i++;
+                                    isNum = false;
+                                    isFloat = false;
+                                    intNum = 0;
+                                    deciNum = 0;
                                 }
                             }
                             else
@@ -177,8 +233,8 @@ namespace Grapher
                                     isFloat = false;
                                     intNum = 0;
                                     deciNum = 0;
-                                }                               
-                            }                            
+                                }
+                            }
                         }
                     }
                     i--;
@@ -197,11 +253,31 @@ namespace Grapher
                     if (branch.operation == null || branch.operation == "")
                     {
                         branch.operation = function[i].ToString();
+                        if (function[i] == '-' && branch.left == null)
+                        {
+                            branch.left = new ParseTree<string>("0");
+                        }
                     }
                     else
                     {
+                        if (function[i] == '-' && branch.left == null)
+                        {
+                            branch.left = new ParseTree<string>("0");
+                        }
                         branch = new ParseTree<string>(branch, function[i].ToString(), null);
-                    }                    
+                    }
+                }
+                else if (function[i] == 'x')
+                {
+                    if (i < function.Length - 2 && function[i + 1] == '^')
+                    {
+                        insertXBranch(branch,"x^" + getPow(new string(function), (short)(i+2)).ToString());
+                        i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
+                    }
+                    else
+                    {
+                        insertXBranch(branch, "x");
+                    }
                 }
             }
             MessageBox.Show(calcTree(branch).ToString());
