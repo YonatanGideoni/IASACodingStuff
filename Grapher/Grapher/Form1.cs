@@ -64,11 +64,11 @@ namespace Grapher
                     return calcTree(node.left) / calcTree(node.right);
                 }
             }
-            else if (node.operation == "x")
+            else if (node.operation == "x" || node.operation == "y")
             {
                 return 10;
             }
-            else if (node.operation.ToCharArray()[0] == 'x' && node.operation.ToCharArray()[1] == '^')
+            else if ((node.operation.ToCharArray()[0] == 'x' || node.operation.ToCharArray()[0]=='y') && node.operation.ToCharArray()[1] == '^')
             {
                 return (float)(Math.Pow(10, getPow(node.operation, 2)));
             }
@@ -101,19 +101,19 @@ namespace Grapher
             return retFloat;
         }
 
-        static void insertXBranch(ParseTree<string> insBranch, string insX)
+        static void insertVarBranch(ParseTree<string> insBranch, string insVar)
         {
             if (insBranch.operation == null || insBranch.operation == "")
             {
-                insBranch.operation = insX;
+                insBranch.operation = insVar;
             }
             else if (insBranch.left == null)
             {
-                insBranch.left = new ParseTree<string>(insX);
+                insBranch.left = new ParseTree<string>(insVar);
             }
             else
             {
-                insBranch.right = new ParseTree<string>(insX);
+                insBranch.right = new ParseTree<string>(insVar);
             }
         }
 
@@ -201,13 +201,13 @@ namespace Grapher
                         }
                         else
                         {
-                            if (i < function.Length && function[i] == 'x')
+                            if (i < function.Length && (function[i] == 'x' || function[i]=='y'))
                             {
                                 if (i < function.Length - 2 && function[i + 1] == '^')
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
                                     branch = new ParseTree<string>(branch.left, branch.operation, 
-                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>("x^" + getPow(new string(function), (short)(i + 2)).ToString()))));
+                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() +"^" + getPow(new string(function), (short)(i + 2)).ToString()))));
                                     i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 2);
                                     isNum = false;
                                 }
@@ -215,7 +215,7 @@ namespace Grapher
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
                                     branch = new ParseTree<string>(branch.left, branch.operation, 
-                                                new ParseTree<string>(branch.right, "*", new ParseTree<string>("x")));
+                                                new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString())));
                                     i++;
                                     isNum = false;
                                 }
@@ -260,16 +260,16 @@ namespace Grapher
                         }
                     }
                 }
-                else if (function[i] == 'x')
+                else if (function[i] == 'x' || function[i]=='y')
                 {
                     if (i < function.Length - 2 && function[i + 1] == '^')
                     {
-                        insertXBranch(branch, "x^" + getPow(new string(function), (short)(i + 2)).ToString());
+                        insertVarBranch(branch, function[i].ToString()+"^" + getPow(new string(function), (short)(i + 2)).ToString());
                         i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
                     }
                     else
                     {
-                        insertXBranch(branch, "x");
+                        insertVarBranch(branch, function[i].ToString());
                     }
                 }
             }
