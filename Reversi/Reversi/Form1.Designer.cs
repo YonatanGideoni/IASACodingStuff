@@ -36,6 +36,7 @@
             this.SkipButton = new System.Windows.Forms.Button();
             this.TurnTextBox = new System.Windows.Forms.TextBox();
             this.CompTurn = new System.Windows.Forms.Button();
+            this.StalemateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,6 +65,11 @@
             // 
             // GridSizeBox
             // 
+            this.GridSizeBox.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.GridSizeBox.Location = new System.Drawing.Point(176, 13);
             this.GridSizeBox.Maximum = new decimal(new int[] {
             16,
@@ -131,11 +137,22 @@
             this.CompTurn.UseVisualStyleBackColor = true;
             this.CompTurn.Click += new System.EventHandler(this.CompTurn_Click);
             // 
+            // StalemateButton
+            // 
+            this.StalemateButton.Location = new System.Drawing.Point(233, 45);
+            this.StalemateButton.Name = "StalemateButton";
+            this.StalemateButton.Size = new System.Drawing.Size(75, 23);
+            this.StalemateButton.TabIndex = 9;
+            this.StalemateButton.Text = "Stalemate?";
+            this.StalemateButton.UseVisualStyleBackColor = true;
+            this.StalemateButton.Click += new System.EventHandler(this.StalemateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(512, 262);
+            this.Controls.Add(this.StalemateButton);
             this.Controls.Add(this.CompTurn);
             this.Controls.Add(this.TurnTextBox);
             this.Controls.Add(this.SkipButton);
@@ -162,6 +179,7 @@
         private System.Windows.Forms.Button SkipButton;
         private System.Windows.Forms.TextBox TurnTextBox;
         private System.Windows.Forms.Button CompTurn;
+        private System.Windows.Forms.Button StalemateButton;
     }
 }
 

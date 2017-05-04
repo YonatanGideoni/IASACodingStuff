@@ -142,7 +142,7 @@ namespace Reversi
             bool[] CanPlace = new bool[3];
             short[] row = new short[3];
             short[] col = new short[3];
-            short BrdArea = (short)((BrdLength-2) * (BrdHeight-2));
+            short BrdArea = (short)((BrdLength - 2) * (BrdHeight - 2));
             short BrdScore;
 
             for (row[0] = 1; row[0] < BrdLength - 1; row[0]++)
@@ -1907,7 +1907,7 @@ namespace Reversi
             {
                 if (BlackTile > BlueTile)
                 {
-                    MessageBox.Show("Black Wins!");                   
+                    MessageBox.Show("Black Wins!");
                 }
                 else if (BlackTile == BlueTile)
                 {
@@ -1916,7 +1916,7 @@ namespace Reversi
                 else
                 {
                     MessageBox.Show("Blue Wins!");
-                }                
+                }
             }
         }
 
@@ -1973,6 +1973,377 @@ namespace Reversi
 
             StartButton.Enabled = false;
             GridSizeBox.Enabled = false;
+        }
+
+        private void StalemateButton_Click(object sender, EventArgs e)
+        {
+            short brdHeight = (short)(Board.GetLength(0) - 2);
+            short brdLength = (short)(Board.GetLength(1) - 2);
+            bool canMove = false;
+
+            for (short row = 1; row < brdHeight - 1; row++)
+            {
+                for (short col = 1; col < brdLength - 1; col++)
+                {
+                    if (intBrd[row, col] != 0)
+                    {
+                        continue;
+                    }
+
+                    if (2 != intBrd[row + 1, col])
+                     {
+                        for (short j = 1; j < brdLength - row - 1; j++)
+                        {
+                            if (2 != intBrd[row + j, col] && intBrd[row + j, col] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row, col + 1])
+                    {
+                        for (short j = 1; j < brdHeight - col - 1; j++)
+                        {
+                            if (2 != intBrd[row, col + j] && intBrd[row, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row, col - 1])
+                    {
+                        for (short j = 1; j < col; j++)
+                        {
+                            if (2 != intBrd[row, col - j] && intBrd[row, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row - 1, col])
+                    {
+                        for (short j = 1; j < row; j++)
+                        {
+                            if (2 != intBrd[row - j, col] && intBrd[row - j, col] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row - 1, col - 1])
+                    {
+                        for (short j = 1; j < row && j < col; j++)
+                        {
+                            if (2 != intBrd[row - j, col - j] && intBrd[row - j, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row + 1, col - 1])
+                    {
+                        for (short j = 1; j < brdLength - 1 - row && j < col; j++)
+                        {
+                            if (2 != intBrd[row + j, col - j] && intBrd[row + j, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row + 1, col + 1])
+                    {
+                        for (short j = 1; j < brdLength - 1 - row && j < brdHeight - 1 - col; j++)
+                        {
+                            if (2 != intBrd[row + j, col + j] && intBrd[row + j, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (2 != intBrd[row - 1, col + 1])
+                    {
+                        for (short j = 1; j < row && j < brdHeight - 1 - col; j++)
+                        {
+                            if (2 != intBrd[row - j, col + j] && intBrd[row - j, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (canMove)
+                {
+                    MessageBox.Show("This isn't a stalemate.");
+                    return;
+                }
+            }
+
+            for (short row = 1; row < brdHeight - 1; row++)
+            {
+                for (short col = 1; col < brdLength - 1; col++)
+                {
+                    if (intBrd[row, col] != 0)
+                    {
+                        continue;
+                    }
+
+                    if (1 != intBrd[row + 1, col])
+                    {
+                        for (short j = 1; j < brdLength - row - 1; j++)
+                        {
+                            if (1 != intBrd[row + j, col] && intBrd[row + j, col] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row, col + 1])
+                    {
+                        for (short j = 1; j < brdHeight - col - 1; j++)
+                        {
+                            if (1 != intBrd[row, col + j] && intBrd[row, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row, col - 1])
+                    {
+                        for (short j = 1; j < col; j++)
+                        {
+                            if (1 != intBrd[row, col - j] && intBrd[row, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row - 1, col])
+                    {
+                        for (short j = 1; j < row; j++)
+                        {
+                            if (1 != intBrd[row - j, col] && intBrd[row - j, col] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row - 1, col - 1])
+                    {
+                        for (short j = 1; j < row && j < col; j++)
+                        {
+                            if (1 != intBrd[row - j, col - j] && intBrd[row - j, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row + 1, col - 1])
+                    {
+                        for (short j = 1; j < brdLength - 1 - row && j < col; j++)
+                        {
+                            if (1 != intBrd[row + j, col - j] && intBrd[row + j, col - j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col - j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row + 1, col + 1])
+                    {
+                        for (short j = 1; j < brdLength - 1 - row && j < brdHeight - 1 - col; j++)
+                        {
+                            if (1 != intBrd[row + j, col + j] && intBrd[row + j, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row + j, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (1 != intBrd[row - 1, col + 1])
+                    {
+                        for (short j = 1; j < row && j < brdHeight - 1 - col; j++)
+                        {
+                            if (1 != intBrd[row - j, col + j] && intBrd[row - j, col + j] != 0)
+                            {
+                                continue;
+                            }
+                            else if (intBrd[row - j, col + j] == 0)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                canMove = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (canMove)
+                {
+                    MessageBox.Show("This isn't a stalemate.");
+                    return;
+                }
+            }
+            if (BlackTile > BlueTile)
+            {
+                MessageBox.Show("This is a stalemate, Black Won!");
+            }
+            else if (BlueTile > BlackTile)
+            {
+                MessageBox.Show("This is a stalemate, Blue Won!");
+            }
+            else if (BlackTile == BlueTile)
+            {
+                MessageBox.Show("This is a stalemateand it's a tie!");
+            }
         }
     }
 }
