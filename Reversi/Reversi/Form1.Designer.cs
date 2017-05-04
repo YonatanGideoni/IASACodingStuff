@@ -64,11 +64,6 @@
             // 
             // GridSizeBox
             // 
-            this.GridSizeBox.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
             this.GridSizeBox.Location = new System.Drawing.Point(176, 13);
             this.GridSizeBox.Maximum = new decimal(new int[] {
             16,

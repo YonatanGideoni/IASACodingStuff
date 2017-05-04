@@ -43,3 +43,12 @@ C:\Users\chais\Desktop\IASACodingStuff-master\Reversi\Reversi\obj\Debug\Reversi.
 C:\Users\chais\Desktop\IASACodingStuff-master\Reversi\Reversi\obj\Debug\Reversi.Form1.resources
 C:\Users\chais\Desktop\IASACodingStuff-master\Reversi\Reversi\obj\Debug\Reversi.Properties.Resources.resources
 C:\Users\chais\Desktop\IASACodingStuff-master\Reversi\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache
+C:\Users\chais\Desktop\Reversi\Reversi\bin\Debug\Reversi.exe.config
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.exe
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.pdb
+C:\Users\chais\Desktop\Reversi\Reversi\bin\Debug\Reversi.exe
+C:\Users\chais\Desktop\Reversi\Reversi\bin\Debug\Reversi.pdb
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.csprojResolveAssemblyReference.cache
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.Form1.resources
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.Properties.Resources.resources
+C:\Users\chais\Desktop\Reversi\Reversi\obj\Debug\Reversi.csproj.GenerateResource.Cache

@@ -136,13 +136,13 @@ namespace Reversi
         {
             short BrdLength = (short)(CurrentBrd.GetLength(0));
             short BrdHeight = (short)(CurrentBrd.GetLength(1));
-            short[] BranchScore = new short[3] { -1000, 1000, -1000 };
+            short[] BranchScore = new short[3] { short.MinValue, short.MaxValue, short.MinValue };
             short[][,] tempBrd = new short[3][,];
             short[] ButtonLoc = new short[3];
             bool[] CanPlace = new bool[3];
             short[] row = new short[3];
             short[] col = new short[3];
-            short BrdArea = (short)(BrdLength * BrdHeight);
+            short BrdArea = (short)((BrdLength-2) * (BrdHeight-2));
             short BrdScore;
 
             for (row[0] = 1; row[0] < BrdLength - 1; row[0]++)
@@ -159,7 +159,7 @@ namespace Reversi
 
                     if (2 != tempBrd[0][row[0] + 1, col[0]])//checks if the adjacent tile in this direction is the same color
                     {
-                        for (short j = 1; j < BrdLength - row[0] - 2; j++)
+                        for (short j = 1; j < BrdLength - row[0] - 1; j++)
                         {
                             if (2 != tempBrd[0][row[0] + j, col[0]] && tempBrd[0][row[0] + j, col[0]] != 0)//checks that the next tile is an enemy tile
                             {
@@ -179,7 +179,7 @@ namespace Reversi
 
                     if (2 != tempBrd[0][row[0], col[0] + 1])
                     {
-                        for (short j = 1; j < BrdHeight - col[0] - 2; j++)
+                        for (short j = 1; j < BrdHeight - col[0] - 1; j++)
                         {
                             if (2 != tempBrd[0][row[0], col[0] + j] && tempBrd[0][row[0], col[0] + j] != 0)
                             {
@@ -323,7 +323,7 @@ namespace Reversi
 
                         if (2 != tempBrd[0][row[0] + 1, col[0]])
                         {
-                            for (short j = 1; j < BrdLength - row[0] - 2; j++)
+                            for (short j = 1; j < BrdLength - row[0] - 1; j++)
                             {
                                 if (2 != tempBrd[0][row[0] + j, col[0]] && tempBrd[0][row[0] + j, col[0]] != 0)
                                 {
@@ -346,7 +346,7 @@ namespace Reversi
 
                         if (2 != tempBrd[0][row[0], col[0] + 1])
                         {
-                            for (short j = 1; j < BrdLength - col[0] - 2; j++)
+                            for (short j = 1; j < BrdLength - col[0] - 1; j++)
                             {
                                 if (2 != tempBrd[0][row[0], col[0] + j] && tempBrd[0][row[0], col[0] + j] != 0)
                                 {
@@ -513,7 +513,7 @@ namespace Reversi
                         }
                         else
                         {
-                            BranchScore[1] = 1000;
+                            BranchScore[1] = short.MaxValue;
 
                             for (row[1] = 1; row[1] < BrdLength - 1; row[1]++)
                             {
@@ -529,7 +529,7 @@ namespace Reversi
 
                                     if (1 != tempBrd[1][row[1] + 1, col[1]])
                                     {
-                                        for (short j = 1; j < BrdLength - row[1] - 2; j++)
+                                        for (short j = 1; j < BrdLength - row[1] - 1; j++)
                                         {
                                             if (1 != tempBrd[1][row[1] + j, col[1]] && tempBrd[1][row[1] + j, col[1]] != 0)
                                             {
@@ -549,7 +549,7 @@ namespace Reversi
 
                                     if (1 != tempBrd[1][row[1], col[1] + 1])
                                     {
-                                        for (short j = 1; j < BrdHeight - col[1] - 2; j++)
+                                        for (short j = 1; j < BrdHeight - col[1] - 1; j++)
                                         {
                                             if (1 != tempBrd[1][row[1], col[1] + j] && tempBrd[1][row[1], col[1] + j] != 0)
                                             {
@@ -693,7 +693,7 @@ namespace Reversi
 
                                         if (1 != tempBrd[1][row[1] + 1, col[1]])
                                         {
-                                            for (short j = 1; j < BrdLength - row[1] - 2; j++)
+                                            for (short j = 1; j < BrdLength - row[1] - 1; j++)
                                             {
                                                 if (1 != tempBrd[1][row[1] + j, col[1]] && tempBrd[1][row[1] + j, col[1]] != 0)
                                                 {
@@ -716,7 +716,7 @@ namespace Reversi
 
                                         if (1 != tempBrd[1][row[1], col[1] + 1])
                                         {
-                                            for (short j = 1; j < BrdLength - col[1] - 2; j++)
+                                            for (short j = 1; j < BrdLength - col[1] - 1; j++)
                                             {
                                                 if (1 != tempBrd[1][row[1], col[1] + j] && tempBrd[1][row[1], col[1] + j] != 0)
                                                 {
@@ -885,7 +885,7 @@ namespace Reversi
                                         }
                                         else
                                         {
-                                            BranchScore[2] = -1000;
+                                            BranchScore[2] = short.MinValue;
                                             for (row[2] = 1; row[2] < BrdLength - 1; row[2]++)
                                             {
                                                 for (col[2] = 1; col[2] < BrdLength - 1; col[2]++)
@@ -900,7 +900,7 @@ namespace Reversi
 
                                                     if (2 != tempBrd[2][row[2] + 1, col[2]])//same kind of move check
                                                     {
-                                                        for (short j = 1; j < BrdLength - row[2] - 2; j++)
+                                                        for (short j = 1; j < BrdLength - row[2] - 1; j++)
                                                         {
                                                             if (2 != tempBrd[2][row[2] + j, col[2]] && tempBrd[2][row[2] + j, col[2]] != 0)
                                                             {
@@ -920,7 +920,7 @@ namespace Reversi
 
                                                     if (2 != tempBrd[2][row[2], col[2] + 1])
                                                     {
-                                                        for (short j = 1; j < BrdHeight - col[2] - 2; j++)
+                                                        for (short j = 1; j < BrdHeight - col[2] - 1; j++)
                                                         {
                                                             if (2 != tempBrd[2][row[2], col[2] + j] && tempBrd[2][row[2], col[2] + j] != 0)
                                                             {
@@ -1064,7 +1064,7 @@ namespace Reversi
 
                                                         if (2 != tempBrd[2][row[2] + 1, col[2]])
                                                         {
-                                                            for (short j = 1; j < BrdLength - row[2] - 2; j++)
+                                                            for (short j = 1; j < BrdLength - row[2] - 1; j++)
                                                             {
                                                                 if (2 != tempBrd[2][row[2] + j, col[2]] && tempBrd[2][row[2] + j, col[2]] != 0)
                                                                 {
@@ -1087,7 +1087,7 @@ namespace Reversi
 
                                                         if (2 != tempBrd[2][row[2], col[2] + 1])
                                                         {
-                                                            for (short j = 1; j < BrdLength - col[2] - 2; j++)
+                                                            for (short j = 1; j < BrdLength - col[2] - 1; j++)
                                                             {
                                                                 if (2 != tempBrd[2][row[2], col[2] + j] && tempBrd[2][row[2], col[2] + j] != 0)
                                                                 {
@@ -1286,7 +1286,7 @@ namespace Reversi
 
             if (turnType != intBrd[row + 1, col])
             {
-                for (short i = 1; i < BrdLength - row - 2; i++)
+                for (short i = 1; i < BrdLength - row - 1; i++)
                 {
                     if (turnType != intBrd[row + i, col] && intBrd[row + i, col] != 0)//check if a touching tile is an enemy tile
                     {
@@ -1325,7 +1325,7 @@ namespace Reversi
 
             if (turnType != intBrd[row, col + 1])
             {
-                for (short i = 1; i < BrdHeight - col - 2; i++)
+                for (short i = 1; i < BrdHeight - col - 1; i++)
                 {
                     if (turnType != intBrd[row, col + i] && intBrd[row, col + i] != 0)
                     {
