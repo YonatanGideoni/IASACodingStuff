@@ -277,19 +277,55 @@ namespace Grapher
                         }
                         else if (function[i] == '/' || function[i] == '*')
                         {
-                            if (branch.left == null)
+                            if (i < function.Length - 2 && function[i + 1] == '(')
                             {
-                                branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                                retBranch = parseBranch((short)(i + 2), function);
+                                branch = new ParseTree<string>(branch, "*", (ParseTree<string>)(retBranch[1]));
+                                i += (short)(retBranch[0]);
                             }
                             else
                             {
-                                branch = new ParseTree<string>(branch.left, branch.operation,
-                                        new ParseTree<string>(branch.right, function[i].ToString(), new ParseTree<string>(null)));
-                            }
+                                if (branch.left == null)
+                                {
+                                    branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                                }
+                                else
+                                {
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                            new ParseTree<string>(branch.right, function[i].ToString(), new ParseTree<string>(null)));
+                                }
+                            }                            
                         }
                         else
                         {
                             branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                        }
+                    }
+                }
+                else if (function[i] == '^')
+                {
+                    if (i < function.Length - 2 && function[i + 1] == '(')
+                    {
+                        retBranch = parseBranch((short)(i + 2), function);
+                        if (branch.right == null)
+                        {
+                            branch = new ParseTree<string>(branch, "^", (ParseTree<string>)(retBranch[1]));
+                        }
+                        else
+                        {
+                            branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", (ParseTree<string>)(retBranch[1])));
+                        }
+                        i += (short)(retBranch[0]);
+                    }
+                    else
+                    {
+                        if (branch.right == null)
+                        {
+                            branch = new ParseTree<string>(branch, "^", null);
+                        }
+                        else
+                        {
+                            branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", null));
                         }
                     }
                 }
@@ -314,10 +350,6 @@ namespace Grapher
                             {
                                 insertVarBranch(new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])),
                                            branch.operation, branch.left);
-                            }
-                            else
-                            {
-
                             }
                             i += (short)(retBranch[0]);
                         }
