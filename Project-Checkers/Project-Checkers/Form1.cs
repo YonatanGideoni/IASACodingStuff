@@ -44,22 +44,22 @@ namespace Project_Checkers
                     }
                     else if (OriginBrd[i, k] == 2)
                     {
-                        whiteCheckers++;
+                        blackCheckers++;
                         Score += (short)(k + 1 - BrdSize);
                     }
                     else if (OriginBrd[i, k] == 1)
                     {
-                        blackCheckers++;
+                        whiteCheckers++;
                         Score += k;
                     }
                     else if (OriginBrd[i, k] == -2)
                     {
-                        whiteCheckers++;
+                        blackCheckers++;
                         Score -= (short)(BrdSize * 4);
                     }
                     else if (OriginBrd[i, k] == -1)
                     {
-                        blackCheckers++;
+                        whiteCheckers++;
                         Score += (short)(BrdSize * 4);
                     }
                 }
@@ -116,7 +116,7 @@ namespace Project_Checkers
         {
             short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
-            short[] MoveScore = new short[3] { -1000, 1000, -1000 };
+            short[] MoveScore = new short[3] { short.MinValue, short.MaxValue, short.MinValue };
             short[] ButtonLoc = null;
             short[] col = new short[2];
             short[] row = new short[2];
@@ -147,7 +147,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 2-Move-AI
-                                        MoveScore[1] = 1000;
+                                        MoveScore[1] = short.MaxValue;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -462,7 +462,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -775,7 +775,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 2-Move-AI
-                                        MoveScore[1] = 1000;
+                                        MoveScore[1] = short.MaxValue;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -1083,7 +1083,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -1394,7 +1394,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -1706,7 +1706,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -2018,7 +2018,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -2330,7 +2330,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -2642,7 +2642,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -2954,7 +2954,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -3266,7 +3266,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 2-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -3578,7 +3578,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 2-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -3889,7 +3889,7 @@ namespace Project_Checkers
 
         public short CompMoveCont(short[,] originBrd)
         {
-            short[] MoveScore = new short[3] { -1000, 1000, -1000 };
+            short[] MoveScore = new short[3] { short.MinValue, short.MaxValue, short.MinValue };
             short[][,] tempBrd = new short[2][,];
             tempBrd[0] = (short[,])originBrd.Clone();
             short[] col = new short[2];
@@ -3921,7 +3921,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 4-Move-AI
-                                        MoveScore[1] = 1000;
+                                        MoveScore[1] = short.MaxValue;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -4235,7 +4235,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -4547,7 +4547,7 @@ namespace Project_Checkers
                                         tempBrd[0][col[0], row[0]] = 0;
 
                                         #region 4-Move-AI
-                                        MoveScore[1] = 1000;
+                                        MoveScore[1] = short.MaxValue;
                                         tempBrd[1] = (short[,])tempBrd[0].Clone();
                                         for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                         {
@@ -4854,7 +4854,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -5164,7 +5164,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -5475,7 +5475,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 4-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -5786,7 +5786,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -6097,7 +6097,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 4-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -6408,7 +6408,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -6719,7 +6719,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 4-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {
@@ -7030,7 +7030,7 @@ namespace Project_Checkers
                                 tempBrd[0][col[0], row[0]] = 0;
 
                                 #region 4-Move-AI
-                                MoveScore[1] = 1000;
+                                MoveScore[1] = short.MaxValue;
                                 tempBrd[1] = (short[,])tempBrd[0].Clone();
                                 for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                 {
@@ -7341,7 +7341,7 @@ namespace Project_Checkers
                                     tempBrd[0][col[0], row[0]] = 0;
 
                                     #region 4-Move-AI
-                                    MoveScore[1] = 1000;
+                                    MoveScore[1] = short.MaxValue;
                                     tempBrd[1] = (short[,])tempBrd[0].Clone();
                                     for (row[1] = 0; row[1] < BrdSize; row[1]++)
                                     {

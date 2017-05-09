@@ -68,9 +68,9 @@ namespace Grapher
             {
                 return 10;
             }
-            else if ((node.operation.ToCharArray()[0] == 'x' || node.operation.ToCharArray()[0]=='y') && node.operation.ToCharArray()[1] == '^')
+            else if (node.operation == "^")
             {
-                return (float)(Math.Pow(10, getPow(node.operation, 2)));
+                return (float)(Math.Pow(calcTree(node.left), calcTree(node.right)));
             }
             return float.Parse(node.operation);
         }
@@ -117,7 +117,23 @@ namespace Grapher
             }
         }
 
-        static float getPow(string num, short startPow)
+        static void insertVarBranch(ParseTree<string> insBranch, string insVar, ParseTree<string> powBranch)
+        {
+            if (insBranch.operation == null || insBranch.operation == "")
+            {
+                insBranch.operation = insVar;
+            }
+            else if (insBranch.left == null)
+            {
+                insBranch.left = new ParseTree<string>(insVar);
+            }
+            else
+            {
+                insBranch.right = new ParseTree<string>(insVar);
+            }
+        }
+
+        static ParseTree<string> getPow(string num, short startPow)
         {
             char[] numArr = num.Substring(startPow).ToCharArray();
             byte rubbish;
@@ -126,6 +142,10 @@ namespace Grapher
             if (numArr[0] == '-')
             {
                 i = 1;
+            }
+            else if (numArr[0] == '(')
+            {
+                return (ParseTree<string>)(parseBranch(1, numArr)[1]);
             }
             else
             {
@@ -139,10 +159,10 @@ namespace Grapher
                 }
                 else
                 {
-                    return float.Parse((new string(numArr).Substring(0, i)));
+                    return new ParseTree<string>(float.Parse((new string(numArr).Substring(0, i))).ToString());
                 }
             }
-            return float.Parse(new string(numArr));
+            return new ParseTree<string>(float.Parse((new string(numArr).Substring(0, i))).ToString());
         }
 
         static void insertFloatBranch(ParseTree<string> insBranch, float insFloat)
@@ -155,26 +175,30 @@ namespace Grapher
             {
                 insBranch.left = new ParseTree<string>(insFloat.ToString());
             }
-            else
+            else if (insBranch.right == null)
             {
                 insBranch.right = new ParseTree<string>(insFloat.ToString());
             }
+            else
+            {
+                insertFloatBranch(insBranch.right, insFloat);
+            }
         }
 
-        private void ParseButton_Click(object sender, EventArgs e)
+        static object[] parseBranch(short startChar, char[] function)
         {
-            char[] function = FunctionText.Text.ToCharArray();
-
             ParseTree<string> root = new ParseTree<string>("");
             ParseTree<string> branch = root;
 
+            object[] retBranch;
             byte numIndex;
             long intNum = 0;
             long deciNum = 0;
             bool isNum = false;
             bool isFloat = false;
+            float powFloat;
 
-            for (short i = 0; i < function.Length; i++)
+            for (short i = startChar; i < function.Length; i++)
             {
                 if (byte.TryParse(function[i].ToString(), out numIndex))
                 {
@@ -201,20 +225,25 @@ namespace Grapher
                         }
                         else
                         {
-                            if (i < function.Length && (function[i] == 'x' || function[i]=='y'))
+                            if (i < function.Length && (function[i] == 'x' || function[i] == 'y'))
                             {
                                 if (i < function.Length - 2 && function[i + 1] == '^')
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    branch = new ParseTree<string>(branch.left, branch.operation, 
-                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() +"^" + getPow(new string(function), (short)(i + 2)).ToString()))));
-                                    i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 2);
-                                    isNum = false;
+                                    retBranch=parseBranch((short)(i+2),function);
+
+                                    if (float.TryParse((string)(((ParseTree<string>)(retBranch[1])).operation), out powFloat))
+                                    {
+                                        branch = new ParseTree<string>(branch.left, branch.operation,
+                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() + "^" + powFloat.ToString()))));
+                                        i += (short)(powFloat.ToString().Length + 2);
+                                        isNum = false;
+                                    }                                    
                                 }
                                 else
                                 {
                                     insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    branch = new ParseTree<string>(branch.left, branch.operation, 
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
                                                 new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString())));
                                     i++;
                                     isNum = false;
@@ -246,34 +275,89 @@ namespace Grapher
                     if (branch.operation == null || branch.operation == "")
                     {
                         branch.operation = function[i].ToString();
-                        if (function[i] == '-' && branch.left == null)
+                        if ((function[i] == '-' || function[i] == '+') && branch.left == null)
                         {
-                            branch.left = new ParseTree<string>("0");
+                            branch.left = emptyNode();
                         }
                     }
                     else
-                    {                        
-                        branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                    {
                         if (function[i] == '-' && branch.left == null)
                         {
-                            branch.left = new ParseTree<string>("0");
+                            branch.left = emptyNode();
+                        }
+                        else if (function[i] == '/' || function[i] == '*')
+                        {
+                            if (branch.left == null)
+                            {
+                                branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                            }
+                            else
+                            {
+                                branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>(branch.right, function[i].ToString(), new ParseTree<string>(null)));
+                            }
+                        }
+                        else
+                        {
+                            branch = new ParseTree<string>(branch, function[i].ToString(), null);
                         }
                     }
                 }
-                else if (function[i] == 'x' || function[i]=='y')
+                else if (function[i] == 'x' || function[i] == 'y')
                 {
                     if (i < function.Length - 2 && function[i + 1] == '^')
                     {
-                        insertVarBranch(branch, function[i].ToString()+"^" + getPow(new string(function), (short)(i + 2)).ToString());
-                        i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
+                        if (function[i + 2] == '(')
+                        {
+                            retBranch = parseBranch((short)(i + 3), function);
+                            insertVarBranch(branch, function[i].ToString() + "^", retBranch[1]);
+                        }
+                        else
+                        {
+                            insertVarBranch(branch, function[i].ToString() + "^" + getPow(new string(function), (short)(i + 2)).ToString());
+                            i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
+                        }                        
                     }
                     else
                     {
                         insertVarBranch(branch, function[i].ToString());
                     }
                 }
+                else if (function[i] == '(')
+                {
+                    retBranch = parseBranch((short)(i + 1), function);
+                    i += (short)(retBranch[0]);
+                    if (branch.left == null)
+                    {
+                        branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), branch.operation, branch.right);
+                    }
+                    else if (branch.right == null)
+                    {
+                        branch = new ParseTree<string>(branch.left, branch.operation, (ParseTree<string>)(retBranch[1]));
+                    }                    
+                }
+                else if (function[i] == ')')
+                {
+                    return new object[2] { i, branch };
+                }
             }
-            MessageBox.Show(calcTree(branch).ToString());
+
+            return new object[2] { (short)(function.Length), branch };
+        }
+
+        static ParseTree<string> emptyNode()
+        {
+            return new ParseTree<string>("0");
+        }
+
+        private void ParseButton_Click(object sender, EventArgs e)
+        {
+            char[] function = FunctionText.Text.ToCharArray();
+
+            object[] branch = parseBranch(0, function);
+            
+            MessageBox.Show(calcTree((ParseTree<string>)(branch[1])).ToString());
         }
     }
 }
