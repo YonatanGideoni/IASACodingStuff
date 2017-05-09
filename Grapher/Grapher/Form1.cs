@@ -119,18 +119,7 @@ namespace Grapher
 
         static void insertVarBranch(ParseTree<string> insBranch, string insVar, ParseTree<string> powBranch)
         {
-            if (insBranch.operation == null || insBranch.operation == "")
-            {
-                insBranch.operation = insVar;
-            }
-            else if (insBranch.left == null)
-            {
-                insBranch.left = new ParseTree<string>(insVar);
-            }
-            else
-            {
-                insBranch.right = new ParseTree<string>(insVar);
-            }
+            insBranch = new ParseTree<string>(insBranch, insVar, powBranch);
         }
 
         static ParseTree<string> getPow(string num, short startPow)
@@ -284,7 +273,7 @@ namespace Grapher
                     {
                         if (function[i] == '-' && branch.left == null)
                         {
-                            branch.left = emptyNode();
+                            branch = new ParseTree<string>(branch, "-", null);
                         }
                         else if (function[i] == '/' || function[i] == '*')
                         {
@@ -311,7 +300,26 @@ namespace Grapher
                         if (function[i + 2] == '(')
                         {
                             retBranch = parseBranch((short)(i + 3), function);
-                            insertVarBranch(branch, function[i].ToString() + "^", retBranch[1]);
+
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1]));
+                            }
+                            else if (branch.left == null)
+                            {
+                                insertVarBranch(branch.right, branch.operation,
+                                            new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])));
+                            }
+                            else if (branch.right == null)
+                            {
+                                insertVarBranch(new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])),
+                                           branch.operation, branch.left);
+                            }
+                            else
+                            {
+
+                            }
+                            i += (short)(retBranch[0]);
                         }
                         else
                         {
