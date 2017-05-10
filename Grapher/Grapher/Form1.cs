@@ -355,7 +355,16 @@ namespace Grapher
                         }
                         else
                         {
-                            insertVarBranch(branch, function[i].ToString() + "^" + getPow(new string(function), (short)(i + 2)).ToString());
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)((getPow(new string(function), (short)(i + 2)))));
+                            }
+                            else
+                            {
+                                branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>
+                                (new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(getPow(new string(function), (short)(i + 2)))));                            
+                            }
+                            
                             i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
                         }                        
                     }
