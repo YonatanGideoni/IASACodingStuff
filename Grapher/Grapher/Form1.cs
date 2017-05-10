@@ -39,7 +39,7 @@ namespace Grapher
             }
         }
 
-        static float calcTree(ParseTree<string> node)
+        static float calcTree(ParseTree<string> node, float xVal)
         {
             if (node == null)
             {
@@ -49,28 +49,28 @@ namespace Grapher
             {
                 if (node.operation == "+")
                 {
-                    return calcTree(node.left) + calcTree(node.right);
+                    return calcTree(node.left, xVal) + calcTree(node.right, xVal);
                 }
                 else if (node.operation == "-")
                 {
-                    return calcTree(node.left) - calcTree(node.right);
+                    return calcTree(node.left, xVal) - calcTree(node.right, xVal);
                 }
                 else if (node.operation == "*")
                 {
-                    return calcTree(node.left) * calcTree(node.right);
+                    return calcTree(node.left, xVal) * calcTree(node.right, xVal);
                 }
                 else if (node.operation == "/")
                 {
-                    return calcTree(node.left) / calcTree(node.right);
+                    return calcTree(node.left, xVal) / calcTree(node.right, xVal);
                 }
             }
             else if (node.operation == "x" || node.operation == "y")
             {
-                return 10;
+                return xVal;
             }
             else if (node.operation == "^")
             {
-                return (float)(Math.Pow(calcTree(node.left), calcTree(node.right)));
+                return (float)(Math.Pow(calcTree(node.left, xVal), calcTree(node.right, xVal)));
             }
             return float.Parse(node.operation);
         }
@@ -176,223 +176,238 @@ namespace Grapher
 
         static object[] parseBranch(short startChar, char[] function)
         {
-            ParseTree<string> root = new ParseTree<string>("");
-            ParseTree<string> branch = root;
-
-            object[] retBranch;
-            byte numIndex;
-            long intNum = 0;
-            long deciNum = 0;
-            bool isNum = false;
-            bool isFloat = false;
-            float powFloat;
-
-            for (short i = startChar; i < function.Length; i++)
+            try
             {
-                if (byte.TryParse(function[i].ToString(), out numIndex))
-                {
-                    isNum = true;
+                ParseTree<string> root = new ParseTree<string>("");
+                ParseTree<string> branch = root;
 
-                    while (isNum && i < function.Length)
+                object[] retBranch;
+                byte numIndex;
+                long intNum = 0;
+                long deciNum = 0;
+                bool isNum = false;
+                bool isFloat = false;
+                float powFloat;
+
+                for (short i = startChar; i < function.Length; i++)
+                {
+                    if (byte.TryParse(function[i].ToString(), out numIndex))
                     {
-                        if (byte.TryParse(function[i].ToString(), out numIndex))
+                        isNum = true;
+
+                        while (isNum && i < function.Length)
                         {
-                            if (!isFloat)
+                            if (byte.TryParse(function[i].ToString(), out numIndex))
                             {
-                                intNum = intNum * 10 + numIndex;
+                                if (!isFloat)
+                                {
+                                    intNum = intNum * 10 + numIndex;
+                                }
+                                else
+                                {
+                                    deciNum = deciNum * 10 + numIndex;
+                                }
+                                i++;
+                            }
+                            else if (function[i] == '.' && !isFloat)
+                            {
+                                isFloat = true;
+                                i++;
                             }
                             else
                             {
-                                deciNum = deciNum * 10 + numIndex;
-                            }
-                            i++;
-                        }
-                        else if (function[i] == '.' && !isFloat)
-                        {
-                            isFloat = true;
-                            i++;
-                        }
-                        else
-                        {
-                            if (i < function.Length && (function[i] == 'x' || function[i] == 'y'))
-                            {
-                                if (i < function.Length - 2 && function[i + 1] == '^')
+                                if (i < function.Length && (function[i] == 'x' || function[i] == 'y'))
                                 {
-                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    retBranch=parseBranch((short)(i+2),function);
-
-                                    if (float.TryParse((string)(((ParseTree<string>)(retBranch[1])).operation), out powFloat))
+                                    if (i < function.Length - 2 && function[i + 1] == '^')
                                     {
+                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                        retBranch = parseBranch((short)(i + 2), function);
+
+                                        if (float.TryParse((string)(((ParseTree<string>)(retBranch[1])).operation), out powFloat))
+                                        {
+                                            branch = new ParseTree<string>(branch.left, branch.operation,
+                                                 (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() + "^" + powFloat.ToString()))));
+                                            i += (short)(powFloat.ToString().Length + 2);
+                                            isNum = false;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
                                         branch = new ParseTree<string>(branch.left, branch.operation,
-                                             (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() + "^" + powFloat.ToString()))));
-                                        i += (short)(powFloat.ToString().Length + 2);
+                                                    new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString())));
+                                        i++;
                                         isNum = false;
-                                    }                                    
+                                    }
                                 }
                                 else
                                 {
-                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    branch = new ParseTree<string>(branch.left, branch.operation,
-                                                new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString())));
-                                    i++;
-                                    isNum = false;
+                                    if (isNum)
+                                    {
+                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                        isNum = false;
+                                    }
+                                }
+                            }
+                        }
+                        i--;
+
+                        if (isNum)
+                        {
+                            insertFloatBranch(branch, createFloat(intNum, deciNum));
+                            isNum = false;
+                        }
+                        isFloat = false;
+                        intNum = 0;
+                        deciNum = 0;
+                    }
+                    else if (baseOperand(function[i]))
+                    {
+                        if (branch.operation == null || branch.operation == "")
+                        {
+                            branch.operation = function[i].ToString();
+                            if ((function[i] == '-' || function[i] == '+') && branch.left == null)
+                            {
+                                branch.left = emptyNode();
+                            }
+                        }
+                        else
+                        {
+                            if (function[i] == '-' && branch.left == null)
+                            {
+                                branch = new ParseTree<string>(branch, "-", null);
+                            }
+                            else if (function[i] == '/' || function[i] == '*')
+                            {
+                                if (i < function.Length - 2 && function[i + 1] == '(')
+                                {
+                                    retBranch = parseBranch((short)(i + 2), function);
+                                    branch = new ParseTree<string>(branch, "*", (ParseTree<string>)(retBranch[1]));
+                                    i += (short)(retBranch[0]);
+                                }
+                                else
+                                {
+                                    if (branch.left == null || branch.right == null)
+                                    {
+                                        branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                                    }
+                                    else
+                                    {
+                                        if (baseOperand(branch.operation))
+                                        {
+                                            branch = new ParseTree<string>(branch.left, branch.operation,
+                                                new ParseTree<string>(branch.right, function[i].ToString(), new ParseTree<string>(null)));
+                                        }
+                                        else if (branch.operation == "^")
+                                        {
+                                            branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                                        }
+
+                                    }
                                 }
                             }
                             else
                             {
-                                if (isNum)
-                                {
-                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                    isNum = false;
-                                }
+                                branch = new ParseTree<string>(branch, function[i].ToString(), null);
                             }
                         }
                     }
-                    i--;
-
-                    if (isNum)
+                    else if (function[i] == '^')
                     {
-                        insertFloatBranch(branch, createFloat(intNum, deciNum));
-                        isNum = false;
-                    }
-                    isFloat = false;
-                    intNum = 0;
-                    deciNum = 0;
-                }
-                else if (baseOperand(function[i]))
-                {
-                    if (branch.operation == null || branch.operation == "")
-                    {
-                        branch.operation = function[i].ToString();
-                        if ((function[i] == '-' || function[i] == '+') && branch.left == null)
+                        if (i < function.Length - 2 && function[i + 1] == '(')
                         {
-                            branch.left = emptyNode();
-                        }
-                    }
-                    else
-                    {
-                        if (function[i] == '-' && branch.left == null)
-                        {
-                            branch = new ParseTree<string>(branch, "-", null);
-                        }
-                        else if (function[i] == '/' || function[i] == '*')
-                        {
-                            if (i < function.Length - 2 && function[i + 1] == '(')
+                            retBranch = parseBranch((short)(i + 2), function);
+                            if (branch.right == null)
                             {
-                                retBranch = parseBranch((short)(i + 2), function);
-                                branch = new ParseTree<string>(branch, "*", (ParseTree<string>)(retBranch[1]));
-                                i += (short)(retBranch[0]);
+                                branch = new ParseTree<string>(branch, "^", (ParseTree<string>)(retBranch[1]));
                             }
                             else
                             {
-                                if (branch.left == null)
-                                {
-                                    branch = new ParseTree<string>(branch, function[i].ToString(), null);
-                                }
-                                else
-                                {
-                                    branch = new ParseTree<string>(branch.left, branch.operation,
-                                            new ParseTree<string>(branch.right, function[i].ToString(), new ParseTree<string>(null)));
-                                }
-                            }                            
-                        }
-                        else
-                        {
-                            branch = new ParseTree<string>(branch, function[i].ToString(), null);
-                        }
-                    }
-                }
-                else if (function[i] == '^')
-                {
-                    if (i < function.Length - 2 && function[i + 1] == '(')
-                    {
-                        retBranch = parseBranch((short)(i + 2), function);
-                        if (branch.right == null)
-                        {
-                            branch = new ParseTree<string>(branch, "^", (ParseTree<string>)(retBranch[1]));
-                        }
-                        else
-                        {
-                            branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", (ParseTree<string>)(retBranch[1])));
-                        }
-                        i += (short)(retBranch[0]);
-                    }
-                    else
-                    {
-                        if (branch.right == null)
-                        {
-                            branch = new ParseTree<string>(branch, "^", null);
-                        }
-                        else
-                        {
-                            branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", null));
-                        }
-                    }
-                }
-                else if (function[i] == 'x' || function[i] == 'y')
-                {
-                    if (i < function.Length - 2 && function[i + 1] == '^')
-                    {
-                        if (function[i + 2] == '(')
-                        {
-                            retBranch = parseBranch((short)(i + 3), function);
-
-                            if (branch.operation == null || branch.operation == "")
-                            {
-                                branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1]));
-                            }
-                            else if (branch.left == null)
-                            {
-                                insertVarBranch(branch.right, branch.operation,
-                                            new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])));
-                            }
-                            else if (branch.right == null)
-                            {
-                                insertVarBranch(new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])),
-                                           branch.operation, branch.left);
+                                branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", (ParseTree<string>)(retBranch[1])));
                             }
                             i += (short)(retBranch[0]);
                         }
                         else
                         {
-                            if (branch.operation == null || branch.operation == "")
+                            if (branch.right == null)
                             {
-                                branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)((getPow(new string(function), (short)(i + 2)))));
+                                branch = new ParseTree<string>(branch, "^", null);
                             }
                             else
                             {
-                                branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>
-                                (new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(getPow(new string(function), (short)(i + 2)))));                            
+                                branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", null));
                             }
-                            
-                            i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
-                        }                        
+                        }
                     }
-                    else
+                    else if (function[i] == 'x' || function[i] == 'y')
                     {
-                        insertVarBranch(branch, function[i].ToString());
-                    }
-                }
-                else if (function[i] == '(')
-                {
-                    retBranch = parseBranch((short)(i + 1), function);
-                    i += (short)(retBranch[0]);
-                    if (branch.left == null)
-                    {
-                        branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), branch.operation, branch.right);
-                    }
-                    else if (branch.right == null)
-                    {
-                        branch = new ParseTree<string>(branch.left, branch.operation, (ParseTree<string>)(retBranch[1]));
-                    }                    
-                }
-                else if (function[i] == ')')
-                {
-                    return new object[2] { i, branch };
-                }
-            }
+                        if (i < function.Length - 2 && function[i + 1] == '^')
+                        {
+                            if (function[i + 2] == '(')
+                            {
+                                retBranch = parseBranch((short)(i + 3), function);
 
-            return new object[2] { (short)(function.Length), branch };
+                                if (branch.operation == null || branch.operation == "")
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1]));
+                                }
+                                else if (branch.left == null)
+                                {
+                                    insertVarBranch(branch.right, branch.operation,
+                                                new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])));
+                                }
+                                else if (branch.right == null)
+                                {
+                                    insertVarBranch(new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])),
+                                               branch.operation, branch.left);
+                                }
+                                i += (short)(retBranch[0]);
+                            }
+                            else
+                            {
+                                if (branch.operation == null || branch.operation == "")
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)((getPow(new string(function), (short)(i + 2)))));
+                                }
+                                else
+                                {
+                                    branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>
+                                    (new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(getPow(new string(function), (short)(i + 2)))));
+                                }
+
+                                i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
+                            }
+                        }
+                        else
+                        {
+                            insertVarBranch(branch, function[i].ToString());
+                        }
+                    }
+                    else if (function[i] == '(')
+                    {
+                        retBranch = parseBranch((short)(i + 1), function);
+                        i += (short)(retBranch[0]);
+                        if (branch.left == null)
+                        {
+                            branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), branch.operation, branch.right);
+                        }
+                        else if (branch.right == null)
+                        {
+                            branch = new ParseTree<string>(branch.left, branch.operation, (ParseTree<string>)(retBranch[1]));
+                        }
+                    }
+                    else if (function[i] == ')')
+                    {
+                        return new object[2] { i, branch };
+                    }
+                }
+
+                return new object[2] { (short)(function.Length), branch };
+            }
+            catch
+            {                
+                return new object[2]{"", 2};
+            }
         }
 
         static ParseTree<string> emptyNode()
@@ -405,8 +420,47 @@ namespace Grapher
             char[] function = FunctionText.Text.ToCharArray();
 
             object[] branch = parseBranch(0, function);
-            
-            MessageBox.Show(calcTree((ParseTree<string>)(branch[1])).ToString());
-        }
+            float minX = (float)(MinXVal.Value);
+            float maxX = (float)(MaxXVal.Value);
+            if (maxX <= minX)
+            {
+                MessageBox.Show("Your graph needs to start before it ends!");
+            }
+            else
+            {
+                float y = 0;
+                float prevX = minX;
+                float prevY = calcTree((ParseTree<string>)(branch[1]), minX);
+                Graphics graph = graphPanel.CreateGraphics();
+                graph.Clear(Color.White);
+
+                try
+                {
+                    for (float x = minX; x < maxX; x += (float)(Math.Min(0.0001,Math.Abs(maxX-minX)*0.01)))
+                    {
+                        y = calcTree((ParseTree<string>)(branch[1]), x);
+                        if (!float.IsNaN(y) && !float.IsInfinity(y))
+                        {
+                            if (Math.Abs(y - prevY)<1)
+                            {
+                                graph.DrawLine(Pens.Black, graphPanel.Width / 2 + x, graphPanel.Height / 2 - y, graphPanel.Width / 2 + prevX, graphPanel.Height / 2 - prevY);
+                                prevX = x;
+                                prevY = y;
+                            }
+                            else
+                            {
+                                prevY = y;
+                                prevX = x;
+                            }
+                            
+                        }
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show("There is a syntax problem, please write your function differently.");
+                }
+            }
+        }        
     }
 }
