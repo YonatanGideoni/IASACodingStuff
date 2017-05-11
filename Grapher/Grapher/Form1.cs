@@ -45,7 +45,7 @@ namespace Grapher
             {
                 return 0;
             }
-            if (node.operation.Length == 1 && baseOperand(node.operation))
+            if (baseOperand(node.operation))
             {
                 if (node.operation == "+")
                 {
@@ -72,6 +72,21 @@ namespace Grapher
             {
                 return (float)(Math.Pow(calcTree(node.left, xVal), calcTree(node.right, xVal)));
             }
+            else if ((bool)(trigOperand(node.operation)[0]))
+            {
+                if ((string)(trigOperand(node.operation)[1]) == "cos")
+                {
+                    return (float)(Math.Cos(calcTree(node.left, xVal)));
+                }
+                else if ((string)(trigOperand(node.operation)[1]) == "sin")
+                {
+                    return (float)(Math.Sin(calcTree(node.left, xVal)));
+                }
+                else
+                {
+                    return (float)(Math.Tan(calcTree(node.left, xVal)));
+                }                
+            }
             return float.Parse(node.operation);
         }
 
@@ -91,6 +106,32 @@ namespace Grapher
                 return true;
             }
             return false;
+        }
+
+        static object[] trigOperand(char[] stringCheck, short startChar)
+        {
+            if (stringCheck.Length - startChar < 3)
+            {
+                return new object[1] { false };
+            }
+            string funcString = new string(stringCheck).Substring(startChar, 3);
+
+            if (funcString == "cos" || funcString == "sin" || funcString == "tan")
+            {
+                return new object[2] { true, funcString };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] trigOperand(string stringCheck)
+        {
+            if (stringCheck == "cos" || stringCheck == "sin" || stringCheck == "tan")
+            {
+                return new object[2] { true, stringCheck };
+            }
+
+            return new object[1] { false };
         }
 
         static float createFloat(long whole, long deci)
@@ -188,6 +229,7 @@ namespace Grapher
                 bool isNum = false;
                 bool isFloat = false;
                 float powFloat;
+                string retOperand;
 
                 for (short i = startChar; i < function.Length; i++)
                 {
@@ -283,7 +325,7 @@ namespace Grapher
                                 {
                                     retBranch = parseBranch((short)(i + 2), function);
                                     branch = new ParseTree<string>(branch, "*", (ParseTree<string>)(retBranch[1]));
-                                    i += (short)(retBranch[0]);
+                                    i = (short)(retBranch[0]);
                                 }
                                 else
                                 {
@@ -325,7 +367,7 @@ namespace Grapher
                             {
                                 branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>(branch.right, "^", (ParseTree<string>)(retBranch[1])));
                             }
-                            i += (short)(retBranch[0]);
+                            i = (short)(retBranch[0]);
                         }
                         else
                         {
@@ -361,7 +403,7 @@ namespace Grapher
                                     insertVarBranch(new ParseTree<string>(new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(retBranch[1])),
                                                branch.operation, branch.left);
                                 }
-                                i += (short)(retBranch[0]);
+                                i = (short)(retBranch[0]);
                             }
                             else
                             {
@@ -383,11 +425,46 @@ namespace Grapher
                             insertVarBranch(branch, function[i].ToString());
                         }
                     }
+                    else if ((bool)(trigOperand(function, i)[0]))
+                    {
+                        if (function[i + 3] == '(')
+                        {
+                            retBranch=parseBranch((short)(i+4),function);
+                            retOperand = (string)(trigOperand(function, i)[1]);
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null);
+                            }
+                            else
+                            {
+                                if (branch.right == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), 
+                                                                                    branch.operation, branch.left);
+                                }
+                                else
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.right);
+                                }
+                            }
+                            i = (short)(retBranch[0]);
+                        }
+                        else
+                        {
+                            return new object[2] { "", 2 };
+                        }                        
+                    }
                     else if (function[i] == '(')
                     {
                         retBranch = parseBranch((short)(i + 1), function);
-                        i += (short)(retBranch[0]);
-                        if (branch.left == null)
+                        i = (short)(retBranch[0]);
+
+                        if (branch.operation == null || branch.operation == "")
+                        {
+                            branch = (ParseTree<string>)(retBranch[1]);
+                        }
+                        else if (branch.left == null)
                         {
                             branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), branch.operation, branch.right);
                         }
@@ -420,8 +497,8 @@ namespace Grapher
             char[] function = FunctionText.Text.ToCharArray();
 
             object[] branch = parseBranch(0, function);
-            float minX = (float)(MinXVal.Value);
-            float maxX = (float)(MaxXVal.Value);
+            float minX = Math.Max((float)(MinXVal.Value),-graphPanel.Width/2);
+            float maxX = Math.Min((float)(MaxXVal.Value),graphPanel.Width/2);
             if (maxX <= minX)
             {
                 MessageBox.Show("Your graph needs to start before it ends!");
@@ -436,14 +513,14 @@ namespace Grapher
 
                 try
                 {
-                    for (float x = minX; x < maxX; x += (float)(Math.Abs(maxX - minX) * 0.001))
+                    for (float x = minX; x < maxX; x += (float)(0.001))
                     {
                         y = calcTree((ParseTree<string>)(branch[1]), x);
                         if (!float.IsNaN(y) && !float.IsInfinity(y))
                         {
                             if (Math.Abs(y - prevY) < 10)//don't connect asymptotes to other parts of graph
                             {
-                                graph.DrawLine(Pens.Black, graphPanel.Width / 2 + x, graphPanel.Height / 2 - y, graphPanel.Width / 2 + prevX, graphPanel.Height / 2 - prevY);
+                                graph.DrawLine(Pens.Blue, graphPanel.Width / 2 + x, graphPanel.Height / 2 - y, graphPanel.Width / 2 + prevX, graphPanel.Height / 2 - prevY);
                                 prevX = x;
                                 prevY = y;
                             }
