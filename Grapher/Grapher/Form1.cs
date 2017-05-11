@@ -97,7 +97,7 @@ namespace Grapher
         {
             byte deciLength = (byte)(deci.ToString().Length);
             float retFloat = whole;
-            retFloat += (float)(deci * Math.Pow(10, -deciLength));
+            retFloat += (float)((deci-Math.Pow(10,deciLength-1)) * Math.Pow(10, -deciLength+1));
             return retFloat;
         }
 
@@ -184,7 +184,7 @@ namespace Grapher
                 object[] retBranch;
                 byte numIndex;
                 long intNum = 0;
-                long deciNum = 0;
+                long deciNum = 1;
                 bool isNum = false;
                 bool isFloat = false;
                 float powFloat;
@@ -259,7 +259,7 @@ namespace Grapher
                         }
                         isFloat = false;
                         intNum = 0;
-                        deciNum = 0;
+                        deciNum = 1;
                     }
                     else if (baseOperand(function[i]))
                     {
@@ -405,8 +405,8 @@ namespace Grapher
                 return new object[2] { (short)(function.Length), branch };
             }
             catch
-            {                
-                return new object[2]{"", 2};
+            {
+                return new object[2] { "", 2 };
             }
         }
 
@@ -436,12 +436,12 @@ namespace Grapher
 
                 try
                 {
-                    for (float x = minX; x < maxX; x += (float)(Math.Min(0.0001,Math.Abs(maxX-minX)*0.01)))
+                    for (float x = minX; x < maxX; x += (float)(Math.Abs(maxX - minX) * 0.001))
                     {
                         y = calcTree((ParseTree<string>)(branch[1]), x);
                         if (!float.IsNaN(y) && !float.IsInfinity(y))
                         {
-                            if (Math.Abs(y - prevY)<1)
+                            if (Math.Abs(y - prevY) < 10)//don't connect asymptotes to other parts of graph
                             {
                                 graph.DrawLine(Pens.Black, graphPanel.Width / 2 + x, graphPanel.Height / 2 - y, graphPanel.Width / 2 + prevX, graphPanel.Height / 2 - prevY);
                                 prevX = x;
@@ -452,7 +452,6 @@ namespace Grapher
                                 prevY = y;
                                 prevX = x;
                             }
-                            
                         }
                     }
                 }
@@ -461,6 +460,6 @@ namespace Grapher
                     MessageBox.Show("There is a syntax problem, please write your function differently.");
                 }
             }
-        }        
+        }
     }
 }

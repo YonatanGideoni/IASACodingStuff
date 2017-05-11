@@ -58,6 +58,7 @@
             // 
             // MinXVal
             // 
+            this.MinXVal.DecimalPlaces = 3;
             this.MinXVal.Location = new System.Drawing.Point(185, 40);
             this.MinXVal.Maximum = new decimal(new int[] {
             100000,
@@ -72,9 +73,15 @@
             this.MinXVal.Name = "MinXVal";
             this.MinXVal.Size = new System.Drawing.Size(63, 20);
             this.MinXVal.TabIndex = 3;
+            this.MinXVal.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            -2147483648});
             // 
             // MaxXVal
             // 
+            this.MaxXVal.DecimalPlaces = 3;
             this.MaxXVal.Location = new System.Drawing.Point(185, 14);
             this.MaxXVal.Maximum = new decimal(new int[] {
             100000,
@@ -89,6 +96,11 @@
             this.MaxXVal.Name = "MaxXVal";
             this.MaxXVal.Size = new System.Drawing.Size(63, 20);
             this.MaxXVal.TabIndex = 4;
+            this.MaxXVal.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
             // 
             // MinXBox
             // 
@@ -120,14 +132,14 @@
             this.graphPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.graphPanel.Location = new System.Drawing.Point(13, 68);
             this.graphPanel.Name = "graphPanel";
-            this.graphPanel.Size = new System.Drawing.Size(375, 342);
+            this.graphPanel.Size = new System.Drawing.Size(675, 642);
             this.graphPanel.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 422);
+            this.ClientSize = new System.Drawing.Size(700, 722);
             this.Controls.Add(this.graphPanel);
             this.Controls.Add(this.MaxXBox);
             this.Controls.Add(this.MinXBox);
