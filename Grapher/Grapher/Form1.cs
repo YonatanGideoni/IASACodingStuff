@@ -85,7 +85,22 @@ namespace Grapher
                 else
                 {
                     return (float)(Math.Tan(calcTree(node.left, xVal)));
-                }                
+                }
+            }
+            else if ((bool)(trigHOperand(node.operation)[0]))
+            {
+                if ((string)(trigHOperand(node.operation)[1]) == "cosh")
+                {
+                    return (float)(Math.Cosh(calcTree(node.left, xVal)));
+                }
+                else if ((string)(trigHOperand(node.operation)[1]) == "sinh")
+                {
+                    return (float)(Math.Sinh(calcTree(node.left, xVal)));
+                }
+                else
+                {
+                    return (float)(Math.Tanh(calcTree(node.left, xVal)));
+                }
             }
             return float.Parse(node.operation);
         }
@@ -127,6 +142,32 @@ namespace Grapher
         static object[] trigOperand(string stringCheck)
         {
             if (stringCheck == "cos" || stringCheck == "sin" || stringCheck == "tan")
+            {
+                return new object[2] { true, stringCheck };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] trigHOperand(char[] stringCheck, short startChar)
+        {            
+            if (stringCheck.Length - startChar < 4)
+            {
+                return new object[1] { false };
+            }
+            string funcString = new string(stringCheck).Substring(startChar, 4);
+
+            if (funcString == "cosh" || funcString == "sinh" || funcString == "tanh")
+            {
+                return new object[2] { true, funcString };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] trigHOperand(string stringCheck)
+        {
+            if (stringCheck == "cosh" || stringCheck == "sinh" || stringCheck == "tanh")
             {
                 return new object[2] { true, stringCheck };
             }
@@ -425,7 +466,37 @@ namespace Grapher
                             insertVarBranch(branch, function[i].ToString());
                         }
                     }
-                    else if ((bool)(trigOperand(function, i)[0]))
+                    else if ((bool)(trigHOperand(function, i)[0]))//check for hyperbolic functions
+                    {
+                        if (function[i + 4] == '(')
+                        {
+                            retBranch = parseBranch((short)(i + 5), function);
+                            retOperand = (string)(trigHOperand(function, i)[1]);
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null);
+                            }
+                            else
+                            {
+                                if (branch.right == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.left);
+                                }
+                                else
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.right);
+                                }
+                            }
+                            i = (short)(retBranch[0]);
+                        }
+                        else
+                        {
+                            return new object[2] { "", 2 };
+                        }
+                    }
+                    else if ((bool)(trigOperand(function, i)[0]))//check for trig functions
                     {
                         if (function[i + 3] == '(')
                         {
@@ -453,8 +524,8 @@ namespace Grapher
                         else
                         {
                             return new object[2] { "", 2 };
-                        }                        
-                    }
+                        }
+                    }                    
                     else if (function[i] == '(')
                     {
                         retBranch = parseBranch((short)(i + 1), function);
