@@ -72,6 +72,21 @@ namespace Grapher
             {
                 return (float)(Math.Pow(calcTree(node.left, xVal), calcTree(node.right, xVal)));
             }
+            else if ((bool)(trigHOperand(node.operation)[0]))
+            {
+                if ((string)(trigHOperand(node.operation)[1]) == "cosh")
+                {
+                    return (float)(Math.Cosh(calcTree(node.left, xVal)));
+                }
+                else if ((string)(trigHOperand(node.operation)[1]) == "sinh")
+                {
+                    return (float)(Math.Sinh(calcTree(node.left, xVal)));
+                }
+                else
+                {
+                    return (float)(Math.Tanh(calcTree(node.left, xVal)));
+                }
+            }
             else if ((bool)(trigOperand(node.operation)[0]))
             {
                 if ((string)(trigOperand(node.operation)[1]) == "cos")
@@ -87,19 +102,15 @@ namespace Grapher
                     return (float)(Math.Tan(calcTree(node.left, xVal)));
                 }
             }
-            else if ((bool)(trigHOperand(node.operation)[0]))
+            else if ((bool)(logOperand(node.operation)[0]))
             {
-                if ((string)(trigHOperand(node.operation)[1]) == "cosh")
+                if ((string)(logOperand(node.operation)[1]) == "log")
                 {
-                    return (float)(Math.Cosh(calcTree(node.left, xVal)));
-                }
-                else if ((string)(trigHOperand(node.operation)[1]) == "sinh")
-                {
-                    return (float)(Math.Sinh(calcTree(node.left, xVal)));
+                    return (float)(Math.Log10(calcTree(node.left, xVal)));
                 }
                 else
                 {
-                    return (float)(Math.Tanh(calcTree(node.left, xVal)));
+                    return (float)(Math.Log(calcTree(node.left, xVal)));
                 }
             }
             return float.Parse(node.operation);
@@ -150,7 +161,7 @@ namespace Grapher
         }
 
         static object[] trigHOperand(char[] stringCheck, short startChar)
-        {            
+        {
             if (stringCheck.Length - startChar < 4)
             {
                 return new object[1] { false };
@@ -175,11 +186,38 @@ namespace Grapher
             return new object[1] { false };
         }
 
+        static object[] logOperand(char[] stringCheck, short startChar)
+        {
+            if (stringCheck.Length - startChar < 3)
+            {
+                return new object[1] { false };
+            }
+
+            string funcString = new string(stringCheck).Substring(startChar, 3);
+
+            if (funcString == "log" || funcString == "lan")
+            {
+                return new object[2] { true, funcString };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] logOperand(string stringCheck)
+        {
+            if (stringCheck == "log" || stringCheck == "lan")
+            {
+                return new object[2] { true, stringCheck };
+            }
+
+            return new object[1] { false };
+        }
+
         static float createFloat(long whole, long deci)
         {
             byte deciLength = (byte)(deci.ToString().Length);
             float retFloat = whole;
-            retFloat += (float)((deci-Math.Pow(10,deciLength-1)) * Math.Pow(10, -deciLength+1));
+            retFloat += (float)((deci - Math.Pow(10, deciLength - 1)) * Math.Pow(10, -deciLength + 1));
             return retFloat;
         }
 
@@ -258,6 +296,8 @@ namespace Grapher
 
         static object[] parseBranch(short startChar, char[] function)
         {
+            object[] errorObj = new object[2] { "", 2 };
+
             try
             {
                 ParseTree<string> root = new ParseTree<string>("");
@@ -299,37 +339,10 @@ namespace Grapher
                             }
                             else
                             {
-                                if (i < function.Length && (function[i] == 'x' || function[i] == 'y'))
+                                if (isNum)
                                 {
-                                    if (i < function.Length - 2 && function[i + 1] == '^')
-                                    {
-                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                        retBranch = parseBranch((short)(i + 2), function);
-
-                                        if (float.TryParse((string)(((ParseTree<string>)(retBranch[1])).operation), out powFloat))
-                                        {
-                                            branch = new ParseTree<string>(branch.left, branch.operation,
-                                                 (new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString() + "^" + powFloat.ToString()))));
-                                            i += (short)(powFloat.ToString().Length + 2);
-                                            isNum = false;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                        branch = new ParseTree<string>(branch.left, branch.operation,
-                                                    new ParseTree<string>(branch.right, "*", new ParseTree<string>(function[i].ToString())));
-                                        i++;
-                                        isNum = false;
-                                    }
-                                }
-                                else
-                                {
-                                    if (isNum)
-                                    {
-                                        insertFloatBranch(branch, createFloat(intNum, deciNum));
-                                        isNum = false;
-                                    }
+                                    insertFloatBranch(branch, createFloat(intNum, deciNum));
+                                    isNum = false;
                                 }
                             }
                         }
@@ -493,14 +506,14 @@ namespace Grapher
                         }
                         else
                         {
-                            return new object[2] { "", 2 };
+                            return errorObj;
                         }
                     }
                     else if ((bool)(trigOperand(function, i)[0]))//check for trig functions
                     {
                         if (function[i + 3] == '(')
                         {
-                            retBranch=parseBranch((short)(i+4),function);
+                            retBranch = parseBranch((short)(i + 4), function);
                             retOperand = (string)(trigOperand(function, i)[1]);
                             if (branch.operation == null || branch.operation == "")
                             {
@@ -510,7 +523,7 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), 
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.left);
                                 }
                                 else
@@ -523,9 +536,39 @@ namespace Grapher
                         }
                         else
                         {
-                            return new object[2] { "", 2 };
+                            return errorObj;
                         }
-                    }                    
+                    }
+                    else if ((bool)(logOperand(function, i)[0]))
+                    {
+                        if (function[i + 3] == '(')
+                        {
+                            retBranch = parseBranch((short)(i + 4), function);
+                            retOperand = (string)(logOperand(function, i)[1]);
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null);
+                            }
+                            else
+                            {
+                                if (branch.right == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.left);
+                                }
+                                else
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.right);
+                                }
+                            }
+                            i = (short)(retBranch[0]);
+                        }
+                        else
+                        {
+                            return errorObj;
+                        }
+                    }
                     else if (function[i] == '(')
                     {
                         retBranch = parseBranch((short)(i + 1), function);
@@ -554,7 +597,7 @@ namespace Grapher
             }
             catch
             {
-                return new object[2] { "", 2 };
+                return errorObj;
             }
         }
 
@@ -568,22 +611,26 @@ namespace Grapher
             char[] function = FunctionText.Text.ToCharArray();
 
             object[] branch = parseBranch(0, function);
-            float minX = Math.Max((float)(MinXVal.Value),-graphPanel.Width/2);
-            float maxX = Math.Min((float)(MaxXVal.Value),graphPanel.Width/2);
+            float minX = Math.Max((float)(MinXVal.Value), -graphPanel.Width / 2);
+            float maxX = Math.Min((float)(MaxXVal.Value), graphPanel.Width / 2);
             if (maxX <= minX)
             {
                 MessageBox.Show("Your graph needs to start before it ends!");
             }
             else
             {
-                float y = 0;
-                float prevX = minX;
-                float prevY = calcTree((ParseTree<string>)(branch[1]), minX);
-                Graphics graph = graphPanel.CreateGraphics();
-                graph.Clear(Color.White);
-
                 try
                 {
+
+                    float y = 0;
+                    float prevX = minX;
+                    float prevY = calcTree((ParseTree<string>)(branch[1]), minX);
+                    Graphics graph = graphPanel.CreateGraphics();
+                    graph.Clear(Color.White);
+
+                    graph.DrawLine(Pens.Black, 0, graphPanel.Height / 2, graphPanel.Width, graphPanel.Height / 2);//draw x and y axis
+                    graph.DrawLine(Pens.Black, graphPanel.Width / 2, 0, graphPanel.Width / 2, graphPanel.Height);
+
                     for (float x = minX; x < maxX; x += (float)(0.001))
                     {
                         y = calcTree((ParseTree<string>)(branch[1]), x);
