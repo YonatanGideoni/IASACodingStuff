@@ -294,6 +294,18 @@ namespace Grapher
             }
         }
 
+        static void forceInsertBranch(string insString, ParseTree<string> branch)
+        {
+            if (branch.right != null)
+            {
+
+            }
+            else if (branch.left != null)
+            {
+
+            }
+        }
+
         static object[] parseBranch(short startChar, char[] function)
         {
             object[] errorObj = new object[2] { "", 2 };
@@ -375,10 +387,14 @@ namespace Grapher
                             }
                             else if (function[i] == '/' || function[i] == '*')
                             {
-                                if (i < function.Length - 2 && function[i + 1] == '(')
+                                if((bool)(trigHOperand(branch.operation)[0]) || (bool)(trigOperand(branch.operation)[0]) || (bool)(logOperand(branch.operation)[0]))
+                                {
+                                    branch = new ParseTree<string>(branch, function[i].ToString(), null);
+                                }
+                                else if (i < function.Length - 2 && function[i + 1] == '(')
                                 {
                                     retBranch = parseBranch((short)(i + 2), function);
-                                    branch = new ParseTree<string>(branch, "*", (ParseTree<string>)(retBranch[1]));
+                                    branch = new ParseTree<string>(branch, function[i].ToString(), (ParseTree<string>)(retBranch[1]));
                                     i = (short)(retBranch[0]);
                                 }
                                 else
@@ -496,7 +512,7 @@ namespace Grapher
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.left);
                                 }
-                                else
+                                else if (branch.left == null)
                                 {
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
@@ -526,7 +542,7 @@ namespace Grapher
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.left);
                                 }
-                                else
+                                else if (branch.left == null)
                                 {
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
@@ -556,10 +572,14 @@ namespace Grapher
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.left);
                                 }
-                                else
+                                else if(branch.left==null)
                                 {
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
+                                }
+                                else
+                                {
+                                    
                                 }
                             }
                             i = (short)(retBranch[0]);
