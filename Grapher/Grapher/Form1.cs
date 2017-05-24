@@ -294,16 +294,26 @@ namespace Grapher
             }
         }
 
-        static void forceInsertBranch(string insString, ParseTree<string> branch)
+        static bool forceInsertBranch(ParseTree<string> insBranch, ParseTree<string> branch)
         {
-            if (branch.right != null)
+            if (branch.operation == null)
             {
-
+                branch = insBranch;
+                return true;
             }
-            else if (branch.left != null)
+            else if (branch.right.operation == null)
             {
-
+                branch.right = insBranch;
+                return true;
             }
+            else if (baseOperand(branch.right.operation))
+            {
+                if (!forceInsertBranch(insBranch, branch.right))
+                {
+                    return forceInsertBranch(insBranch, branch.left);
+                }
+            }
+            return false;
         }
 
         static object[] parseBranch(short startChar, char[] function)
@@ -517,6 +527,10 @@ namespace Grapher
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
                                 }
+                                else
+                                {
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), branch);
+                                }
                             }
                             i = (short)(retBranch[0]);
                         }
@@ -546,6 +560,10 @@ namespace Grapher
                                 {
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
+                                }
+                                else
+                                {
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), branch);
                                 }
                             }
                             i = (short)(retBranch[0]);
@@ -579,7 +597,7 @@ namespace Grapher
                                 }
                                 else
                                 {
-                                    
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),branch);
                                 }
                             }
                             i = (short)(retBranch[0]);
