@@ -39,7 +39,7 @@ namespace Grapher
             }
         }
 
-        static float calcTree(ParseTree<string> node, float xVal)
+        static double calcTree(ParseTree<string> node, double xVal, double yVal)
         {
             if (node == null)
             {
@@ -49,68 +49,72 @@ namespace Grapher
             {
                 if (node.operation == "+")
                 {
-                    return calcTree(node.left, xVal) + calcTree(node.right, xVal);
+                    return calcTree(node.left, xVal, yVal) + calcTree(node.right, xVal, yVal);
                 }
                 else if (node.operation == "-")
                 {
-                    return calcTree(node.left, xVal) - calcTree(node.right, xVal);
+                    return calcTree(node.left, xVal, yVal) - calcTree(node.right, xVal, yVal);
                 }
                 else if (node.operation == "*")
                 {
-                    return calcTree(node.left, xVal) * calcTree(node.right, xVal);
+                    return calcTree(node.left, xVal, yVal) * calcTree(node.right, xVal, yVal);
                 }
                 else if (node.operation == "/")
                 {
-                    return calcTree(node.left, xVal) / calcTree(node.right, xVal);
+                    return calcTree(node.left, xVal, yVal) / calcTree(node.right, xVal, yVal);
                 }
             }
-            else if (node.operation == "x" || node.operation == "y")
+            else if (node.operation == "x")
             {
                 return xVal;
             }
+            else if (node.operation == "y")
+            {
+                return yVal;
+            }
             else if (node.operation == "^")
             {
-                return (float)(Math.Pow(calcTree(node.left, xVal), calcTree(node.right, xVal)));
+                return (float)(Math.Pow(calcTree(node.left, xVal, yVal), calcTree(node.right, xVal, yVal)));
             }
             else if ((bool)(trigHOperand(node.operation)[0]))
             {
                 if ((string)(trigHOperand(node.operation)[1]) == "cosh")
                 {
-                    return (float)(Math.Cosh(calcTree(node.left, xVal)));
+                    return (double)(Math.Cosh(calcTree(node.left, xVal, yVal)));
                 }
                 else if ((string)(trigHOperand(node.operation)[1]) == "sinh")
                 {
-                    return (float)(Math.Sinh(calcTree(node.left, xVal)));
+                    return (double)(Math.Sinh(calcTree(node.left, xVal, yVal)));
                 }
                 else
                 {
-                    return (float)(Math.Tanh(calcTree(node.left, xVal)));
+                    return (double)(Math.Tanh(calcTree(node.left, xVal, yVal)));
                 }
             }
             else if ((bool)(trigOperand(node.operation)[0]))
             {
                 if ((string)(trigOperand(node.operation)[1]) == "cos")
                 {
-                    return (float)(Math.Cos(calcTree(node.left, xVal)));
+                    return (double)(Math.Cos(calcTree(node.left, xVal, yVal)));
                 }
                 else if ((string)(trigOperand(node.operation)[1]) == "sin")
                 {
-                    return (float)(Math.Sin(calcTree(node.left, xVal)));
+                    return (double)(Math.Sin(calcTree(node.left, xVal, yVal)));
                 }
                 else
                 {
-                    return (float)(Math.Tan(calcTree(node.left, xVal)));
+                    return (double)(Math.Tan(calcTree(node.left, xVal, yVal)));
                 }
             }
             else if ((bool)(logOperand(node.operation)[0]))
             {
                 if ((string)(logOperand(node.operation)[1]) == "log")
                 {
-                    return (float)(Math.Log10(calcTree(node.left, xVal)));
+                    return (float)(Math.Log10(calcTree(node.left, xVal, yVal)));
                 }
                 else
                 {
-                    return (float)(Math.Log(calcTree(node.left, xVal)));
+                    return (float)(Math.Log(calcTree(node.left, xVal, yVal)));
                 }
             }
             return float.Parse(node.operation);
@@ -649,9 +653,22 @@ namespace Grapher
             char[] function = FunctionText.Text.ToCharArray();
 
             object[] branch = parseBranch(0, function);
-            float minX = Math.Max((float)(MinXVal.Value), -graphPanel.Width / 2);
-            float maxX = Math.Min((float)(MaxXVal.Value), graphPanel.Width / 2);
-            if (maxX <= minX)
+            float minX = (float)(MinXVal.Value);
+            float maxX = (float)(MaxXVal.Value);
+            float minY = (float)(MinYVal.Value);
+            float maxY = (float)(MaxYVal.Value);
+
+            float incY = 100 / (Math.Abs(maxY) + Math.Abs(minY));
+            float incX = 100 / (Math.Abs(maxX) + Math.Abs(minX));
+
+            double[,] zCoord = new double[100, 100];
+            double[,] xCoord = new double[100, 100];
+            double[,] yCoord = new double[100, 100];
+
+            Graphics graph = graphPanel.CreateGraphics();
+            graph.Clear(Color.White);
+
+            if (maxX <= minX || maxY<=minY)
             {
                 MessageBox.Show("Your graph needs to start before it ends!");
             }
@@ -659,34 +676,13 @@ namespace Grapher
             {
                 try
                 {
-
-                    float y = 0;
-                    float prevX = minX;
-                    float prevY = calcTree((ParseTree<string>)(branch[1]), minX);
-                    Graphics graph = graphPanel.CreateGraphics();
-                    graph.Clear(Color.White);
-
-                    graph.DrawLine(Pens.Black, 0, graphPanel.Height / 2, graphPanel.Width, graphPanel.Height / 2);//draw x and y axis
-                    graph.DrawLine(Pens.Black, graphPanel.Width / 2, 0, graphPanel.Width / 2, graphPanel.Height);
-
-                    for (float x = minX; x < maxX; x += (float)(0.001))
+                    for (double y = minY; y < maxY; y += incY)
                     {
-                        y = calcTree((ParseTree<string>)(branch[1]), x);
-                        if (!float.IsNaN(y) && !float.IsInfinity(y))
+                        for (double x = minX; x < maxX; x += incX)
                         {
-                            if (Math.Abs(y - prevY) < 10)//don't connect asymptotes to other parts of graph
-                            {
-                                graph.DrawLine(Pens.Blue, graphPanel.Width / 2 + x, graphPanel.Height / 2 - y, graphPanel.Width / 2 + prevX, graphPanel.Height / 2 - prevY);
-                                prevX = x;
-                                prevY = y;
-                            }
-                            else
-                            {
-                                prevY = y;
-                                prevX = x;
-                            }
+                            zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = calcTree((ParseTree<string>)(branch[1]), x, y);
                         }
-                    }
+                    }                    
                 }
                 catch
                 {
