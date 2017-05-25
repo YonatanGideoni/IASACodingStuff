@@ -657,13 +657,18 @@ namespace Grapher
             float maxX = (float)(MaxXVal.Value);
             float minY = (float)(MinYVal.Value);
             float maxY = (float)(MaxYVal.Value);
+            double[] maxCoord = new double[3] { 0, 0,0 };
 
-            float incY = 100 / (Math.Abs(maxY) + Math.Abs(minY));
-            float incX = 100 / (Math.Abs(maxX) + Math.Abs(minX));
+            PointF[] fillPoints = new PointF[4];
 
-            double[,] zCoord = new double[100, 100];
-            double[,] xCoord = new double[100, 100];
-            double[,] yCoord = new double[100, 100];
+            float resolution = (Math.Abs(maxX) + Math.Abs(minX))+(Math.Abs(maxY) + Math.Abs(minY));
+            float incY = resolution / (Math.Abs(maxY) + Math.Abs(minY));
+            float incX = resolution / (Math.Abs(maxX) + Math.Abs(minX));
+            double viewAngle = AngleBar.Value;
+
+            double[,] zCoord = new double[(int)resolution, (int)resolution];
+            double[,] xCoord = new double[(int)resolution, (int)resolution];
+            double[,] yCoord = new double[(int)resolution, (int)resolution];
 
             Graphics graph = graphPanel.CreateGraphics();
             graph.Clear(Color.White);
@@ -674,20 +679,59 @@ namespace Grapher
             }
             else
             {
-                try
-                {
+                //try
+                //{
                     for (double y = minY; y < maxY; y += incY)
                     {
                         for (double x = minX; x < maxX; x += incX)
                         {
                             zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = calcTree((ParseTree<string>)(branch[1]), x, y);
+                            yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
+                            xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle) * y + x;
+                            
+
+                            if (maxCoord[0] < Math.Abs(xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            {
+                                maxCoord[0] = Math.Abs(xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
+                            }
+                            if (maxCoord[1] < Math.Abs(yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            {
+                                maxCoord[1] = Math.Abs(yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
+                            }
+                            if (maxCoord[2] < Math.Abs(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            {
+                                maxCoord[2] = Math.Abs(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
+                            }
                         }
-                    }                    
-                }
-                catch
-                {
+                    }
+
+                    double xScale = graphPanel.Width / 2 / maxCoord[0];
+                    double yScale = graphPanel.Height / 2 / maxCoord[1];
+                    double zScale = graphPanel.Height / 2 / maxCoord[2];
+                    Brush graphColor;
+
+                    for (short y = 0; y < resolution-1; y++)
+                    {
+                        for (short x = 0; x < resolution - 1; x++)
+                        {
+                            fillPoints[0] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y] * yScale));
+                            fillPoints[1] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
+                            fillPoints[2] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y + 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y + 1] * yScale));
+                            fillPoints[3] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y + 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y + 1] * yScale));
+
+                            graphColor=new SolidBrush(Color.FromArgb((int)Math.Abs(255*zCoord[x,y]/maxCoord[2]),0,0));
+                            graph.FillPolygon(graphColor, fillPoints);
+
+                            graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
+
+                            graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x, y + 1] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y + 1] * yScale));
+                        }
+                    }
+                //}
+                //catch
+                //{
                     MessageBox.Show("There is a syntax problem, please write your function differently.");
-                }
+                //}
             }
         }
     }

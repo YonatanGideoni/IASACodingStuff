@@ -85,7 +85,7 @@
             this.MinXVal.Size = new System.Drawing.Size(63, 20);
             this.MinXVal.TabIndex = 3;
             this.MinXVal.Value = new decimal(new int[] {
-            50,
+            5,
             0,
             0,
             -2147483648});
@@ -108,7 +108,7 @@
             this.MaxXVal.Size = new System.Drawing.Size(63, 20);
             this.MaxXVal.TabIndex = 4;
             this.MaxXVal.Value = new decimal(new int[] {
-            50,
+            5,
             0,
             0,
             0});
@@ -201,7 +201,7 @@
             this.MaxYVal.Size = new System.Drawing.Size(63, 20);
             this.MaxYVal.TabIndex = 10;
             this.MaxYVal.Value = new decimal(new int[] {
-            50,
+            5,
             0,
             0,
             0});
@@ -224,7 +224,7 @@
             this.MinYVal.Size = new System.Drawing.Size(63, 20);
             this.MinYVal.TabIndex = 9;
             this.MinYVal.Value = new decimal(new int[] {
-            50,
+            5,
             0,
             0,
             -2147483648});
