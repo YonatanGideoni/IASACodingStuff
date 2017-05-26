@@ -45,6 +45,7 @@
             this.AngleBar = new System.Windows.Forms.HScrollBar();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.ResolutionBox = new System.Windows.Forms.NumericUpDown();
+            this.ContourBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MinXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxYVal)).BeginInit();
@@ -71,8 +72,8 @@
             // 
             // MinXVal
             // 
-            this.MinXVal.DecimalPlaces = 3;
-            this.MinXVal.Location = new System.Drawing.Point(490, 43);
+            this.MinXVal.DecimalPlaces = 2;
+            this.MinXVal.Location = new System.Drawing.Point(527, 44);
             this.MinXVal.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -84,7 +85,7 @@
             0,
             -2147483648});
             this.MinXVal.Name = "MinXVal";
-            this.MinXVal.Size = new System.Drawing.Size(63, 20);
+            this.MinXVal.Size = new System.Drawing.Size(48, 20);
             this.MinXVal.TabIndex = 3;
             this.MinXVal.Value = new decimal(new int[] {
             5,
@@ -94,8 +95,8 @@
             // 
             // MaxXVal
             // 
-            this.MaxXVal.DecimalPlaces = 3;
-            this.MaxXVal.Location = new System.Drawing.Point(490, 17);
+            this.MaxXVal.DecimalPlaces = 2;
+            this.MaxXVal.Location = new System.Drawing.Point(527, 18);
             this.MaxXVal.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -107,7 +108,7 @@
             0,
             -2147483648});
             this.MaxXVal.Name = "MaxXVal";
-            this.MaxXVal.Size = new System.Drawing.Size(63, 20);
+            this.MaxXVal.Size = new System.Drawing.Size(48, 20);
             this.MaxXVal.TabIndex = 4;
             this.MaxXVal.Value = new decimal(new int[] {
             5,
@@ -119,7 +120,7 @@
             // 
             this.MinXBox.BackColor = System.Drawing.SystemColors.Control;
             this.MinXBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.MinXBox.Location = new System.Drawing.Point(424, 45);
+            this.MinXBox.Location = new System.Drawing.Point(461, 46);
             this.MinXBox.MaxLength = 5;
             this.MinXBox.Name = "MinXBox";
             this.MinXBox.ReadOnly = true;
@@ -131,7 +132,7 @@
             // 
             this.MaxXBox.BackColor = System.Drawing.SystemColors.Control;
             this.MaxXBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.MaxXBox.Location = new System.Drawing.Point(424, 20);
+            this.MaxXBox.Location = new System.Drawing.Point(461, 21);
             this.MaxXBox.MaxLength = 5;
             this.MaxXBox.Name = "MaxXBox";
             this.MaxXBox.ReadOnly = true;
@@ -165,7 +166,7 @@
             // 
             this.textBox2.BackColor = System.Drawing.SystemColors.Control;
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Location = new System.Drawing.Point(559, 20);
+            this.textBox2.Location = new System.Drawing.Point(581, 21);
             this.textBox2.MaxLength = 5;
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -177,7 +178,7 @@
             // 
             this.textBox3.BackColor = System.Drawing.SystemColors.Control;
             this.textBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox3.Location = new System.Drawing.Point(559, 45);
+            this.textBox3.Location = new System.Drawing.Point(581, 46);
             this.textBox3.MaxLength = 5;
             this.textBox3.Name = "textBox3";
             this.textBox3.ReadOnly = true;
@@ -187,8 +188,8 @@
             // 
             // MaxYVal
             // 
-            this.MaxYVal.DecimalPlaces = 3;
-            this.MaxYVal.Location = new System.Drawing.Point(625, 17);
+            this.MaxYVal.DecimalPlaces = 2;
+            this.MaxYVal.Location = new System.Drawing.Point(647, 18);
             this.MaxYVal.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -200,7 +201,7 @@
             0,
             -2147483648});
             this.MaxYVal.Name = "MaxYVal";
-            this.MaxYVal.Size = new System.Drawing.Size(63, 20);
+            this.MaxYVal.Size = new System.Drawing.Size(50, 20);
             this.MaxYVal.TabIndex = 10;
             this.MaxYVal.Value = new decimal(new int[] {
             5,
@@ -210,8 +211,8 @@
             // 
             // MinYVal
             // 
-            this.MinYVal.DecimalPlaces = 3;
-            this.MinYVal.Location = new System.Drawing.Point(625, 43);
+            this.MinYVal.DecimalPlaces = 2;
+            this.MinYVal.Location = new System.Drawing.Point(647, 44);
             this.MinYVal.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -223,7 +224,7 @@
             0,
             -2147483648});
             this.MinYVal.Name = "MinYVal";
-            this.MinYVal.Size = new System.Drawing.Size(63, 20);
+            this.MinYVal.Size = new System.Drawing.Size(50, 20);
             this.MinYVal.TabIndex = 9;
             this.MinYVal.Value = new decimal(new int[] {
             5,
@@ -235,7 +236,7 @@
             // 
             this.textBox4.BackColor = System.Drawing.SystemColors.Control;
             this.textBox4.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox4.Location = new System.Drawing.Point(300, 20);
+            this.textBox4.Location = new System.Drawing.Point(294, 21);
             this.textBox4.MaxLength = 5;
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
@@ -248,7 +249,7 @@
             this.AngleBar.Location = new System.Drawing.Point(270, 44);
             this.AngleBar.Maximum = 90;
             this.AngleBar.Name = "AngleBar";
-            this.AngleBar.Size = new System.Drawing.Size(136, 17);
+            this.AngleBar.Size = new System.Drawing.Size(108, 17);
             this.AngleBar.TabIndex = 15;
             this.AngleBar.Value = 45;
             // 
@@ -277,6 +278,11 @@
             0,
             0,
             0});
+            this.ResolutionBox.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.ResolutionBox.Name = "ResolutionBox";
             this.ResolutionBox.Size = new System.Drawing.Size(50, 20);
             this.ResolutionBox.TabIndex = 17;
@@ -286,11 +292,23 @@
             0,
             0});
             // 
+            // ContourBox
+            // 
+            this.ContourBox.AutoSize = true;
+            this.ContourBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ContourBox.Location = new System.Drawing.Point(181, 47);
+            this.ContourBox.Name = "ContourBox";
+            this.ContourBox.Size = new System.Drawing.Size(63, 17);
+            this.ContourBox.TabIndex = 18;
+            this.ContourBox.Text = "Contour";
+            this.ContourBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 722);
+            this.Controls.Add(this.ContourBox);
             this.Controls.Add(this.ResolutionBox);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.AngleBar);
@@ -338,6 +356,7 @@
         private System.Windows.Forms.HScrollBar AngleBar;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.NumericUpDown ResolutionBox;
+        private System.Windows.Forms.CheckBox ContourBox;
     }
 }
 

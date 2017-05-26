@@ -501,7 +501,7 @@ namespace Grapher
                                     (new ParseTree<string>(function[i].ToString()), "^", (ParseTree<string>)(getPow(new string(function), (short)(i + 2)))));
                                 }
 
-                                i += (short)(getPow(new string(function), (short)(i + 2)).ToString().Length + 1);
+                                i += (short)(getPow(new string(function), (short)(i + 2)).operation.ToString().Length + 1);
                             }
                         }
                         else
@@ -628,6 +628,12 @@ namespace Grapher
                         {
                             branch = new ParseTree<string>(branch.left, branch.operation, (ParseTree<string>)(retBranch[1]));
                         }
+
+                        if (i < function.Length - 2 && (function[i + 1] == '*' || function[i + 1] == '/'))
+                        {
+                            branch = new ParseTree<string>(branch, function[i + 1].ToString(), null);
+                            i++;
+                        }
                     }
                     else if (function[i] == ')')
                     {
@@ -682,49 +688,56 @@ namespace Grapher
             {
                 try
                 {
-                    for (double y = minY; Math.Round(y, 2) < maxY; y += incY)
+                    for (double y = minY; y < maxY; y += incY)
                     {
-                        for (double x = minX; Math.Round(x,2) < maxX; x += incX)
+                        for (double x = minX; x < maxX; x += incX)
                         {
-                            zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = calcTree((ParseTree<string>)(branch[1]), x, y);
-                            if (!double.IsInfinity(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]) &&
-                                !double.IsNaN(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            try
                             {
-                                yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle*Math.PI/180) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
-                                xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle * Math.PI / 180) * y + x;
+                                zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = calcTree((ParseTree<string>)(branch[1]), x, y);
+                                if (!double.IsInfinity(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]) &&
+                                    !double.IsNaN(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                                {
+                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle * Math.PI / 180) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
+                                    xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle * Math.PI / 180) * y + x;
 
-                                if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
-                                {
-                                    maxCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
-                                }
-                                else if (minCoord[0] > xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
-                                {
-                                    minCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
-                                }
+                                    if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        maxCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
+                                    else if (minCoord[0] > xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        minCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
 
-                                if (maxCoord[1] < yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
-                                {
-                                    maxCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
-                                }
-                                else if (minCoord[1] > yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
-                                {
-                                    minCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
-                                }
+                                    if (maxCoord[1] < yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        maxCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
+                                    else if (minCoord[1] > yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        minCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
 
-                                if (maxCoord[2] < zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
-                                {
-                                    maxCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    if (maxCoord[2] < zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        maxCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
+                                    else if (minCoord[2] > zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                    {
+                                        minCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    }
                                 }
-                                else if (minCoord[2] > zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                else
                                 {
-                                    minCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
+                                    xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
                                 }
                             }
-                            else
+                            catch
                             {
-                                yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
-                                xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
-                            }                            
+                                break;
+                            }
                         }
                     }
 
@@ -740,7 +753,7 @@ namespace Grapher
                         {
                             if (!double.IsInfinity(zCoord[x, y]) && !double.IsNaN(zCoord[x, y]) &&
                                 !double.IsNaN(xCoord[x, y]) && !double.IsNaN(xCoord[x + 1, y]) &&
-                                !double.IsNaN(xCoord[x, y - 1]) && !double.IsNaN(xCoord[x + 1, y - 1]) && 
+                                !double.IsNaN(xCoord[x, y - 1]) && !double.IsNaN(xCoord[x + 1, y - 1]) &&
                                 !double.IsNaN(yCoord[x, y]) && !double.IsNaN(yCoord[x + 1, y]) &&
                                 !double.IsNaN(yCoord[x, y - 1]) && !double.IsNaN(yCoord[x + 1, y - 1]))
                             {
@@ -751,11 +764,13 @@ namespace Grapher
 
                                 graphColor = new SolidBrush(Color.FromArgb((int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif), 0, 0));
                                 graph.FillPolygon(graphColor, fillPoints);
-                                Update();
-                                                                
-                                //graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
 
-                                //graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
+                                if (ContourBox.Checked)
+                                {
+                                    graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
+
+                                    graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
+                                }
                             }
                         }
                     }
