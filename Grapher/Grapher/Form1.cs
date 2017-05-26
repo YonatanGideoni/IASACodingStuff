@@ -401,7 +401,7 @@ namespace Grapher
                             }
                             else if (function[i] == '/' || function[i] == '*')
                             {
-                                if((bool)(trigHOperand(branch.operation)[0]) || (bool)(trigOperand(branch.operation)[0]) || (bool)(logOperand(branch.operation)[0]))
+                                if ((bool)(trigHOperand(branch.operation)[0]) || (bool)(trigOperand(branch.operation)[0]) || (bool)(logOperand(branch.operation)[0]))
                                 {
                                     branch = new ParseTree<string>(branch, function[i].ToString(), null);
                                 }
@@ -594,14 +594,14 @@ namespace Grapher
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.left);
                                 }
-                                else if(branch.left==null)
+                                else if (branch.left == null)
                                 {
                                     branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
                                                                                     branch.operation, branch.right);
                                 }
                                 else
                                 {
-                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),branch);
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), branch);
                                 }
                             }
                             i = (short)(retBranch[0]);
@@ -657,13 +657,14 @@ namespace Grapher
             float maxX = (float)(MaxXVal.Value);
             float minY = (float)(MinYVal.Value);
             float maxY = (float)(MaxYVal.Value);
-            double[] maxCoord = new double[3] { 0, 0,0 };
+            double[] maxCoord = new double[3] { 0, 0, 0 };
+            double[] minCoord = new double[3] { 0, 0, 0 };
 
             PointF[] fillPoints = new PointF[4];
 
-            float resolution = (Math.Abs(maxX) + Math.Abs(minX))+(Math.Abs(maxY) + Math.Abs(minY));
-            float incY = resolution / (Math.Abs(maxY) + Math.Abs(minY));
-            float incX = resolution / (Math.Abs(maxX) + Math.Abs(minX));
+            short resolution = (short)ResolutionBox.Value;
+            float incY = (Math.Abs(maxY) + Math.Abs(minY)) / resolution;
+            float incX = (Math.Abs(maxX) + Math.Abs(minX)) / resolution;
             double viewAngle = AngleBar.Value;
 
             double[,] zCoord = new double[(int)resolution, (int)resolution];
@@ -673,65 +674,96 @@ namespace Grapher
             Graphics graph = graphPanel.CreateGraphics();
             graph.Clear(Color.White);
 
-            if (maxX <= minX || maxY<=minY)
+            if (maxX <= minX || maxY <= minY)
             {
                 MessageBox.Show("Your graph needs to start before it ends!");
             }
             else
             {
-                //try
-                //{
-                    for (double y = minY; y < maxY; y += incY)
+                try
+                {
+                    for (double y = minY; Math.Round(y, 2) < maxY; y += incY)
                     {
-                        for (double x = minX; x < maxX; x += incX)
+                        for (double x = minX; Math.Round(x,2) < maxX; x += incX)
                         {
                             zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = calcTree((ParseTree<string>)(branch[1]), x, y);
-                            yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
-                            xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle) * y + x;
-                            
+                            if (!double.IsInfinity(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]) &&
+                                !double.IsNaN(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            {
+                                yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle*Math.PI/180) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
+                                xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle * Math.PI / 180) * y + x;
 
-                            if (maxCoord[0] < Math.Abs(xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
-                            {
-                                maxCoord[0] = Math.Abs(xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
+                                if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    maxCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
+                                else if (minCoord[0] > xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    minCoord[0] = xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
+
+                                if (maxCoord[1] < yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    maxCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
+                                else if (minCoord[1] > yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    minCoord[1] = yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
+
+                                if (maxCoord[2] < zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    maxCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
+                                else if (minCoord[2] > zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
+                                {
+                                    minCoord[2] = zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
+                                }
                             }
-                            if (maxCoord[1] < Math.Abs(yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
+                            else
                             {
-                                maxCoord[1] = Math.Abs(yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
-                            }
-                            if (maxCoord[2] < Math.Abs(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
-                            {
-                                maxCoord[2] = Math.Abs(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]);
-                            }
+                                yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
+                                xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = double.NaN;
+                            }                            
                         }
                     }
 
-                    double xScale = graphPanel.Width / 2 / maxCoord[0];
-                    double yScale = graphPanel.Height / 2 / maxCoord[1];
-                    double zScale = graphPanel.Height / 2 / maxCoord[2];
+                    double xScale = graphPanel.Width / 2 / Math.Abs(maxCoord[0]);
+                    double yScale = graphPanel.Height / 2 / Math.Abs(maxCoord[1]);
+                    double zScale = graphPanel.Height / 2 / Math.Abs(maxCoord[2]);
+                    double heightDif = maxCoord[2] - minCoord[2];
                     Brush graphColor;
 
-                    for (short y = 0; y < resolution-1; y++)
+                    for (short y = (short)Math.Floor((decimal)resolution - 1); y > 0; y--)
                     {
-                        for (short x = 0; x < resolution - 1; x++)
+                        for (short x = 0; x < (short)Math.Floor((decimal)resolution - 1); x++)
                         {
-                            fillPoints[0] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y] * yScale));
-                            fillPoints[1] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
-                            fillPoints[2] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y + 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y + 1] * yScale));
-                            fillPoints[3] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y + 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y + 1] * yScale));
+                            if (!double.IsInfinity(zCoord[x, y]) && !double.IsNaN(zCoord[x, y]) &&
+                                !double.IsNaN(xCoord[x, y]) && !double.IsNaN(xCoord[x + 1, y]) &&
+                                !double.IsNaN(xCoord[x, y - 1]) && !double.IsNaN(xCoord[x + 1, y - 1]) && 
+                                !double.IsNaN(yCoord[x, y]) && !double.IsNaN(yCoord[x + 1, y]) &&
+                                !double.IsNaN(yCoord[x, y - 1]) && !double.IsNaN(yCoord[x + 1, y - 1]))
+                            {
+                                fillPoints[1] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y] * yScale));
+                                fillPoints[0] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
+                                fillPoints[2] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
+                                fillPoints[3] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y - 1] * yScale));
 
-                            graphColor=new SolidBrush(Color.FromArgb((int)Math.Abs(255*zCoord[x,y]/maxCoord[2]),0,0));
-                            graph.FillPolygon(graphColor, fillPoints);
+                                graphColor = new SolidBrush(Color.FromArgb((int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif), 0, 0));
+                                graph.FillPolygon(graphColor, fillPoints);
+                                Update();
+                                                                
+                                //graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
 
-                            graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
-
-                            graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x, y + 1] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y + 1] * yScale));
+                                //graph.DrawLine(Pens.Blue, (int)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y] * yScale), (int)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (int)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
+                            }
                         }
                     }
-                //}
-                //catch
-                //{
+                }
+                catch
+                {
                     MessageBox.Show("There is a syntax problem, please write your function differently.");
-                //}
+                }
             }
         }
     }

@@ -44,10 +44,12 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.AngleBar = new System.Windows.Forms.HScrollBar();
             this.textBox5 = new System.Windows.Forms.TextBox();
+            this.ResolutionBox = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.MinXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxYVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MinYVal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResolutionBox)).BeginInit();
             this.SuspendLayout();
             // 
             // FunctionText
@@ -243,7 +245,7 @@
             // 
             // AngleBar
             // 
-            this.AngleBar.Location = new System.Drawing.Point(270, 43);
+            this.AngleBar.Location = new System.Drawing.Point(270, 44);
             this.AngleBar.Maximum = 90;
             this.AngleBar.Name = "AngleBar";
             this.AngleBar.Size = new System.Drawing.Size(136, 17);
@@ -262,11 +264,34 @@
             this.textBox5.TabIndex = 16;
             this.textBox5.Text = "Resolution:";
             // 
+            // ResolutionBox
+            // 
+            this.ResolutionBox.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ResolutionBox.Location = new System.Drawing.Point(218, 17);
+            this.ResolutionBox.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.ResolutionBox.Name = "ResolutionBox";
+            this.ResolutionBox.Size = new System.Drawing.Size(50, 20);
+            this.ResolutionBox.TabIndex = 17;
+            this.ResolutionBox.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 722);
+            this.Controls.Add(this.ResolutionBox);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.AngleBar);
             this.Controls.Add(this.textBox4);
@@ -289,6 +314,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.MaxXVal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxYVal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MinYVal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ResolutionBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,6 +337,7 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.HScrollBar AngleBar;
         private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.NumericUpDown ResolutionBox;
     }
 }
 
