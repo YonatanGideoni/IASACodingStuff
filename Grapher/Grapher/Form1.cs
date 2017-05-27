@@ -235,9 +235,13 @@ namespace Grapher
             {
                 insBranch.left = new ParseTree<string>(insVar);
             }
-            else
+            else if(insBranch.right==null)
             {
                 insBranch.right = new ParseTree<string>(insVar);
+            }
+            else
+            {
+                forceInsertBranch(new ParseTree<string>(insVar), insBranch);
             }
         }
 
@@ -259,6 +263,10 @@ namespace Grapher
             else if (numArr[0] == '(')
             {
                 return (ParseTree<string>)(parseBranch(1, numArr)[1]);
+            }
+            else if (numArr[0] == 'x' || numArr[0] == 'y')
+            {
+                return new ParseTree<string>(numArr[0].ToString());
             }
             else
             {
