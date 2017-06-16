@@ -235,7 +235,7 @@ namespace Grapher
             {
                 insBranch.left = new ParseTree<string>(insVar);
             }
-            else if(insBranch.right==null)
+            else if (insBranch.right == null)
             {
                 insBranch.right = new ParseTree<string>(insVar);
             }

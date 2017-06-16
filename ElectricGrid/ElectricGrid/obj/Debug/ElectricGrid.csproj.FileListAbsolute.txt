@@ -7,3 +7,12 @@ C:\Users\chais\Desktop\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.Properti
 C:\Users\chais\Desktop\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.csproj.GenerateResource.Cache
 C:\Users\chais\Desktop\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.exe
 C:\Users\chais\Desktop\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\bin\Debug\ElectricGrid.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\bin\Debug\ElectricGrid.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\bin\Debug\ElectricGrid.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.Form1.resources
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.Properties.Resources.resources
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\ElectricGrid\ElectricGrid\obj\Debug\ElectricGrid.csproj.GenerateResource.Cache
