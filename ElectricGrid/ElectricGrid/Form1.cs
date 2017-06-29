@@ -20,6 +20,7 @@ namespace ElectricGrid
         Button[,] gridArr;
         byte[,] gridByte;
         byte[] prevButton;
+        bool powerActive = false;
 
         private void InitGridButton_Click(object sender, EventArgs e)
         {
@@ -68,75 +69,78 @@ namespace ElectricGrid
         {
             byte gridSize = (byte)gridArr.GetLength(0);
             byte[] pressedButton = (byte[])(((Button)(sender)).Tag);
-            if (e.Button == MouseButtons.Left)
+            if (!powerActive)
             {
-                if (prevButton == null)
+                if (e.Button == MouseButtons.Left)
                 {
-                    prevButton = new byte[2] { pressedButton[0], pressedButton[1] };
-                }
-                else
-                {
-                    if (pressedButton[0] - prevButton[0] == 0 || pressedButton[1] - prevButton[1] == 0)
+                    if (prevButton == null)
                     {
-                        if (pressedButton[0] - prevButton[0] == 0)
-                        {
-                            for (byte i = Math.Min(pressedButton[1], prevButton[1]); i < 1 + Math.Max(pressedButton[1], prevButton[1]); i++)
-                            {
-                                gridArr[prevButton[0], i].BackgroundImage = Properties.Resources.VerticalWire;
-                                gridByte[prevButton[0], i] = 2;
-                            }
-                        }
-                        else
-                        {
-                            for (byte i = Math.Min(pressedButton[0], prevButton[0]); i < 1 + Math.Max(pressedButton[0], prevButton[0]); i++)
-                            {
-                                gridArr[i, prevButton[1]].BackgroundImage = Properties.Resources.HorizontalWire;
-                                gridByte[i, prevButton[1]] = 3;
-                            }
-                        }
-
-                        if (isIntersection(prevButton))
-                        {
-                            gridArr[prevButton[0], prevButton[1]].BackgroundImage = Properties.Resources._Intersection;
-                        }
-                        if (isIntersection(pressedButton))
-                        {
-                            gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources._Intersection;
-                        }
-
-                        prevButton = null;
+                        prevButton = new byte[2] { pressedButton[0], pressedButton[1] };
                     }
                     else
                     {
-                        if (prevButton != new byte[2] { (byte)(gridSize / 2 - 1), 0 })
+                        if (pressedButton[0] - prevButton[0] == 0 || pressedButton[1] - prevButton[1] == 0)
                         {
+                            if (pressedButton[0] - prevButton[0] == 0)
+                            {
+                                for (byte i = Math.Min(pressedButton[1], prevButton[1]); i < 1 + Math.Max(pressedButton[1], prevButton[1]); i++)
+                                {
+                                    gridArr[prevButton[0], i].BackgroundImage = Properties.Resources.VerticalWire;
+                                    gridByte[prevButton[0], i] = 2;
+                                }
+                            }
+                            else
+                            {
+                                for (byte i = Math.Min(pressedButton[0], prevButton[0]); i < 1 + Math.Max(pressedButton[0], prevButton[0]); i++)
+                                {
+                                    gridArr[i, prevButton[1]].BackgroundImage = Properties.Resources.HorizontalWire;
+                                    gridByte[i, prevButton[1]] = 3;
+                                }
+                            }
+
+                            if (isIntersection(prevButton))
+                            {
+                                gridArr[prevButton[0], prevButton[1]].BackgroundImage = Properties.Resources._Intersection;
+                            }
+                            if (isIntersection(pressedButton))
+                            {
+                                gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources._Intersection;
+                            }
+
                             prevButton = null;
+                        }
+                        else
+                        {
+                            if (prevButton != new byte[2] { (byte)(gridSize / 2 - 1), 0 })
+                            {
+                                prevButton = null;
+                            }
                         }
                     }
                 }
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                switch (gridByte[pressedButton[0], pressedButton[1]])
+                else if (e.Button == MouseButtons.Right)
                 {
-                    case 3:
-                        gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor1;
-                        gridByte[pressedButton[0], pressedButton[1]] = 1;
-                        break;
-                    case 1:
-                        gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor5;
-                        gridByte[pressedButton[0], pressedButton[1]] = 5;
-                        break;
-                    case 5:
-                        gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor10;
-                        gridByte[pressedButton[0], pressedButton[1]] = 10;
-                        break;
-                    case 10:
-                        gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalWire;
-                        gridByte[pressedButton[0], pressedButton[1]] = 3;
-                        break;
-                }
+                    switch (gridByte[pressedButton[0], pressedButton[1]])
+                    {
+                        case 3:
+                            gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor1;
+                            gridByte[pressedButton[0], pressedButton[1]] = 1;
+                            break;
+                        case 1:
+                            gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor5;
+                            gridByte[pressedButton[0], pressedButton[1]] = 5;
+                            break;
+                        case 5:
+                            gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalResistor10;
+                            gridByte[pressedButton[0], pressedButton[1]] = 10;
+                            break;
+                        case 10:
+                            gridArr[pressedButton[0], pressedButton[1]].BackgroundImage = Properties.Resources.HorizontalWire;
+                            gridByte[pressedButton[0], pressedButton[1]] = 3;
+                            break;
+                    }
 
+                }
             }
         }
 
@@ -147,14 +151,14 @@ namespace ElectricGrid
             bool horizontalConnect = false;
             if (buttonLoc[0] != 0)
             {
-                if (gridByte[buttonLoc[0] - 1, buttonLoc[1]] == 2)
+                if (gridByte[buttonLoc[0] - 1, buttonLoc[1]] == 3)
                 {
                     verticalConnect = true;
                 }
             }
             if (buttonLoc[0] != gridSize - 1)
             {
-                if (gridByte[buttonLoc[0] + 1, buttonLoc[1]] == 2)
+                if (gridByte[buttonLoc[0] + 1, buttonLoc[1]] == 3)
                 {
                     verticalConnect = true;
                 }
@@ -176,9 +180,18 @@ namespace ElectricGrid
 
             if (horizontalConnect && verticalConnect)
             {
+                gridByte[buttonLoc[0], buttonLoc[1]] = 4;
                 return true;
             }
             return false;
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar.ToString() == Keys.P.ToString())
+            {
+                powerActive = true;
+            }
         }
     }
 }

@@ -25,3 +25,7 @@ C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolve
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.Form1.resources
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.Properties.Resources.resources
 C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.csproj.GenerateResource.Cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\bin\Debug\MatrixLinearEquationsSolver.exe.manifest
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\bin\Debug\MatrixLinearEquationsSolver.application
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.exe.manifest
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\MatrixLinearEquationsSolver\MatrixLinearEquationsSolver\obj\Debug\MatrixLinearEquationsSolver.application

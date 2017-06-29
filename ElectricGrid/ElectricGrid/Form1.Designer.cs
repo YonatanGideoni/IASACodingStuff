@@ -84,8 +84,10 @@
             this.Controls.Add(this.GridSizeText);
             this.Controls.Add(this.GridSizeNum);
             this.Controls.Add(this.InitGridButton);
+            this.KeyPreview = true;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

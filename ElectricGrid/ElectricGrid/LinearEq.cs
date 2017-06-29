@@ -192,7 +192,7 @@ namespace ElectricGrid
 
         public float[] solveMatrice(float[,] matrice)
         {
-            byte varNum = (byte)(matrice.GetLength(0)-1);
+            byte varNum = (byte)(matrice.GetLength(0) - 1);
             byte eqNum = (byte)(matrice.GetLength(1));
             float[] solutionMatrice = new float[varNum];
             for (byte i = 0; i < solutionMatrice.Length - 1; i++, solutionMatrice[i] = float.MaxValue) { }
@@ -214,12 +214,16 @@ namespace ElectricGrid
                             {
                                 eliminateVar(matrice, i, row);
                                 showMatrice(matrice, (row + 1).ToString() + " variables eliminated");
-                                lineVarsCount[j] = numVarsPerLine(j, matrice);
                             }
                         }
                         break;
                     }
                 }
+            }
+
+            for (byte i = 0; i < eqNum; i++)
+            {
+                lineVarsCount[i] = numVarsPerLine(i, matrice);
             }
 
             //check if there's a solution, unqie or at all
