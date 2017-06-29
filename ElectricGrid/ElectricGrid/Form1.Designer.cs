@@ -86,7 +86,7 @@
             this.Controls.Add(this.InitGridButton);
             this.KeyPreview = true;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Electric Grid";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeNum)).EndInit();
             this.ResumeLayout(false);

@@ -30,14 +30,14 @@ namespace ElectricGrid
             gridByte = new byte[gridSize, gridSize];
 
             Panel grid = new Panel();
-            grid.Size = new Size(gridSize * (buttonSize + 1), gridSize * (buttonSize + 1));
+            grid.Size = new Size(gridSize * (buttonSize + 2), gridSize * (buttonSize + 4));
             this.Size = grid.Size;
             grid.Location = new Point(0, 0);
             grid.BackColor = Color.Yellow;
 
-            for (byte i = 0; i < gridSize - 1; i++)
+            for (byte i = 0; i < gridSize; i++)
             {
-                for (byte j = 0; j < gridSize - 1; j++)
+                for (byte j = 0; j < gridSize; j++)
                 {
                     gridArr[i, j] = new Button();
                     gridByte[i, j] = 0;
@@ -54,15 +54,17 @@ namespace ElectricGrid
 
             this.Controls.Add(grid);
 
-            gridByte[0, gridSize / 2 - 1] = 0;
-            gridArr[0, gridSize / 2 - 1].BackColor = Color.Green;
-            prevButton = new byte[2] { 0, (byte)(gridSize / 2 - 1) };
+            gridByte[0, (gridSize-1) / 2 ] = 0;
+            gridArr[0, (gridSize-1) / 2].BackColor = Color.Green;
+            prevButton = new byte[2] { 0, (byte)((gridSize-1) / 2 )};
 
             GridSizeNum.Enabled = false;
             InitGridButton.Enabled = false;
             GridSizeText.Visible = false;
             GridSizeNum.Visible = false;
             InitGridButton.Visible = false;
+
+            this.Text = "Create Grid";
         }
 
         void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -111,7 +113,7 @@ namespace ElectricGrid
                         }
                         else
                         {
-                            if (prevButton != new byte[2] { (byte)(gridSize / 2 - 1), 0 })
+                            if (prevButton != new byte[2] { (byte)((gridSize-1) / 2), 0 })
                             {
                                 prevButton = null;
                             }
@@ -142,6 +144,20 @@ namespace ElectricGrid
 
                 }
             }
+            else
+            {
+                gridArr[0, (gridSize-1) / 2].BackgroundImage = null;
+                gridArr[0, (gridSize-1) / 2].BackColor = Color.Green;
+
+                solveCircuit(gridByte);
+            }
+        }
+
+        static float solveCircuit(byte[,] circuit)
+        {
+            CircuitCalc solve=new CircuitCalc();
+            solve.solveCircuit(circuit);
+            return float.NaN;
         }
 
         public bool isIntersection(byte[] buttonLoc)
@@ -186,11 +202,38 @@ namespace ElectricGrid
             return false;
         }
 
+        private void clearGrid(Button[,] gridArr, byte[,] gridByte)
+        {
+            for (byte i = 0; i < gridArr.GetLength(0); i++)
+            {
+                for (byte j = 0; j < gridArr.GetLength(1); j++)
+                {
+                    gridByte[i, j] = 0;
+                    gridArr[i, j].BackColor = Color.Black;
+                    gridArr[i, j].BackgroundImage = null;
+                }
+            }
+            gridArr[0, gridArr.GetLength(0) / 2 - 1].BackColor = Color.Green;
+        }
+
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar.ToString() == Keys.P.ToString())
+            if (e.KeyChar == 'p')
             {
-                powerActive = true;
+                powerActive = !powerActive;
+                if (powerActive)
+                {
+                    this.Text = "Grid is Active";
+                }
+                else
+                {
+                    this.Text = "Create Grid";
+                }
+            }
+            if (e.KeyChar == 'c')
+            {
+                clearGrid(gridArr, gridByte);
+                prevButton = new byte[2] { 0, (byte)(gridArr.GetLength(0) / 2 - 1) };
             }
         }
     }
