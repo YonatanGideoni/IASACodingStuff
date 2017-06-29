@@ -8,12 +8,46 @@ namespace ElectricGrid
 {
     class CircuitList
     {
-        private CircuitList firstWire=null;
-        private CircuitList secondWire=null;
-        private CircuitList thirdWire=null;
-        private float resistance = float.NaN;
-        private float voltage = float.NaN;
-        private float amperage = float.NaN;
+        public CircuitList firstWire { get; set; }
+        public CircuitList secondWire { get; set; }
+        public CircuitList thirdWire { get; set; }
+        private float Resistance = float.NaN;
+        private float Voltage = float.NaN;
+        private float Amperage = float.NaN;
+
+        public float resistance
+        {
+            get
+            {
+                return Resistance;
+            }
+            set
+            {
+                Resistance = value;
+            }
+        }
+        public float voltage
+        {
+            get
+            {
+                return Voltage;
+            }
+            set
+            {
+                Voltage = value;
+            }
+        }
+        public float amperage
+        {
+            get
+            {
+                return Amperage;
+            }
+            set
+            {
+                Amperage = value;
+            }
+        }
 
         /// <summary>
         /// Gets a wire and returns active wire. Doesn't work for nodes.

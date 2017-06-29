@@ -12,7 +12,7 @@ namespace Grapher
         /// Creates a new tree branch with an operand and null left and right nodes.
         /// </summary>
         public ParseTree(T operand)
-        {            
+        {
             this.left = null;
             this.right = null;
             this.operation = operand;

@@ -156,7 +156,13 @@ namespace ElectricGrid
         static float solveCircuit(byte[,] circuit)
         {
             CircuitCalc solve=new CircuitCalc();
-            solve.solveCircuit(circuit);
+            float[,] solvedCircuit= solve.solveCircuit(circuit,10);
+
+            if (solvedCircuit == null)
+            {
+                MessageBox.Show("You need a closed circuit!");
+            }
+
             return float.NaN;
         }
 
