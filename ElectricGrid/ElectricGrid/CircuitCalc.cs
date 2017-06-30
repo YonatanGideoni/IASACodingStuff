@@ -3,11 +3,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ElectricGrid
 {
     class CircuitCalc
     {
+        private bool debug = true;
+
+        private string printCircuit(CircuitList circuit,string branch)
+        {
+            string retString="";
+            bool allNull = true;
+
+            if (circuit.firstWire != null)
+            {
+                retString+= printCircuit(circuit.firstWire,branch+" 1");
+                allNull = false;
+            }
+            if (circuit.secondWire != null)
+            {
+                retString += printCircuit(circuit.secondWire, branch + " 2");
+                allNull = false;
+            }
+            if (circuit.thirdWire != null)
+            {
+                retString += printCircuit(circuit.thirdWire, branch + " 3");
+                allNull = false;
+            }
+
+            if (allNull)
+            {
+                return branch + " end";
+            }
+
+            return retString;
+        }
+
         /// <summary>
         /// Finds the circuit's voltage at every point.
         /// </summary>
@@ -26,6 +58,11 @@ namespace ElectricGrid
             CircuitList circuit = new CircuitList();
             circuit.voltage = inputVoltage;
             createCircuit(circuitArr, circuit, (byte[])(startWire.Clone()), "");
+
+            if (debug)
+            {
+                MessageBox.Show(printCircuit(circuit, "start 2"));
+            }
 
             return null;
         }
@@ -95,7 +132,7 @@ namespace ElectricGrid
         /// <param name="currentWire"></param>
         /// <param name="dir"></param>
         /// <returns></returns>
-        private bool isConnected(byte[,] circuitArr, byte[] currentWire, string dir)
+        private bool isConnectedToStart(byte[,] circuitArr, byte[] currentWire, string dir)
         {
             byte circuitSize = (byte)circuitArr.GetLength(0);
             bool connected = false;
@@ -107,18 +144,59 @@ namespace ElectricGrid
 
             if (currentWire[1] > 0 && circuitArr[currentWire[0], currentWire[1] - 1] != 0 && dir != "up")//traces circuit to see if it is connected to beginning
             {
-                connected = connected || isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
+                connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
             }
             if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, currentWire[1]] != 0)
             {
-                connected = connected || isConnected(circuitArr, new byte[2] { (byte)(currentWire[0] - 1), (byte)(currentWire[1]) }, "");
+                connected = connected || isConnectedToStart(circuitArr, new byte[2] { (byte)(currentWire[0] - 1), (byte)(currentWire[1]) }, "");
             }
             if (currentWire[1] < circuitSize - 1 && circuitArr[currentWire[0], currentWire[1] + 1] != 0 && dir != "down")
             {
-                connected = connected || isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
+                connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
             }
 
             return connected;
+        }
+
+        /// <summary>
+        /// Checks if more than one node on current wire. If no, checks if connected to start.
+        /// </summary>
+        /// <param name="circuitArr"></param>
+        /// <param name="currentWire"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
+        private bool isConnected(byte[,] circuitArr, byte[] currentWire, string dir)
+        {
+            byte i = currentWire[1];
+            byte nodesOnWire = 0;
+
+            if (dir == "up")
+            {
+                for (;circuitArr[currentWire[0], i] != 0 && i < circuitArr.GetLength(1); i++)
+                {
+                    if (circuitArr[currentWire[0], i] == 4)
+                    {
+                        nodesOnWire++;
+                    }
+                }
+            }
+            else if (dir == "down")
+            {
+                for (; circuitArr[currentWire[0], i] != 0 && i > 0; i--)
+                {
+                    if (circuitArr[currentWire[0], i] == 4)
+                    {
+                        nodesOnWire++;
+                    }
+                }
+            }
+
+            if (nodesOnWire > 1)
+            {
+                return false;
+            }
+
+            return isConnectedToStart(circuitArr,currentWire,dir);
         }
 
         /// <summary>
