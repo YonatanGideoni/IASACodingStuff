@@ -28,14 +28,14 @@ namespace ElectricGrid
         /// <param name="circuit"></param>
         /// <param name="branch"></param>
         /// <returns></returns>
-        private string printCircuit(CircuitList circuit,string branch)
+        private string printCircuit(CircuitList circuit, string branch)
         {
-            string retString="";
+            string retString = "";
             bool allNull = true;
 
             if (circuit.firstWire != null)
             {
-                retString+= printCircuit(circuit.firstWire,branch+" 1");
+                retString += printCircuit(circuit.firstWire, branch + " 1");
                 allNull = false;
             }
             if (circuit.secondWire != null)
@@ -49,7 +49,7 @@ namespace ElectricGrid
                 {
                     retString += printCircuit(circuit.secondWire, " 2");
                 }
-                
+
             }
             if (circuit.thirdWire != null)
             {
@@ -89,7 +89,13 @@ namespace ElectricGrid
 
             CircuitList circuit = new CircuitList();
             circuit.voltage = inputVoltage;
+            circuit.coords = new byte[2] { 0, (byte)((circuitSize - 1) / 2) };
             createCircuit(circuitArr, circuit, (byte[])(startWire.Clone()), "");
+
+            while (fixCircuit(circuit, circuitSize)[1] != "end")
+            {
+                fixCircuit(circuit, circuitSize);
+            }
 
             if (debug)
             {
@@ -99,6 +105,97 @@ namespace ElectricGrid
             return null;
         }
 
+
+        private object[] fixCircuit(CircuitList circuit, byte circuitSize)
+        {
+            object[] retObj = new object[2] { circuit, "not end" };
+            //check if reached end of circuit
+            if (circuit.connectedWires()==0)
+            {
+                return new object[2] { circuit, "end" };
+            }
+
+            if (circuit.connectedWires() == 1)
+            {
+                return new object[2]{circuit ,fixCircuit(circuit.MainWire, circuitSize)[1]};
+            }
+            else if (circuit.connectedWires() == 2)
+            {
+                CircuitList[] pointerCircuit = new CircuitList[2];
+                if (circuit.firstWire != null)
+                {
+                    if (circuit.secondWire != null)
+                    {
+                        pointerCircuit[0] = circuit.firstWire;
+                        pointerCircuit[1] = circuit.secondWire;                        
+                    }
+                    else
+                    {
+                        pointerCircuit[0] = circuit.firstWire;
+                        pointerCircuit[1] = circuit.thirdWire;
+                    }
+                }
+                else
+                {
+                    pointerCircuit[0] = circuit.secondWire;
+                    pointerCircuit[1] = circuit.secondWire; 
+                }
+
+                retObj = convergeWires(pointerCircuit, circuitSize);
+                
+            }
+
+            return new object[2] { circuit, retObj[1] };
+        }
+
+        /// <summary>
+        /// Makes two wires which diverge at a node converge branches when they meet.
+        /// </summary>
+        /// <param name="pointerCircuit"></param>
+        /// <param name="circuitSize"></param>
+        /// <returns></returns>
+        private object[] convergeWires(CircuitList[] pointerCircuit, byte circuitSize)
+        {
+            object[] retObj;
+            while (true)
+            {
+                {
+                    if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.connectedWires() > 1)
+                    {
+                        pointerCircuit[0].MainWire = (CircuitList)(fixCircuit(pointerCircuit[0].MainWire, circuitSize)[0]);
+                    }
+                    else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] >= pointerCircuit[0].coords[0])
+                    {
+                        pointerCircuit[0] = pointerCircuit[0].MainWire;
+
+                        if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
+                        {//if replica found, converge
+                            pointerCircuit[1].MainWire = pointerCircuit[0].MainWire;
+                            retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                            break;
+                        }
+                    }
+
+                    if (pointerCircuit[1].MainWire != null && pointerCircuit[1].MainWire.connectedWires() > 1)
+                    {
+                        pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire, circuitSize)[0]);
+                    }
+                    else if (pointerCircuit[1].MainWire != null && pointerCircuit[0].coords[0] >= pointerCircuit[1].coords[0])
+                    {
+                        pointerCircuit[1] = pointerCircuit[1].MainWire;
+
+                        if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
+                        {//if replica found, converge
+                            pointerCircuit[1].MainWire = pointerCircuit[0].MainWire;
+                            retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return retObj;
+        }
 
         private CircuitList createCircuit(byte[,] circuitArr, CircuitList circuit, byte[] currentWire, string dir)
         {
@@ -135,20 +232,23 @@ namespace ElectricGrid
                         if (dir != "down" && currentWire[1] < circuitSize - 1 //check if continuation of circuit exists in all directions
                             && circuitArr[currentWire[0], currentWire[1] + 1] != 0
                             && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up"))
-                        {//find and build next circuit branch
+                        {//find and build next circuit branch                            
                             circuit.thirdWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
+                            circuit.thirdWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
 
                         if (circuitArr[(byte)(currentWire[0] + 1), currentWire[1]] != 0)
-                        {
+                        {                            
                             circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
+                            circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
 
                         if (dir != "up" && currentWire[1] > 0
                             && circuitArr[currentWire[0], currentWire[1] - 1] != 0
                             && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down"))
-                        {
+                        {                            
                             circuit.firstWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
+                            circuit.firstWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
                         break;
                 }
@@ -204,7 +304,7 @@ namespace ElectricGrid
 
             if (dir == "up")
             {
-                for (;circuitArr[currentWire[0], i] != 0 && i < circuitArr.GetLength(1); i++)
+                for (; circuitArr[currentWire[0], i] != 0 && i < circuitArr.GetLength(1); i++)
                 {
                     if (circuitArr[currentWire[0], i] == 4)
                     {
@@ -228,7 +328,7 @@ namespace ElectricGrid
                 return false;
             }
 
-            return isConnectedToStart(circuitArr,currentWire,dir);
+            return isConnectedToStart(circuitArr, currentWire, dir);
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ namespace ElectricGrid
         private float Voltage = float.NaN;
         private float Amperage = float.NaN;
 
+        public byte[] coords { get; set; }
         public float resistance
         {
             get
@@ -50,21 +51,69 @@ namespace ElectricGrid
         }
 
         /// <summary>
-        /// Gets a wire and returns active wire. Doesn't work for nodes.
+        /// Gets a wire and returns active wire. Doesn't work for nodes with multiple wires.
         /// </summary>
         /// <param name="wire"></param>
         /// <returns></returns>
-        public CircuitList MainWire(CircuitList wire)
+        public CircuitList MainWire
         {
-            if (firstWire != null)
+            get
             {
-                return firstWire;
+                {
+                    if (this.firstWire != null)
+                    {
+                        return this.firstWire;
+                    }
+                    else if (this.secondWire != null)
+                    {
+                        return this.secondWire;
+                    }
+                    else if (this.thirdWire != null)
+                    {
+                        return this.thirdWire;
+                    }
+                    return null;
+                }
             }
-            else if (secondWire != null)
+            set
             {
-                return secondWire;
+                {
+                    if (this.firstWire != null)
+                    {
+                        this.firstWire = value;
+                    }
+                    else if (this.secondWire != null)
+                    {
+                        this.secondWire = value;
+                    }
+                    this.thirdWire = value;
+                }
             }
-            return thirdWire;
+        }
+
+        /// <summary>
+        /// Gets the number of wires connected to a node.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <returns></returns>
+        public byte connectedWires()
+        {
+            byte connectedWires = 0;
+
+            if (this.firstWire != null)
+            {
+                connectedWires++;
+            }
+            if (this.secondWire != null)
+            {
+                connectedWires++;
+            }
+            if (this.thirdWire != null)
+            {
+                connectedWires++;
+            }
+
+            return connectedWires;
         }
 
         /// <summary>
