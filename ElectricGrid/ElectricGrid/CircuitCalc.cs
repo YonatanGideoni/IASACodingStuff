@@ -9,8 +9,25 @@ namespace ElectricGrid
 {
     class CircuitCalc
     {
-        private bool debug = true;
+        private bool Debug = true;
+        public bool debug
+        {
+            get
+            {
+                return Debug;
+            }
+            set
+            {
+                Debug = value;
+            }
+        }
 
+        /// <summary>
+        /// Prints circuit. Debug function.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <param name="branch"></param>
+        /// <returns></returns>
         private string printCircuit(CircuitList circuit,string branch)
         {
             string retString="";
@@ -23,18 +40,33 @@ namespace ElectricGrid
             }
             if (circuit.secondWire != null)
             {
-                retString += printCircuit(circuit.secondWire, branch + " 2");
-                allNull = false;
+                if (allNull)
+                {
+                    retString += printCircuit(circuit.secondWire, branch + " 2");
+                    allNull = false;
+                }
+                else
+                {
+                    retString += printCircuit(circuit.secondWire, " 2");
+                }
+                
             }
             if (circuit.thirdWire != null)
             {
-                retString += printCircuit(circuit.thirdWire, branch + " 3");
-                allNull = false;
+                if (allNull)
+                {
+                    retString += printCircuit(circuit.thirdWire, branch + " 3");
+                    allNull = false;
+                }
+                else
+                {
+                    retString += printCircuit(circuit.thirdWire, " 3");
+                }
             }
 
             if (allNull)
             {
-                return branch + " end";
+                return branch + " █";
             }
 
             return retString;
