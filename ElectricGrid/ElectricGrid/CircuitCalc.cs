@@ -21,6 +21,13 @@ namespace ElectricGrid
                 Debug = value;
             }
         }
+        private enum wire
+        {
+            empty = 0,
+            node = 4,
+            vertical = 2,
+            horizontal = 3
+        }
 
         /// <summary>
         /// Prints circuit. Debug function.
@@ -231,21 +238,21 @@ namespace ElectricGrid
                         foundComponent = true;
 
                         if (dir != "down" && currentWire[1] < circuitSize - 1 //check if continuation of circuit exists in all directions
-                            && circuitArr[currentWire[0], currentWire[1] + 1] != 0
+                            && circuitArr[currentWire[0], currentWire[1] + 1] != (byte)wire.empty
                             && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up"))
                         {//find and build next circuit branch                            
                             circuit.thirdWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
                             circuit.thirdWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
 
-                        if (circuitArr[(byte)(currentWire[0] + 1), currentWire[1]] != 0)
+                        if (circuitArr[(byte)(currentWire[0] + 1), currentWire[1]] != (byte)wire.empty)
                         {                            
                             circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                             circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
 
                         if (dir != "up" && currentWire[1] > 0
-                            && circuitArr[currentWire[0], currentWire[1] - 1] != 0
+                            && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty
                             && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down"))
                         {                            
                             circuit.firstWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
@@ -275,15 +282,15 @@ namespace ElectricGrid
                 return true;
             }
 
-            if (currentWire[1] > 0 && circuitArr[currentWire[0], currentWire[1] - 1] != 0 && dir != "up")//traces circuit to see if it is connected to beginning
+            if (currentWire[1] > 0 && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty && dir != "up")//traces circuit to see if it is connected to beginning
             {
                 connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
             }
-            if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, currentWire[1]] != 0)
+            if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, currentWire[1]] != (byte)wire.empty)
             {
                 connected = connected || isConnectedToStart(circuitArr, new byte[2] { (byte)(currentWire[0] - 1), (byte)(currentWire[1]) }, "");
             }
-            if (currentWire[1] < circuitSize - 1 && circuitArr[currentWire[0], currentWire[1] + 1] != 0 && dir != "down")
+            if (currentWire[1] < circuitSize - 1 && circuitArr[currentWire[0], currentWire[1] + 1] != (byte)wire.empty && dir != "down")
             {
                 connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
             }
@@ -306,13 +313,13 @@ namespace ElectricGrid
 
             if (dir == "up")
             {
-                for (; circuitArr[currentWire[0], i] != 0 && i < circuitArr.GetLength(1); i++)
+                for (; circuitArr[currentWire[0], i] != (byte)wire.empty && i < circuitArr.GetLength(1); i++)
                 {
-                    if (circuitArr[currentWire[0], i] == 4)
+                    if (circuitArr[currentWire[0], i] == (byte)wire.node)
                     {
                         nodesOnWire++;
 
-                        if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, i] != 0)
+                        if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, i] != (byte)wire.empty)
                         {
                             withHorizontalWire = true;
                         }
@@ -321,9 +328,9 @@ namespace ElectricGrid
             }
             else if (dir == "down")
             {
-                for (; circuitArr[currentWire[0], i] != 0 && i > 0; i--)
+                for (; circuitArr[currentWire[0], i] != (byte)wire.empty && i > 0; i--)
                 {
-                    if (circuitArr[currentWire[0], i] == 4)
+                    if (circuitArr[currentWire[0], i] == (byte)wire.node)
                     {
                         nodesOnWire++;
                     }
@@ -361,15 +368,15 @@ namespace ElectricGrid
             }
             else
             {
-                if (currentWire[1] > 0 && circuit[currentWire[0], (byte)(currentWire[1] - 1)] != 0 && dir != "down")//check recursively in each direction for circuit end
+                if (currentWire[1] > 0 && circuit[currentWire[0], (byte)(currentWire[1] - 1)] != (byte)wire.empty && dir != "down")//check recursively in each direction for circuit end
                 {
                     closed = closed || isClosed(circuit, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, circuitSize, "up");
                 }
-                if (currentWire[0] < circuitSize - 1 && circuit[(byte)(currentWire[0] + 1), currentWire[1]] != 0)
+                if (currentWire[0] < circuitSize - 1 && circuit[(byte)(currentWire[0] + 1), currentWire[1]] != (byte)wire.empty)
                 {
                     closed = closed || isClosed(circuit, new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, circuitSize, "");
                 }
-                if (currentWire[1] < circuitSize - 1 && circuit[currentWire[0], (byte)(currentWire[1] + 1)] != 0 && dir != "up")
+                if (currentWire[1] < circuitSize - 1 && circuit[currentWire[0], (byte)(currentWire[1] + 1)] != (byte)wire.empty && dir != "up")
                 {
                     closed = closed || isClosed(circuit, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, circuitSize, "down");
                 }
