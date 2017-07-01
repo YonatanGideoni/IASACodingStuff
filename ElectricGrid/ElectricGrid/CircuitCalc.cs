@@ -197,6 +197,7 @@ namespace ElectricGrid
             return retObj;
         }
 
+
         private CircuitList createCircuit(byte[,] circuitArr, CircuitList circuit, byte[] currentWire, string dir)
         {
             bool foundComponent = false;
@@ -301,6 +302,7 @@ namespace ElectricGrid
         {
             byte i = currentWire[1];
             byte nodesOnWire = 0;
+            bool withHorizontalWire = false;
 
             if (dir == "up")
             {
@@ -309,6 +311,11 @@ namespace ElectricGrid
                     if (circuitArr[currentWire[0], i] == 4)
                     {
                         nodesOnWire++;
+
+                        if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, i] != 0)
+                        {
+                            withHorizontalWire = true;
+                        }
                     }
                 }
             }
@@ -323,7 +330,12 @@ namespace ElectricGrid
                 }
             }
 
-            if (nodesOnWire > 1)
+            if (nodesOnWire > 1)//if multiple nodes on current wire continue to next node
+            {
+                return false;
+            }
+
+            if (withHorizontalWire)//if node is connected with a horizontal wire then continue
             {
                 return false;
             }
