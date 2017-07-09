@@ -26,8 +26,12 @@ namespace ElectricGrid
             empty = 0,
             node = 4,
             vertical = 2,
-            horizontal = 3
+            horizontal = 3,
+            resistor1 = 1,
+            resistor5 = 5,
+            resistor10 = 10
         }
+
         private Random rand = new Random();
 
         /// <summary>
@@ -153,6 +157,27 @@ namespace ElectricGrid
                 convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
 
             }
+            else
+            {
+                CircuitList[] pointerCircuit = new CircuitList[2];
+                pointerCircuit[0] = circuit.firstWire;
+                pointerCircuit[1] = circuit.secondWire;
+
+                retObj = wireToConverge(pointerCircuit, circuitSize);
+                convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
+
+                pointerCircuit[0] = circuit.firstWire;
+                pointerCircuit[1] = circuit.thirdWire;
+
+                retObj = wireToConverge(pointerCircuit, circuitSize);
+                convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
+
+                pointerCircuit[0] = circuit.secondWire;
+                pointerCircuit[1] = circuit.thirdWire;
+
+                retObj = wireToConverge(pointerCircuit, circuitSize);
+                convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
+            }
 
             return new object[2] { circuit, retObj[1] };
         }
@@ -191,43 +216,53 @@ namespace ElectricGrid
         private object[] wireToConverge(CircuitList[] pointerCircuit, byte circuitSize)
         {
             object[] retObj;
+            byte noChange = 0;
+
             while (true)
             {
+                if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.connectedWires() > 1)
                 {
-                    if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.connectedWires() > 1)
-                    {
-                        pointerCircuit[0].MainWire = (CircuitList)(fixCircuit(pointerCircuit[0].MainWire, circuitSize)[0]);
-                    }
-                    else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] >= pointerCircuit[0].coords[0])
-                    {
-                        pointerCircuit[0] = pointerCircuit[0].MainWire;
+                    noChange = 0;
+                    pointerCircuit[0].MainWire = (CircuitList)(fixCircuit(pointerCircuit[0].MainWire, circuitSize)[0]);
+                }
+                else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] >= pointerCircuit[0].coords[0])
+                {
+                    noChange = 0;
+                    pointerCircuit[0] = pointerCircuit[0].MainWire;
 
-                        if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
-                        {//if replica found, converge
-                            pointerCircuit[1] = pointerCircuit[0];
-                            retObj = fixCircuit(pointerCircuit[0], circuitSize);
-                            retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
-                            break;
-                        }
-                    }
-
-                    if (pointerCircuit[1].MainWire != null && pointerCircuit[1].MainWire.connectedWires() > 1)
-                    {
-                        pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire, circuitSize)[0]);
-                    }
-                    else if (pointerCircuit[1].MainWire != null && pointerCircuit[0].coords[0] >= pointerCircuit[1].coords[0])
-                    {
-                        pointerCircuit[1] = pointerCircuit[1].MainWire;
-
-                        if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
-                        {//if replica found, converge
-                            pointerCircuit[1] = pointerCircuit[0];
-                            retObj = fixCircuit(pointerCircuit[0], circuitSize);
-                            retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
-                            break;
-                        }
+                    if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
+                    {//if replica found, converge
+                        pointerCircuit[1] = pointerCircuit[0];
+                        retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
+                        break;
                     }
                 }
+                else
+                {
+                    noChange++;//to remove possibility of infinite loops
+                }
+
+                if (pointerCircuit[1].MainWire != null && pointerCircuit[1].MainWire.connectedWires() > 1)
+                {
+                    noChange = 0;
+                    pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire, circuitSize)[0]);
+                }
+                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange>50))
+                {
+                    noChange = 0;
+
+                    pointerCircuit[1] = pointerCircuit[1].MainWire;
+
+                    if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
+                    {//if replica found, converge
+                        pointerCircuit[1] = pointerCircuit[0];
+                        retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
+                        break;
+                    }
+                }
+
             }
 
             return retObj;
@@ -252,7 +287,7 @@ namespace ElectricGrid
                 }
                 switch (circuitArr[currentWire[0], currentWire[1]])
                 {//continue along wire until node/resistor
-                    case 2://vertical wire
+                    case (byte)wire.vertical://vertical wire
                         if (dir == "up")
                         {
                             currentWire[1]++;
@@ -263,11 +298,11 @@ namespace ElectricGrid
                         }
                         break;
 
-                    case 3://horizontal wire
+                    case (byte)wire.horizontal://horizontal wire
                         currentWire[0]++;
                         break;
 
-                    case 4://node
+                    case (byte)wire.node://node
                         foundComponent = true;
 
                         if (dir != "down" && currentWire[1] < circuitSize - 1 //check if continuation of circuit exists in all directions
@@ -291,6 +326,22 @@ namespace ElectricGrid
                             circuit.firstWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
                             circuit.firstWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
+                        break;
+                    case (byte)wire.resistor1://1 Ohm resistor
+                        foundComponent = true;
+                        circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
+                        circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                        circuit.secondWire.resistance = 1;
+                        break;
+                    case (byte)wire.resistor5://5 Ohm resistor
+                        circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
+                        circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                        circuit.secondWire.resistance = 5;
+                        break;
+                    case (byte)wire.resistor10://10 Ohm resistor
+                        circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
+                        circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                        circuit.secondWire.resistance = 10;
                         break;
                 }
             }            
