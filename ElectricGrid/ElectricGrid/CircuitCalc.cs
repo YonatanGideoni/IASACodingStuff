@@ -28,6 +28,7 @@ namespace ElectricGrid
             vertical = 2,
             horizontal = 3
         }
+        private Random rand = new Random();
 
         /// <summary>
         /// Prints circuit. Debug function.
@@ -145,23 +146,49 @@ namespace ElectricGrid
                 else
                 {
                     pointerCircuit[0] = circuit.secondWire;
-                    pointerCircuit[1] = circuit.secondWire; 
+                    pointerCircuit[1] = circuit.thirdWire; 
                 }
 
-                retObj = convergeWires(pointerCircuit, circuitSize);
-                
+                retObj = wireToConverge(pointerCircuit, circuitSize);
+                convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
+
             }
 
             return new object[2] { circuit, retObj[1] };
         }
 
+
+        private CircuitList convergeWire(CircuitList circuit, CircuitList convergenceBranch, byte[] convergeCoords)
+        {
+            if (circuit.coords.SequenceEqual(convergeCoords))
+            {
+                circuit = convergenceBranch;
+                return circuit;
+            }
+
+            if (circuit.firstWire != null)
+            {
+                circuit.firstWire = convergeWire(circuit.firstWire, convergenceBranch, convergeCoords);
+            }
+            if (circuit.secondWire != null)
+            {
+                circuit.secondWire = convergeWire(circuit.secondWire, convergenceBranch, convergeCoords);
+            }
+            if (circuit.thirdWire != null)
+            {
+                circuit.thirdWire = convergeWire(circuit.thirdWire, convergenceBranch, convergeCoords);
+            }
+
+            return circuit;
+        }
+
         /// <summary>
-        /// Makes two wires which diverge at a node converge branches when they meet.
+        /// Returns which branch needs to be converged and its coordinates.
         /// </summary>
         /// <param name="pointerCircuit"></param>
         /// <param name="circuitSize"></param>
         /// <returns></returns>
-        private object[] convergeWires(CircuitList[] pointerCircuit, byte circuitSize)
+        private object[] wireToConverge(CircuitList[] pointerCircuit, byte circuitSize)
         {
             object[] retObj;
             while (true)
@@ -177,8 +204,9 @@ namespace ElectricGrid
 
                         if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
                         {//if replica found, converge
-                            pointerCircuit[1].MainWire = pointerCircuit[0].MainWire;
+                            pointerCircuit[1] = pointerCircuit[0];
                             retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                            retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
                             break;
                         }
                     }
@@ -193,8 +221,9 @@ namespace ElectricGrid
 
                         if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
                         {//if replica found, converge
-                            pointerCircuit[1].MainWire = pointerCircuit[0].MainWire;
+                            pointerCircuit[1] = pointerCircuit[0];
                             retObj = fixCircuit(pointerCircuit[0], circuitSize);
+                            retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
                             break;
                         }
                     }
@@ -210,6 +239,10 @@ namespace ElectricGrid
             bool foundComponent = false;
             bool[] nodeConnections = new bool[3];
             byte circuitSize = (byte)circuitArr.GetLength(0);
+            if (debug)
+            {
+                circuit.voltage = rand.Next(999);
+            }
 
             while (!foundComponent)
             {
@@ -239,7 +272,7 @@ namespace ElectricGrid
 
                         if (dir != "down" && currentWire[1] < circuitSize - 1 //check if continuation of circuit exists in all directions
                             && circuitArr[currentWire[0], currentWire[1] + 1] != (byte)wire.empty
-                            && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up"))
+                            && connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up"))
                         {//find and build next circuit branch                            
                             circuit.thirdWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
                             circuit.thirdWire.coords = new byte[2] { currentWire[0], currentWire[1] };
@@ -253,101 +286,49 @@ namespace ElectricGrid
 
                         if (dir != "up" && currentWire[1] > 0
                             && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty
-                            && !isConnected(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down"))
+                            && connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down"))
                         {                            
                             circuit.firstWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
                             circuit.firstWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         }
                         break;
                 }
-            }
+            }            
 
             return circuit;
         }
-
+        
         /// <summary>
-        /// Checks if the current wire has a current from the beginning of the circuit.
+        /// Checks if wire is connected to end of circuit.
         /// </summary>
         /// <param name="circuitArr"></param>
         /// <param name="currentWire"></param>
         /// <param name="dir"></param>
         /// <returns></returns>
-        private bool isConnectedToStart(byte[,] circuitArr, byte[] currentWire, string dir)
+        private bool connectsToEnd(byte[,] circuitArr, byte[] currentWire, string dir)
         {
+            bool endReached = false;
             byte circuitSize = (byte)circuitArr.GetLength(0);
-            bool connected = false;
 
-            if (currentWire[0] == 0 && currentWire[1] == (byte)(circuitSize - 1) / 2)//check if reached beginning of circuit
+            if (currentWire[0] == circuitSize-1 && currentWire[1] == (byte)(circuitSize - 1) / 2)//check if reached end of circuit
             {
                 return true;
             }
 
-            if (currentWire[1] > 0 && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty && dir != "up")//traces circuit to see if it is connected to beginning
+            if (currentWire[1] > 0 && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty && dir != "up")//traces circuit to see if it is connected to end
             {
-                connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
+                endReached = endReached || connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
             }
-            if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, currentWire[1]] != (byte)wire.empty)
+            if (currentWire[0] < circuitSize-1 && circuitArr[currentWire[0] + 1, currentWire[1]] != (byte)wire.empty)
             {
-                connected = connected || isConnectedToStart(circuitArr, new byte[2] { (byte)(currentWire[0] - 1), (byte)(currentWire[1]) }, "");
+                endReached = endReached || connectsToEnd(circuitArr, new byte[2] { (byte)(currentWire[0] + 1), (byte)(currentWire[1]) }, "");
             }
             if (currentWire[1] < circuitSize - 1 && circuitArr[currentWire[0], currentWire[1] + 1] != (byte)wire.empty && dir != "down")
             {
-                connected = connected || isConnectedToStart(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
+                endReached = endReached || connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
             }
 
-            return connected;
-        }
-
-        /// <summary>
-        /// Checks if more than one node on current wire. If no, checks if connected to start.
-        /// </summary>
-        /// <param name="circuitArr"></param>
-        /// <param name="currentWire"></param>
-        /// <param name="dir"></param>
-        /// <returns></returns>
-        private bool isConnected(byte[,] circuitArr, byte[] currentWire, string dir)
-        {
-            byte i = currentWire[1];
-            byte nodesOnWire = 0;
-            bool withHorizontalWire = false;
-
-            if (dir == "up")
-            {
-                for (; circuitArr[currentWire[0], i] != (byte)wire.empty && i < circuitArr.GetLength(1); i++)
-                {
-                    if (circuitArr[currentWire[0], i] == (byte)wire.node)
-                    {
-                        nodesOnWire++;
-
-                        if (currentWire[0] > 0 && circuitArr[currentWire[0] - 1, i] != (byte)wire.empty)
-                        {
-                            withHorizontalWire = true;
-                        }
-                    }
-                }
-            }
-            else if (dir == "down")
-            {
-                for (; circuitArr[currentWire[0], i] != (byte)wire.empty && i > 0; i--)
-                {
-                    if (circuitArr[currentWire[0], i] == (byte)wire.node)
-                    {
-                        nodesOnWire++;
-                    }
-                }
-            }
-
-            if (nodesOnWire > 1)//if multiple nodes on current wire continue to next node
-            {
-                return false;
-            }
-
-            if (withHorizontalWire)//if node is connected with a horizontal wire then continue
-            {
-                return false;
-            }
-
-            return isConnectedToStart(circuitArr, currentWire, dir);
+            return endReached;
         }
 
         /// <summary>
