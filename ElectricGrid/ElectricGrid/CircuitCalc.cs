@@ -391,7 +391,11 @@ namespace ElectricGrid
             return endReached;
         }
 
-
+        /// <summary>
+        /// Gets the resistance of a circuit.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <returns></returns>
         private float getResistance(CircuitList circuit)
         {
             if (circuit.connectedWires() == 0)
@@ -412,7 +416,11 @@ namespace ElectricGrid
             return 0;
         }
 
-
+        /// <summary>
+        /// Gets the resistance of a sequential set of resistors.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <returns></returns>
         private float getSequentialResistance(CircuitList circuit)
         {
             if (!circuit.converges)
@@ -431,18 +439,69 @@ namespace ElectricGrid
             return circuit.resistance;
         }
 
-
+        /// <summary>
+        /// Gets the resistance of a node with a parallel circuit with 2 connected wires.
+        /// </summary>
+        /// <param name="firstCircuit"></param>
+        /// <param name="secondCircuit"></param>
+        /// <returns></returns>
         private float getParallelResistance(CircuitList firstCircuit, CircuitList secondCircuit)
         {
-            if (!firstCircuit.converges)
-            {
+            float totResistance=0;
 
+            if (!firstCircuit.converges && !secondCircuit.converges)
+            {
+                totResistance += 1 / getResistance(secondCircuit);
+                totResistance += 1 / getResistance(firstCircuit);
             }
+
+            return 1 / totResistance;
         }
 
+        /// <summary>
+        /// Gets the resistance of a node with a parallel circuit with 3 connected wires.
+        /// </summary>
+        /// <param name="firstCircuit"></param>
+        /// <param name="secondCircuit"></param>
+        /// <param name="thirdCircuit"></param>
+        /// <returns></returns>
         private float getParallelResistance(CircuitList firstCircuit, CircuitList secondCircuit, CircuitList thirdCircuit)
         {
-            return 0;
+            float totResistance = 0;
+
+            if (!firstCircuit.converges && !secondCircuit.converges && !thirdCircuit.converges)
+            {
+                totResistance += 1 / getResistance(secondCircuit);
+                totResistance += 1 / getResistance(firstCircuit);
+                totResistance += 1 / getResistance(thirdCircuit);
+            }
+
+            return 1 / totResistance;
+        }
+
+
+        private float[] getVoltage(CircuitList circuit, float inputVoltage)
+        {
+            float[] wiresResistance;
+            float[,] linearEquations;
+
+            switch (circuit.connectedWires())
+            {
+                case 1:
+                    return new float[1]{inputVoltage * getResistance(circuit.MainWire) / getResistance(circuit)};;
+                case 2:
+                    wiresResistance = new float[3] { getResistance(circuit), getResistance(circuit.activeWires()[0]), getResistance(circuit.activeWires()[1]) };
+                    linearEquations = new float[2, 3] {{wiresResistance[1],wiresResistance[2],inputVoltage*wiresResistance[0] },//Kirchoff's laws
+                                                        {1,1,inputVoltage}};
+                    return new LinearEq().solveMatrice(linearEquations);
+                case 3:
+                    wiresResistance = new float[4] { getResistance(circuit), getResistance(circuit.firstWire), getResistance(circuit.secondWire), getResistance(circuit.thirdWire) };
+                    
+                    
+                    break;
+            }
+
+            return null;
         }
 
         /// <summary>
