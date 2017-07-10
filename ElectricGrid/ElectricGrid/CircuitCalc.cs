@@ -114,45 +114,34 @@ namespace ElectricGrid
                 MessageBox.Show(printCircuit(circuit, "start 2"));
             }
 
+
+
             return null;
         }
 
-
+        /// <summary>
+        /// Fixes diverging branches in the circuit and forces them to converge.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <param name="circuitSize"></param>
+        /// <returns></returns>
         private object[] fixCircuit(CircuitList circuit, byte circuitSize)
         {
             object[] retObj = new object[2] { circuit, "not end" };
             //check if reached end of circuit
-            if (circuit.connectedWires()==0)
+            if (circuit.connectedWires() == 0)
             {
                 return new object[2] { circuit, "end" };
             }
 
             if (circuit.connectedWires() == 1)
             {
-                return new object[2]{circuit ,fixCircuit(circuit.MainWire, circuitSize)[1]};
+                return new object[2] { circuit, fixCircuit(circuit.MainWire, circuitSize)[1] };
             }
             else if (circuit.connectedWires() == 2)
             {
-                CircuitList[] pointerCircuit = new CircuitList[2];
-                if (circuit.firstWire != null)
-                {
-                    if (circuit.secondWire != null)
-                    {
-                        pointerCircuit[0] = circuit.firstWire;
-                        pointerCircuit[1] = circuit.secondWire;                        
-                    }
-                    else
-                    {
-                        pointerCircuit[0] = circuit.firstWire;
-                        pointerCircuit[1] = circuit.thirdWire;
-                    }
-                }
-                else
-                {
-                    pointerCircuit[0] = circuit.secondWire;
-                    pointerCircuit[1] = circuit.thirdWire; 
-                }
-
+                CircuitList[] pointerCircuit = circuit.activeWires();
+                
                 retObj = wireToConverge(pointerCircuit, circuitSize);
                 convergeWire(circuit, (CircuitList)retObj[0], (byte[])retObj[2]);
 
@@ -182,12 +171,19 @@ namespace ElectricGrid
             return new object[2] { circuit, retObj[1] };
         }
 
-
+        /// <summary>
+        /// Finds and converges branches based on pre-known data.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <param name="convergenceBranch"></param>
+        /// <param name="convergeCoords"></param>
+        /// <returns></returns>
         private CircuitList convergeWire(CircuitList circuit, CircuitList convergenceBranch, byte[] convergeCoords)
         {
             if (circuit.coords.SequenceEqual(convergeCoords))
             {
                 circuit = convergenceBranch;
+                circuit.converges = true;
                 return circuit;
             }
 
@@ -248,7 +244,7 @@ namespace ElectricGrid
                     noChange = 0;
                     pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire, circuitSize)[0]);
                 }
-                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange>50))
+                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange > 50))
                 {
                     noChange = 0;
 
@@ -268,7 +264,14 @@ namespace ElectricGrid
             return retObj;
         }
 
-
+        /// <summary>
+        /// Creates circuit based on 2D enum array.
+        /// </summary>
+        /// <param name="circuitArr"></param>
+        /// <param name="circuit"></param>
+        /// <param name="currentWire"></param>
+        /// <param name="dir"></param>
+        /// <returns></returns>
         private CircuitList createCircuit(byte[,] circuitArr, CircuitList circuit, byte[] currentWire, string dir)
         {
             bool foundComponent = false;
@@ -311,44 +314,50 @@ namespace ElectricGrid
                         {//find and build next circuit branch                            
                             circuit.thirdWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] + 1) }, "up");
                             circuit.thirdWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                            circuit.thirdWire.resistance = 0;
                         }
 
                         if (circuitArr[(byte)(currentWire[0] + 1), currentWire[1]] != (byte)wire.empty)
-                        {                            
+                        {
                             circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                             circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                            circuit.secondWire.resistance = 0;
                         }
 
                         if (dir != "up" && currentWire[1] > 0
                             && circuitArr[currentWire[0], currentWire[1] - 1] != (byte)wire.empty
                             && connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down"))
-                        {                            
+                        {
                             circuit.firstWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
                             circuit.firstWire.coords = new byte[2] { currentWire[0], currentWire[1] };
+                            circuit.firstWire.resistance = 0;
                         }
                         break;
+
                     case (byte)wire.resistor1://1 Ohm resistor
                         foundComponent = true;
                         circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                         circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         circuit.secondWire.resistance = 1;
                         break;
+
                     case (byte)wire.resistor5://5 Ohm resistor
                         circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                         circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         circuit.secondWire.resistance = 5;
                         break;
+
                     case (byte)wire.resistor10://10 Ohm resistor
                         circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                         circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         circuit.secondWire.resistance = 10;
                         break;
                 }
-            }            
+            }
 
             return circuit;
         }
-        
+
         /// <summary>
         /// Checks if wire is connected to end of circuit.
         /// </summary>
@@ -361,7 +370,7 @@ namespace ElectricGrid
             bool endReached = false;
             byte circuitSize = (byte)circuitArr.GetLength(0);
 
-            if (currentWire[0] == circuitSize-1 && currentWire[1] == (byte)(circuitSize - 1) / 2)//check if reached end of circuit
+            if (currentWire[0] == circuitSize - 1 && currentWire[1] == (byte)(circuitSize - 1) / 2)//check if reached end of circuit
             {
                 return true;
             }
@@ -370,7 +379,7 @@ namespace ElectricGrid
             {
                 endReached = endReached || connectsToEnd(circuitArr, new byte[2] { currentWire[0], (byte)(currentWire[1] - 1) }, "down");
             }
-            if (currentWire[0] < circuitSize-1 && circuitArr[currentWire[0] + 1, currentWire[1]] != (byte)wire.empty)
+            if (currentWire[0] < circuitSize - 1 && circuitArr[currentWire[0] + 1, currentWire[1]] != (byte)wire.empty)
             {
                 endReached = endReached || connectsToEnd(circuitArr, new byte[2] { (byte)(currentWire[0] + 1), (byte)(currentWire[1]) }, "");
             }
@@ -380,6 +389,60 @@ namespace ElectricGrid
             }
 
             return endReached;
+        }
+
+
+        private float getResistance(CircuitList circuit)
+        {
+            if (circuit.connectedWires() == 0)
+            {
+                return float.NaN;
+            }
+
+            if (circuit.connectedWires() == 1)
+            {
+
+            }
+
+            if (circuit.connectedWires() == 2)
+            {
+                return getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
+            }
+
+            return 0;
+        }
+
+
+        private float getSequentialResistance(CircuitList circuit)
+        {
+            if (!circuit.converges)
+            {
+                switch (circuit.connectedWires())
+                {
+                    case 1:
+                        return circuit.resistance + getSequentialResistance(circuit.MainWire);
+                    case 2:
+                        return circuit.resistance + getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
+                    case 3:
+                        return circuit.resistance + getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1],circuit.activeWires()[2]);
+                }                
+            }
+
+            return circuit.resistance;
+        }
+
+
+        private float getParallelResistance(CircuitList firstCircuit, CircuitList secondCircuit)
+        {
+            if (!firstCircuit.converges)
+            {
+
+            }
+        }
+
+        private float getParallelResistance(CircuitList firstCircuit, CircuitList secondCircuit, CircuitList thirdCircuit)
+        {
+            return 0;
         }
 
         /// <summary>

@@ -31,7 +31,10 @@
             this.InitGridButton = new System.Windows.Forms.Button();
             this.GridSizeNum = new System.Windows.Forms.NumericUpDown();
             this.GridSizeText = new System.Windows.Forms.TextBox();
+            this.inVoltageText = new System.Windows.Forms.TextBox();
+            this.inVoltageBox = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inVoltageBox)).BeginInit();
             this.SuspendLayout();
             // 
             // InitGridButton
@@ -76,11 +79,40 @@
             this.GridSizeText.TabIndex = 2;
             this.GridSizeText.Text = "Grid Size:";
             // 
+            // inVoltageText
+            // 
+            this.inVoltageText.BackColor = System.Drawing.SystemColors.Control;
+            this.inVoltageText.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.inVoltageText.Location = new System.Drawing.Point(107, 48);
+            this.inVoltageText.Name = "inVoltageText";
+            this.inVoltageText.Size = new System.Drawing.Size(73, 13);
+            this.inVoltageText.TabIndex = 4;
+            this.inVoltageText.Text = "Input Voltage:";
+            // 
+            // inVoltageBox
+            // 
+            this.inVoltageBox.Location = new System.Drawing.Point(186, 46);
+            this.inVoltageBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.inVoltageBox.Name = "inVoltageBox";
+            this.inVoltageBox.Size = new System.Drawing.Size(37, 20);
+            this.inVoltageBox.TabIndex = 3;
+            this.inVoltageBox.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Controls.Add(this.inVoltageText);
+            this.Controls.Add(this.inVoltageBox);
             this.Controls.Add(this.GridSizeText);
             this.Controls.Add(this.GridSizeNum);
             this.Controls.Add(this.InitGridButton);
@@ -89,6 +121,7 @@
             this.Text = "Electric Grid";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.GridSizeNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.inVoltageBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -99,6 +132,8 @@
         private System.Windows.Forms.Button InitGridButton;
         private System.Windows.Forms.NumericUpDown GridSizeNum;
         private System.Windows.Forms.TextBox GridSizeText;
+        private System.Windows.Forms.TextBox inVoltageText;
+        private System.Windows.Forms.NumericUpDown inVoltageBox;
     }
 }
 

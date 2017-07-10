@@ -60,9 +60,12 @@ namespace ElectricGrid
 
             GridSizeNum.Enabled = false;
             InitGridButton.Enabled = false;
+            inVoltageBox.Enabled = false;
+            inVoltageText.Visible = false;
             GridSizeText.Visible = false;
             GridSizeNum.Visible = false;
             InitGridButton.Visible = false;
+            inVoltageBox.Visible = false;
 
             this.Text = "Create Grid";
         }
@@ -149,14 +152,14 @@ namespace ElectricGrid
                 gridArr[0, (gridSize-1) / 2].BackgroundImage = null;
                 gridArr[0, (gridSize-1) / 2].BackColor = Color.Green;
 
-                solveCircuit(gridByte);
+                solveCircuit(gridByte, (byte)inVoltageBox.Value);
             }
         }
 
-        static float solveCircuit(byte[,] circuit)
+        static float solveCircuit(byte[,] circuit, byte inputVoltage)
         {
             CircuitCalc solve=new CircuitCalc();
-            float[,] solvedCircuit= solve.solveCircuit(circuit,10);
+            float[,] solvedCircuit= solve.solveCircuit(circuit,inputVoltage);
 
             if (solvedCircuit == null)
             {

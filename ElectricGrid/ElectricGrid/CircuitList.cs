@@ -15,6 +15,7 @@ namespace ElectricGrid
         private float Voltage = float.NaN;
         private float Amperage = float.NaN;
 
+        public bool converges { get; set; }
         public byte[] coords { get; set; }
         public float resistance
         {
@@ -89,6 +90,37 @@ namespace ElectricGrid
                     this.thirdWire = value;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns wires which are not null. Only for nodes with >1 wires.
+        /// </summary>
+        /// <returns></returns>
+        public CircuitList[] activeWires()
+        {
+            if (this.connectedWires() == 2)
+            {
+                if (this.firstWire != null)
+                {
+                    if (this.secondWire != null)
+                    {
+                        return new CircuitList[2] { this.firstWire, this.secondWire };
+                    }
+                    else
+                    {
+                        return new CircuitList[2] { this.firstWire, this.thirdWire };
+                    }
+                }
+                else
+                {
+                    return new CircuitList[2] { this.secondWire, this.thirdWire };
+                }
+            }
+            else if (this.connectedWires() == 3)
+            {
+                return new CircuitList[3] { this.firstWire, this.secondWire, this.thirdWire };
+            }
+            return null;
         }
 
         /// <summary>
