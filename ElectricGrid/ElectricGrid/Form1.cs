@@ -159,7 +159,7 @@ namespace ElectricGrid
         static float solveCircuit(byte[,] circuit, byte inputVoltage)
         {
             CircuitCalc solve=new CircuitCalc();
-            float[,] solvedCircuit= solve.solveCircuit(circuit,inputVoltage);
+            float[][,] solvedCircuit= solve.solveCircuit(circuit,inputVoltage);
 
             if (solvedCircuit == null)
             {

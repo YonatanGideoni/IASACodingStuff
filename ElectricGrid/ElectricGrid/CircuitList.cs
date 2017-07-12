@@ -87,7 +87,10 @@ namespace ElectricGrid
                     {
                         this.secondWire = value;
                     }
-                    this.thirdWire = value;
+                    else if (this.thirdWire != null)
+                    {
+                        this.thirdWire = value;
+                    }                    
                 }
             }
         }

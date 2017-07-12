@@ -111,34 +111,42 @@ namespace ElectricGrid
                 fixCircuit(circuit);
             }
 
-            float[][,] retCircuits = calculateCircuitVals(circuit, inputVoltage);
+            circuit = addCircuitEnd(circuit);
+
+            float[][,] retCircuits = calculateCircuitVals(circuit, inputVoltage,"voltage");
+
+            printArray(retCircuits[0], "Amperage:");
+            printArray(retCircuits[1], "Voltage:");
 
             return null;
         }
 
         private void printArray(float[,] arr, string title)
         {
-            string message = title + Environment.NewLine;
-
-            for (byte i = 0; i < arr.GetLength(0); i++)
+            if (debug)
             {
-                for (byte j = 0; j < arr.GetLength(1); j++)
+                string message = title + Environment.NewLine;
+
+                for (byte i = 0; i < arr.GetLength(0); i++)
                 {
-                    message += (Math.Round(arr[j, i], 4)).ToString();
-
-                    for (byte k = (byte)((Math.Round(arr[j, i], 4)).ToString().Length+2); k < 6; k++)
+                    for (byte j = 0; j < arr.GetLength(1); j++)
                     {
-                        message += " ";
-                    }
-                }
-                message += Environment.NewLine;
-            }
+                        message += (Math.Round(arr[j, i], 3)).ToString();
 
-            MessageBox.Show(message);
+                        for (byte k = (byte)((Math.Round(arr[j, i], 3)).ToString().Length); k < 6; k++)
+                        {
+                            message += " ";
+                        }
+                    }
+                    message += Environment.NewLine;
+                }
+
+                MessageBox.Show(message);
+            }
         }
 
 
-        private float[][,] calculateCircuitVals(CircuitList circuit, float inputVoltage)
+        private float[][,] calculateCircuitVals(CircuitList circuit, float inputParameter, string type)
         {
             float[,] amperageCircuit = new float[circuitSize, circuitSize];
             float[,] voltageCircuit = new float[circuitSize, circuitSize];
@@ -146,47 +154,56 @@ namespace ElectricGrid
 
             if (!circuit.coords.SequenceEqual(endCoords))
             {
-                if (float.IsNaN(circuit.amperage))
+                if (type == "voltage")
                 {
-                    circuit.amperage = getAmperage(circuit, inputVoltage);
+                    if (float.IsNaN(circuit.amperage))
+                    {
+                        circuit.amperage = getAmperage(circuit, inputParameter);
+                    }
+                    else
+                    {
+                        circuit.amperage += getAmperage(circuit, inputParameter);
+                    }
+
+                    amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
+                    circuit.voltage = circuit.amperage * getResistance(circuit, endCoords);
+                    voltageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.voltage;
                 }
-                else
+                else if (type == "amperage")
                 {
-                    circuit.amperage += getAmperage(circuit, inputVoltage);
+                    circuit.amperage = inputParameter;
+                    amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
+                    circuit.voltage = circuit.amperage * getResistance(circuit, endCoords);
+                    voltageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.voltage;
                 }
-
-                amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
-                circuit.voltage = circuit.amperage * getResistance(circuit,endCoords);
-
+                
                 switch (circuit.connectedWires())
                 {
                     case 1:
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.MainWire, circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.MainWire, circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.MainWire, circuit.amperage, "amperage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.MainWire, circuit.amperage, "amperage")[1]);
                         break;
 
                     case 2:
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage, "voltage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage, "voltage")[1]);
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage, "voltage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage, "voltage")[1]);
                         break;
 
                     case 3:
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage, "voltage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage, "voltage")[1]);
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage, "voltage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage, "voltage")[1]);
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage)[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage)[1]);
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage, "voltage")[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage, "voltage")[1]);
                         break;
                 }
             }
-
-            printArray(amperageCircuit,"Amperage:");
 
             return new float[2][,] { amperageCircuit, voltageCircuit };
         }
@@ -443,12 +460,14 @@ namespace ElectricGrid
                         break;
 
                     case (byte)wire.resistor5://5 Ohm resistor
+                        foundComponent = true;
                         circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                         circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         circuit.secondWire.resistance = 5;
                         break;
 
                     case (byte)wire.resistor10://10 Ohm resistor
+                        foundComponent = true;
                         circuit.secondWire = createCircuit(circuitArr, new CircuitList(), new byte[2] { (byte)(currentWire[0] + 1), currentWire[1] }, "");
                         circuit.secondWire.coords = new byte[2] { currentWire[0], currentWire[1] };
                         circuit.secondWire.resistance = 10;
@@ -681,6 +700,21 @@ namespace ElectricGrid
             }
 
             return closed;
+        }
+
+        private CircuitList addCircuitEnd(CircuitList circuit)
+        {
+            if (circuit.connectedWires() != 0)
+            {
+                circuit.MainWire = addCircuitEnd(circuit.MainWire);
+            }
+            else
+            {
+                circuit.secondWire = new CircuitList();
+                circuit.secondWire.coords = new byte[2] { (byte)(circuitSize - 1), (byte)((circuitSize - 1) / 2) };
+            }
+
+            return circuit;
         }
     }
 }
