@@ -162,21 +162,5 @@ namespace ElectricGrid
 
             return new float[3] { amperage, voltage, resistance };
         }
-
-        /// <summary>
-        /// Finds the wire's amperage or voltage if possible.
-        /// </summary>
-        /// <param name="wire"></param>
-        public void findWireVals(CircuitList wire)
-        {
-            if (!float.IsNaN(wire.voltage) && !float.IsNaN(wire.resistance))
-            {
-                wire.amperage = wire.voltage / wire.resistance;
-            }
-            else if (!float.IsNaN(wire.resistance) && !float.IsNaN(wire.amperage))
-            {
-                wire.voltage = wire.amperage * wire.resistance;
-            }
-        }
     }
 }

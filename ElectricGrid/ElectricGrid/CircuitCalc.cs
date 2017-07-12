@@ -91,7 +91,7 @@ namespace ElectricGrid
         /// </summary>
         /// <param name="circuit"></param>
         /// <returns></returns>
-        public float[,] solveCircuit(byte[,] circuitArr, byte inputVoltage)
+        public float[][,] solveCircuit(byte[,] circuitArr, byte inputVoltage)
         {
             circuitSize = (byte)circuitArr.GetLength(0);
             byte[] startWire = new byte[2] { 0, (byte)((circuitSize - 1) / 2) };
@@ -111,14 +111,113 @@ namespace ElectricGrid
                 fixCircuit(circuit);
             }
 
-            if (debug)
-            {
-                MessageBox.Show(printCircuit(circuit, "start 2"));
-            }
-
-
+            float[][,] retCircuits = calculateCircuitVals(circuit, inputVoltage);
 
             return null;
+        }
+
+        private void printArray(float[,] arr, string title)
+        {
+            string message = title + Environment.NewLine;
+
+            for (byte i = 0; i < arr.GetLength(0); i++)
+            {
+                for (byte j = 0; j < arr.GetLength(1); j++)
+                {
+                    message += (Math.Round(arr[j, i], 4)).ToString();
+
+                    for (byte k = (byte)((Math.Round(arr[j, i], 4)).ToString().Length+2); k < 6; k++)
+                    {
+                        message += " ";
+                    }
+                }
+                message += Environment.NewLine;
+            }
+
+            MessageBox.Show(message);
+        }
+
+
+        private float[][,] calculateCircuitVals(CircuitList circuit, float inputVoltage)
+        {
+            float[,] amperageCircuit = new float[circuitSize, circuitSize];
+            float[,] voltageCircuit = new float[circuitSize, circuitSize];
+            byte[] endCoords = findEndOfCircuit(circuit);
+
+            if (!circuit.coords.SequenceEqual(endCoords))
+            {
+                if (float.IsNaN(circuit.amperage))
+                {
+                    circuit.amperage = getAmperage(circuit, inputVoltage);
+                }
+                else
+                {
+                    circuit.amperage += getAmperage(circuit, inputVoltage);
+                }
+
+                amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
+                circuit.voltage = circuit.amperage * getResistance(circuit,endCoords);
+
+                switch (circuit.connectedWires())
+                {
+                    case 1:
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.MainWire, circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.MainWire, circuit.voltage)[1]);
+                        break;
+
+                    case 2:
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage)[1]);
+
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage)[1]);
+                        break;
+
+                    case 3:
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage)[1]);
+
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage)[1]);
+
+                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage)[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage)[1]);
+                        break;
+                }
+            }
+
+            printArray(amperageCircuit,"Amperage:");
+
+            return new float[2][,] { amperageCircuit, voltageCircuit };
+        }
+
+
+        private byte[] findEndOfCircuit(CircuitList circuit)
+        {
+            while (circuit.connectedWires() != 0)
+            {
+                circuit = circuit.MainWire;
+            }
+
+            return circuit.coords;
+        }
+
+        private float[,] unifyArrays(float[,] firstArray, float[,] secondArray)
+        {
+            float[,] unifiedArrays = (float[,])firstArray.Clone();
+
+            for (byte i = 0; i < firstArray.GetLength(0); i++)
+            {
+                for (byte j = 0; j < firstArray.GetLength(1); j++)
+                {
+                    if (secondArray[i, j] != 0 && secondArray[i, j] != firstArray[i, j])
+                    {
+                        unifiedArrays[i,j] = secondArray[i, j];
+                    }
+                }
+            }
+
+            return unifiedArrays;
         }
 
         /// <summary>
@@ -397,24 +496,19 @@ namespace ElectricGrid
         /// </summary>
         /// <param name="circuit"></param>
         /// <returns></returns>
-        private float getResistance(CircuitList circuit)
+        private float getResistance(CircuitList circuit, byte[] endCoords)
         {
-            if (circuit.connectedWires() == 0)
+            switch (circuit.connectedWires())
             {
-                return float.NaN;
+                case 1:
+                    return getSequentialResistance(circuit, endCoords);
+                case 2:
+                    return getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
+                case 3:
+                    return getParallelResistance(circuit.activeWires());
             }
 
-            if (circuit.connectedWires() == 1)
-            {
-
-            }
-
-            if (circuit.connectedWires() == 2)
-            {
-                return getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
-            }
-
-            return 0;
+            return float.NaN;
         }
 
         /// <summary>
@@ -444,13 +538,23 @@ namespace ElectricGrid
         /// <returns></returns>
         private float getSequentialResistance(CircuitList circuit, byte[] endCoords)
         {
-            float resistance = 0;
+            float resistance;
+
+            if (!float.IsNaN(circuit.resistance))
+            {
+                resistance = circuit.resistance;
+            }
+            else
+            {
+                resistance = 0;
+            }
+            
             if (!endCoords.SequenceEqual(circuit.coords))
             {
                 switch (circuit.connectedWires())
                 {
                     case 1:
-                        resistance = circuit.resistance + getSequentialResistance(circuit.MainWire, endCoords);
+                        resistance += getSequentialResistance(circuit.MainWire, endCoords);
                         break;
                     case 2:
                         resistance += 1 / getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
@@ -520,26 +624,28 @@ namespace ElectricGrid
             return 1 / resistance;
         }
 
-
-        private float[] getAmperage(CircuitList circuit, float inputVoltage)
+        /// <summary>
+        /// Gets a wires amperage.
+        /// </summary>
+        /// <param name="circuit"></param>
+        /// <param name="inputVoltage"></param>
+        /// <returns></returns>
+        private float getAmperage(CircuitList circuit, float inputVoltage)
         {
-            float[] wiresResistance;
             float resistance = 0;
+            byte[] wireEnd = findEndOfCircuit(circuit);
 
             switch (circuit.connectedWires())
             {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    wiresResistance = new float[4] { getResistance(circuit), getResistance(circuit.firstWire), getResistance(circuit.secondWire), getResistance(circuit.thirdWire) };
+                case 1:                    
+                    resistance = getSequentialResistance(circuit, wireEnd);
 
-
-                    break;
+                    return inputVoltage / resistance;
+                case 0:
+                    return 0;
             }
 
-            return null;
+            return float.NaN;
         }
 
         /// <summary>
