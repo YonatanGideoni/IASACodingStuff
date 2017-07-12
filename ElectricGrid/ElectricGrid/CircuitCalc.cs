@@ -102,9 +102,19 @@ namespace ElectricGrid
             }
 
             CircuitList circuit = new CircuitList();
+            circuit.secondWire = new CircuitList();
+            for (byte i = 1; i < circuitSize; i++)
+            {
+                if (circuitArr[i, (byte)((circuitSize - 1) / 2)] != (byte)wire.horizontal)
+                {
+                    circuit.secondWire.coords = new byte[2] { i, (byte)((circuitSize - 1) / 2) };
+                    break;
+                }
+            }
+
             circuit.voltage = inputVoltage;
             circuit.coords = new byte[2] { 0, (byte)((circuitSize - 1) / 2) };
-            createCircuit(circuitArr, circuit, (byte[])(startWire.Clone()), "");
+            createCircuit(circuitArr, circuit.secondWire, (byte[])(startWire.Clone()), "");
 
             while (fixCircuit(circuit)[1] != "end")
             {
@@ -339,7 +349,7 @@ namespace ElectricGrid
                     noChange = 0;
                     pointerCircuit[0].MainWire = (CircuitList)(fixCircuit(pointerCircuit[0].MainWire)[0]);
                 }
-                else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] >= pointerCircuit[0].coords[0])
+                else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] > pointerCircuit[0].coords[0])
                 {
                     noChange = 0;
                     pointerCircuit[0] = pointerCircuit[0].MainWire;
@@ -347,6 +357,13 @@ namespace ElectricGrid
                     if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
                     {//if replica found, converge
                         pointerCircuit[1] = pointerCircuit[0];
+                        retObj = fixCircuit(pointerCircuit[0]);
+                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
+                        break;
+                    }
+                    else if (pointerCircuit[1].MainWire!=null && pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].MainWire.coords))
+                    {
+                        pointerCircuit[1].MainWire = pointerCircuit[0];
                         retObj = fixCircuit(pointerCircuit[0]);
                         retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
                         break;
@@ -362,7 +379,7 @@ namespace ElectricGrid
                     noChange = 0;
                     pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire)[0]);
                 }
-                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange > 50))
+                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange > 5))
                 {
                     noChange = 0;
 
@@ -373,6 +390,13 @@ namespace ElectricGrid
                         pointerCircuit[1] = pointerCircuit[0];
                         retObj = fixCircuit(pointerCircuit[0]);
                         retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
+                        break;
+                    }
+                    else if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.coords.SequenceEqual(pointerCircuit[1].coords))
+                    {
+                        pointerCircuit[1] = pointerCircuit[0].MainWire;
+                        retObj = fixCircuit(pointerCircuit[0].MainWire);
+                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].MainWire.coords };
                         break;
                     }
                 }
@@ -517,17 +541,30 @@ namespace ElectricGrid
         /// <returns></returns>
         private float getResistance(CircuitList circuit, byte[] endCoords)
         {
-            switch (circuit.connectedWires())
+            float resistance = 0;
+            while (!circuit.coords.SequenceEqual(endCoords))
             {
-                case 1:
-                    return getSequentialResistance(circuit, endCoords);
-                case 2:
-                    return getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
-                case 3:
-                    return getParallelResistance(circuit.activeWires());
+                switch (circuit.connectedWires())
+                {
+                    case 1:
+                        resistance += getSequentialResistance(circuit, endCoords);
+                        return resistance;
+
+                    case 2:
+                        resistance += 1 / getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
+                        circuit = (CircuitList)wireToConverge(new CircuitList[2] { circuit.activeWires()[0], circuit.activeWires()[1] })[0];
+                        break;
+
+                    case 3:
+                        resistance += 1 / getParallelResistance(circuit.activeWires());
+                        circuit = furthestWire(new CircuitList[3]{(CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.secondWire })[0],
+                                                                  (CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.thirdWire })[0],
+                                                                  (CircuitList)wireToConverge(new CircuitList[2] { circuit.thirdWire, circuit.secondWire })[0]});
+                        break;
+                }
             }
 
-            return float.NaN;
+            return resistance;
         }
 
         /// <summary>
@@ -578,14 +615,14 @@ namespace ElectricGrid
                     case 2:
                         resistance += 1 / getParallelResistance(circuit.activeWires()[0], circuit.activeWires()[1]);
                         circuit = (CircuitList)wireToConverge(new CircuitList[2] { circuit.activeWires()[0], circuit.activeWires()[1] })[0];
-                        resistance += getSequentialResistance(circuit, endCoords);
+                        resistance += getResistance(circuit, endCoords);
                         break;
                     case 3:
                         resistance += 1 / getParallelResistance(circuit.activeWires());
                         circuit = furthestWire(new CircuitList[3]{(CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.secondWire })[0],
                                                                   (CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.thirdWire })[0],
                                                                   (CircuitList)wireToConverge(new CircuitList[2] { circuit.thirdWire, circuit.secondWire })[0]});
-                        resistance += getSequentialResistance(circuit, endCoords);
+                        resistance += getResistance(circuit, endCoords);
                         break;
                 }
             }
@@ -650,21 +687,18 @@ namespace ElectricGrid
         /// <param name="inputVoltage"></param>
         /// <returns></returns>
         private float getAmperage(CircuitList circuit, float inputVoltage)
-        {
-            float resistance = 0;
+        {            
             byte[] wireEnd = findEndOfCircuit(circuit);
+            float resistance = getResistance(circuit, wireEnd);
 
-            switch (circuit.connectedWires())
+            if (circuit.connectedWires() != 0)
             {
-                case 1:                    
-                    resistance = getSequentialResistance(circuit, wireEnd);
-
-                    return inputVoltage / resistance;
-                case 0:
-                    return 0;
+                return inputVoltage / resistance;
             }
-
-            return float.NaN;
+            else
+            {
+                return 0;
+            }
         }
 
         /// <summary>
