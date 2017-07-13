@@ -152,7 +152,6 @@ namespace ElectricGrid
             }
         }
 
-
         private float[][,] calculateCircuitVals(CircuitList circuit, float inputParameter, string type, byte[] endCoords)
         {
             float[,] amperageCircuit = new float[circuitSize, circuitSize];
@@ -259,6 +258,14 @@ namespace ElectricGrid
                             break;
                     }
                 }
+            }
+            else if(type=="amperage")
+            {
+                circuit = getEndAmperage(circuit, inputParameter, endCoords);
+
+                updateArrays(new float[2][,] { amperageCircuit, voltageCircuit }, circuit);
+
+                return new float[2][,] { amperageCircuit, voltageCircuit };
             }
 
 
