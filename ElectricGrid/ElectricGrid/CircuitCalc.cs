@@ -433,70 +433,73 @@ namespace ElectricGrid
         private object[] wireToConverge(CircuitList[] pointerCircuit)
         {
             object[] retObj;
-            byte noChange = 0;
 
-            while (true)
+            if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
             {
-                if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.connectedWires() > 1)
-                {
-                    noChange = 0;
-                    pointerCircuit[0].MainWire = (CircuitList)(fixCircuit(pointerCircuit[0].MainWire)[0]);
-                }
-                else if (pointerCircuit[0].MainWire != null && pointerCircuit[1].coords[0] > pointerCircuit[0].coords[0])
-                {
-                    noChange = 0;
-                    pointerCircuit[0] = pointerCircuit[0].MainWire;
+                pointerCircuit[1] = pointerCircuit[1].MainWire;
+                pointerCircuit[0] = pointerCircuit[0].MainWire;
+            }
 
-                    if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
-                    {//if replica found, converge
-                        pointerCircuit[1] = pointerCircuit[0];
-                        retObj = fixCircuit(pointerCircuit[0]);
-                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
-                        break;
-                    }
-                    else if (pointerCircuit[1].MainWire!=null && pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].MainWire.coords))
+            while (pointerCircuit[0] != null)
+            {
+                if (doConverge((CircuitList[])pointerCircuit.Clone()))
+                {
+                    while (!pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
                     {
-                        pointerCircuit[1].MainWire = pointerCircuit[0];
-                        retObj = fixCircuit(pointerCircuit[0]);
-                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
-                        break;
+                        pointerCircuit[1] = pointerCircuit[1].MainWire;
                     }
+                    pointerCircuit[0] = pointerCircuit[1];
+                    retObj = fixCircuit(pointerCircuit[0]);
+                    retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
+                    return retObj;
                 }
                 else
                 {
-                    noChange++;//to remove possibility of infinite loops
+                    pointerCircuit[0] = pointerCircuit[0].MainWire;
                 }
-
-                if (pointerCircuit[1].MainWire != null && pointerCircuit[1].MainWire.connectedWires() > 1)
-                {
-                    noChange = 0;
-                    pointerCircuit[1].MainWire = (CircuitList)(fixCircuit(pointerCircuit[1].MainWire)[0]);
-                }
-                else if (pointerCircuit[1].MainWire != null && (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] || noChange > 5))
-                {
-                    noChange = 0;
-
-                    pointerCircuit[1] = pointerCircuit[1].MainWire;
-
-                    if (pointerCircuit[0].coords.SequenceEqual(pointerCircuit[1].coords))
-                    {//if replica found, converge
-                        pointerCircuit[1] = pointerCircuit[0];
-                        retObj = fixCircuit(pointerCircuit[0]);
-                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].coords };
-                        break;
-                    }
-                    else if (pointerCircuit[0].MainWire != null && pointerCircuit[0].MainWire.coords.SequenceEqual(pointerCircuit[1].coords))
-                    {
-                        pointerCircuit[1] = pointerCircuit[0].MainWire;
-                        retObj = fixCircuit(pointerCircuit[0].MainWire);
-                        retObj = new object[3] { retObj[0], retObj[1], pointerCircuit[0].MainWire.coords };
-                        break;
-                    }
-                }
-
             }
 
-            return retObj;
+            return null;
+        }
+
+
+        private bool doConverge(CircuitList[] pointerCircuit)
+        {
+            while (pointerCircuit[0].coords[0] > pointerCircuit[1].coords[0] && pointerCircuit[1].MainWire != null)
+            {
+                pointerCircuit[1] = pointerCircuit[1].MainWire;
+            }
+
+            if (pointerCircuit[1].coords[0] > pointerCircuit[0].coords[0])
+            {
+                return false;
+            }
+            else
+            {
+                if (pointerCircuit[1].coords.SequenceEqual(pointerCircuit[0].coords))
+                {
+                    return true;
+                }
+                else
+                {
+                    while (pointerCircuit[0].coords[1] != pointerCircuit[1].coords[1] && pointerCircuit[1].MainWire!=null)
+                    {
+                        pointerCircuit[1] = pointerCircuit[1].MainWire;
+
+                        if (pointerCircuit[1].coords.SequenceEqual(pointerCircuit[0].coords))
+                        {
+                            return true;
+                        }
+
+                        if (pointerCircuit[1].coords[0] > pointerCircuit[0].coords[0])
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
