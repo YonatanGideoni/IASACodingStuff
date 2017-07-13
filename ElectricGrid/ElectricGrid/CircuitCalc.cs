@@ -160,6 +160,9 @@ namespace ElectricGrid
         {
             float[,] amperageCircuit = new float[circuitSize, circuitSize];
             float[,] voltageCircuit = new float[circuitSize, circuitSize];
+            float[][,] retArrays;
+            byte[] endOfParallel;
+            float inputVoltage;
             byte[] endCoords = findEndOfCircuit(circuit);
 
             if (!circuit.coords.SequenceEqual(endCoords))
@@ -173,20 +176,26 @@ namespace ElectricGrid
                     else
                     {
                         circuit.amperage += getAmperage(circuit, inputParameter);
-                    }
-
-                    amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
-                    circuit.voltage = circuit.amperage * getResistance(circuit, endCoords);
-                    voltageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.voltage;
+                    }                    
                 }
                 else if (type == "amperage")
                 {
-                    circuit.amperage = inputParameter;
-                    amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
-                    circuit.voltage = circuit.amperage * getResistance(circuit, endCoords);
-                    voltageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.voltage;
+                    circuit.amperage = inputParameter;                
                 }
-                
+
+                amperageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.amperage;
+
+                if (float.IsNaN(circuit.voltage))
+                {
+                    circuit.voltage += circuit.amperage * getResistance(circuit, endCoords);
+                }
+                else
+                {
+                    circuit.voltage = circuit.amperage * getResistance(circuit, endCoords);
+                }
+
+                voltageCircuit[circuit.coords[0], circuit.coords[1]] = circuit.voltage;
+
                 switch (circuit.connectedWires())
                 {
                     case 1:
@@ -195,22 +204,42 @@ namespace ElectricGrid
                         break;
 
                     case 2:
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage, "voltage")[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[0], circuit.voltage, "voltage")[1]);
+                        endOfParallel = (byte[])wireToConverge(circuit.activeWires())[2];
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage, "voltage")[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.activeWires()[1], circuit.voltage, "voltage")[1]);
+                        inputVoltage = circuit.voltage * getResistance(circuit, endOfParallel) / getResistance(circuit, endCoords);
+
+                        retArrays = calculateCircuitVals(circuit.activeWires()[0], circuit.voltage, "voltage");
+
+                        amperageCircuit = unifyArrays(amperageCircuit, retArrays[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, retArrays[1]);
+
+                        retArrays = calculateCircuitVals(circuit.activeWires()[1], circuit.voltage, "voltage");
+
+                        amperageCircuit = unifyArrays(amperageCircuit, retArrays[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, retArrays[1]);
                         break;
 
                     case 3:
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage, "voltage")[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.firstWire, circuit.voltage, "voltage")[1]);
+                        endOfParallel = furthestWire(new CircuitList[3]{(CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.secondWire })[0],
+                                                                  (CircuitList)wireToConverge(new CircuitList[2] { circuit.firstWire, circuit.thirdWire })[0],
+                                                                  (CircuitList)wireToConverge(new CircuitList[2] { circuit.thirdWire, circuit.secondWire })[0]}).coords;
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage, "voltage")[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.secondWire, circuit.voltage, "voltage")[1]);
+                        inputVoltage = circuit.voltage * getResistance(circuit, endOfParallel) / getResistance(circuit, endCoords);
 
-                        amperageCircuit = unifyArrays(amperageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage, "voltage")[0]);
-                        voltageCircuit = unifyArrays(voltageCircuit, calculateCircuitVals(circuit.thirdWire, circuit.voltage, "voltage")[1]);
+                        retArrays = calculateCircuitVals(circuit.firstWire, circuit.voltage, "voltage");
+
+                        amperageCircuit = unifyArrays(amperageCircuit, retArrays[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, retArrays[1]);
+
+                        retArrays = calculateCircuitVals(circuit.secondWire, circuit.voltage, "voltage");
+
+                        amperageCircuit = unifyArrays(amperageCircuit, retArrays[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, retArrays[1]);
+
+                        retArrays = calculateCircuitVals(circuit.thirdWire, circuit.voltage, "voltage");
+
+                        amperageCircuit = unifyArrays(amperageCircuit, retArrays[0]);
+                        voltageCircuit = unifyArrays(voltageCircuit, retArrays[1]);
                         break;
                 }
             }
