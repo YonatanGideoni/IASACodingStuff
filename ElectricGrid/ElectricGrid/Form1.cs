@@ -54,9 +54,10 @@ namespace ElectricGrid
 
             this.Controls.Add(grid);
 
-            gridByte[0, (gridSize-1) / 2 ] = 0;
-            gridArr[0, (gridSize-1) / 2].BackColor = Color.Green;
-            prevButton = new byte[2] { 0, (byte)((gridSize-1) / 2 )};
+            gridByte[0, (gridSize - 1) / 2] = 0;
+            gridArr[0, (gridSize - 1) / 2].BackColor = Color.Green;
+            gridArr[gridArr.GetLength(0) - 1, (gridArr.GetLength(0) - 1) / 2].BackColor = Color.Red;
+            prevButton = new byte[2] { 0, (byte)((gridSize - 1) / 2) };
 
             GridSizeNum.Enabled = false;
             InitGridButton.Enabled = false;
@@ -116,7 +117,7 @@ namespace ElectricGrid
                         }
                         else
                         {
-                            if (prevButton != new byte[2] { (byte)((gridSize-1) / 2), 0 })
+                            if (prevButton != new byte[2] { (byte)((gridSize - 1) / 2), 0 })
                             {
                                 prevButton = null;
                             }
@@ -149,24 +150,31 @@ namespace ElectricGrid
             }
             else
             {
-                gridArr[0, (gridSize-1) / 2].BackgroundImage = null;
-                gridArr[0, (gridSize-1) / 2].BackColor = Color.Green;
+                gridArr[0, (gridSize - 1) / 2].BackgroundImage = null;
+                gridArr[0, (gridSize - 1) / 2].BackColor = Color.Green;
+                gridArr[gridSize - 1, (gridSize - 1) / 2].BackgroundImage = null;
+                gridArr[gridSize - 1, (gridSize - 1) / 2].BackColor = Color.Red;
 
-                solveCircuit(gridByte, (byte)inVoltageBox.Value);
+                float[] circuitVars = solveCircuit(gridByte, (byte)inVoltageBox.Value, pressedButton);
+
+                if (!float.IsNaN(circuitVars[0]))
+                {
+                    MessageBox.Show("Amperage: " + circuitVars[0].ToString() + Environment.NewLine + "Voltage: " + circuitVars[1].ToString());
+                }
             }
         }
 
-        static float solveCircuit(byte[,] circuit, byte inputVoltage)
+        static float[] solveCircuit(byte[,] circuit, byte inputVoltage, byte[] coords)
         {
-            CircuitCalc solve=new CircuitCalc();
-            float[][,] solvedCircuit= solve.solveCircuit(circuit,inputVoltage);
+            CircuitCalc solve = new CircuitCalc();
+            float[][,] solvedCircuit = solve.solveCircuit(circuit, inputVoltage);
 
             if (solvedCircuit == null)
             {
                 MessageBox.Show("You need a closed circuit!");
             }
 
-            return float.NaN;
+            return new float[2] { solvedCircuit[0][coords[0], coords[1]], solvedCircuit[1][coords[0], coords[1]] };
         }
 
         public bool isIntersection(byte[] buttonLoc)
@@ -222,13 +230,17 @@ namespace ElectricGrid
                     gridArr[i, j].BackgroundImage = null;
                 }
             }
-            gridArr[0, gridArr.GetLength(0) / 2 - 1].BackColor = Color.Green;
+            gridArr[0, (gridArr.GetLength(0) - 1) / 2].BackColor = Color.Green;
+            gridArr[gridArr.GetLength(0) - 1, (gridArr.GetLength(0) - 1) / 2].BackColor = Color.Red;
         }
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'p')
             {
+                gridArr[0, (gridArr.GetLength(0) - 1) / 2].BackColor = Color.Green;
+                gridArr[gridArr.GetLength(0) - 1, (gridArr.GetLength(0) - 1) / 2].BackColor = Color.Red;
+
                 powerActive = !powerActive;
                 if (powerActive)
                 {

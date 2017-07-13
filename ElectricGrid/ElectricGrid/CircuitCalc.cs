@@ -9,7 +9,7 @@ namespace ElectricGrid
 {
     class CircuitCalc
     {
-        private bool Debug = true;
+        private bool Debug = false;
         public bool debug
         {
             get
@@ -122,10 +122,28 @@ namespace ElectricGrid
 
             float[][,] retCircuits = calculateCircuitVals(circuit, inputVoltage, "voltage", findEndOfCircuit(circuit));
 
+            setEndValues(circuit, circuit.amperage);
+
+            fillArrayGaps(retCircuits, circuit);
+
             printArray(retCircuits[0], "Amperage:");
             printArray(retCircuits[1], "Voltage:");
 
-            return null;
+            return retCircuits;
+        }
+
+
+        private void setEndValues(CircuitList circuit, float amperage)
+        {
+            if (circuit.connectedWires() != 0)
+            {
+                setEndValues(circuit.MainWire,amperage);
+            }
+            else
+            {
+                circuit.amperage = amperage;
+                circuit.voltage = 0;
+            }
         }
 
         private void printArray(float[,] arr, string title)
@@ -152,10 +170,42 @@ namespace ElectricGrid
             }
         }
 
+        private void fillArrayGaps(float[][,] arrays, CircuitList circuit)
+        {
+            if (float.IsNaN(circuit.amperage))
+            {
+                circuit.amperage = getAmperage(circuit);
+                arrays[0][circuit.coords[0], circuit.coords[1]] = circuit.amperage;
+            }
+            if (float.IsNaN(circuit.voltage))
+            {
+                circuit.voltage = getVoltage(circuit);
+                arrays[1][circuit.coords[0], circuit.coords[1]] = circuit.voltage;
+            }
+
+            switch (circuit.connectedWires())
+            {
+                case 1:
+                    fillArrayGaps(arrays, circuit.MainWire);
+                    break;
+                case 2:
+                    fillArrayGaps(arrays, circuit.activeWires()[0]);
+                    fillArrayGaps(arrays, circuit.activeWires()[1]);
+                    break;
+                case 3:
+                    fillArrayGaps(arrays, circuit.firstWire);
+                    fillArrayGaps(arrays, circuit.secondWire);
+                    fillArrayGaps(arrays, circuit.thirdWire);
+                    break;
+            }
+        }
+
         private float[][,] calculateCircuitVals(CircuitList circuit, float inputParameter, string type, byte[] endCoords)
         {
             float[,] amperageCircuit = new float[circuitSize, circuitSize];
             float[,] voltageCircuit = new float[circuitSize, circuitSize];
+            initNanArray(amperageCircuit);
+            initNanArray(voltageCircuit);
             float[][,] retArrays;
             byte[] endOfParallel;
             float inputVoltage;
@@ -329,6 +379,17 @@ namespace ElectricGrid
             return circuit.coords;
         }
 
+        private void initNanArray(float[,] array)
+        {
+            for (byte i = 0; i < array.GetLength(0); i++)
+            {
+                for (byte j = 0; j < array.GetLength(1); j++)
+                {
+                    array[i, j] = float.NaN;
+                }
+            }
+        }
+
         private float[,] unifyArrays(float[,] secondArray, float[,] firstArray)
         {
             float[,] unifiedArrays = (float[,])firstArray.Clone();
@@ -337,7 +398,7 @@ namespace ElectricGrid
             {
                 for (byte j = 0; j < firstArray.GetLength(1); j++)
                 {
-                    if (secondArray[i, j] != 0 && secondArray[i, j] != firstArray[i, j])
+                    if (!float.IsNaN(secondArray[i,j]) && secondArray[i, j] != firstArray[i, j])
                     {
                         unifiedArrays[i, j] = secondArray[i, j];
                     }
@@ -796,6 +857,26 @@ namespace ElectricGrid
             {
                 return 0;
             }
+        }
+
+        private float getAmperage(CircuitList circuit)
+        {
+            if (float.IsNaN(circuit.amperage))
+            {
+                return getAmperage(circuit.MainWire);
+            }
+
+            return circuit.amperage;
+        }
+
+        private float getVoltage(CircuitList circuit)
+        {
+            if (float.IsNaN(circuit.voltage))
+            {
+                return getVoltage(circuit.MainWire);
+            }
+
+            return circuit.voltage;
         }
 
         /// <summary>
