@@ -117,6 +117,17 @@ namespace Grapher
                     return (float)(Math.Log(calcTree(node.left, xVal, yVal)));
                 }
             }
+            else if ((bool)(minmaxOperand(node.operation)[0]))
+            {
+                if ((string)(minmaxOperand(node.operation)[1]) == "max")
+                {
+                    return Math.Max(calcTree(node.right, xVal, yVal), calcTree(node.left, xVal, yVal));
+                }
+                else
+                {
+                    return Math.Min(calcTree(node.right, xVal, yVal), calcTree(node.left, xVal, yVal));
+                }
+            }
             else if ((bool)sqrtOperand(node.operation)[0])
             {
                 return Math.Sqrt(calcTree(node.left,xVal,yVal));
@@ -214,6 +225,33 @@ namespace Grapher
         static object[] logOperand(string stringCheck)
         {
             if (stringCheck == "log" || stringCheck == "lan")
+            {
+                return new object[2] { true, stringCheck };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] minmaxOperand(char[] stringCheck, short startChar)
+        {
+            if (stringCheck.Length - startChar < 3)
+            {
+                return new object[1] { false };
+            }
+
+            string funcString = new string(stringCheck).Substring(startChar, 3);
+
+            if (funcString == "min" || funcString == "max")
+            {
+                return new object[2] { true, funcString };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] minmaxOperand(string stringCheck)
+        {
+            if (stringCheck == "min" || stringCheck == "max")
             {
                 return new object[2] { true, stringCheck };
             }
@@ -650,7 +688,41 @@ namespace Grapher
                             return errorObj;
                         }
                     }
-                    else if ((bool)sqrtOperand(function, i)[0])
+                    else if ((bool)(minmaxOperand(function, i)[0]))
+                    {
+                        if (function[i + 3] == '(')
+                        {
+                            retBranch = parseBranch((short)(i + 4), function);
+                            retOperand = (string)(minmaxOperand(function, i)[1]);
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]);
+                            }
+                            else
+                            {
+                                if (branch.right == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]),
+                                                                                    branch.operation, branch.left);
+                                }
+                                else if (branch.left == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]),
+                                                                                    branch.operation, branch.right);
+                                }
+                                else
+                                {
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]), branch);
+                                }
+                            }
+                            i = (short)(retBranch[0]);
+                        }
+                        else
+                        {
+                            return errorObj;
+                        }
+                    }
+                    else if ((bool)sqrtOperand(function, i)[0])//explicit ^0.5
                     {
                         if (function[i + 4] == '(')
                         {
@@ -683,6 +755,11 @@ namespace Grapher
                         {
                             return errorObj;
                         }
+                    }
+                    else if (function[i] == ',')
+                    {
+                        retBranch = parseBranch((short)(i + 1), function);
+                        return new object[3] { retBranch[0], branch, retBranch[1] };
                     }
                     else if (function[i] == '(')
                     {
