@@ -132,6 +132,10 @@ namespace Grapher
             {
                 return Math.Sqrt(calcTree(node.left,xVal,yVal));
             }
+            else if ((bool)absOperand(node.operation)[0])
+            {
+                return Math.Abs(calcTree(node.left, xVal, yVal));
+            }
             return float.Parse(node.operation);
         }
 
@@ -279,6 +283,33 @@ namespace Grapher
         static object[] sqrtOperand(string stringCheck)
         {
             if (stringCheck == "sqrt")
+            {
+                return new object[2] { true, stringCheck };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] absOperand(char[] stringCheck, short startChar)
+        {
+            if (stringCheck.Length - startChar < 3)
+            {
+                return new object[1] { false };
+            }
+
+            string funcString = new string(stringCheck).Substring(startChar, 3);
+
+            if (funcString == "abs")
+            {
+                return new object[2] { true, funcString };
+            }
+
+            return new object[1] { false };
+        }
+
+        static object[] absOperand(string stringCheck)
+        {
+            if (stringCheck == "abs")
             {
                 return new object[2] { true, stringCheck };
             }
@@ -728,6 +759,40 @@ namespace Grapher
                         {
                             retBranch = parseBranch((short)(i + 5), function);
                             retOperand = "sqrt";
+                            if (branch.operation == null || branch.operation == "")
+                            {
+                                branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null);
+                            }
+                            else
+                            {
+                                if (branch.right == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.left);
+                                }
+                                else if (branch.left == null)
+                                {
+                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
+                                                                                    branch.operation, branch.right);
+                                }
+                                else
+                                {
+                                    forceInsertBranch(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null), branch);
+                                }
+                            }
+                            i = (short)(retBranch[0]);
+                        }
+                        else
+                        {
+                            return errorObj;
+                        }
+                    }
+                    else if ((bool)absOperand(function, i)[0])//absolute value
+                    {
+                        if (function[i + 3] == '(')
+                        {
+                            retBranch = parseBranch((short)(i + 4), function);
+                            retOperand = "abs";
                             if (branch.operation == null || branch.operation == "")
                             {
                                 branch = new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null);
