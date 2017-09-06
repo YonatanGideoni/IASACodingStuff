@@ -1,0 +1,18 @@
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\bin\Debug\Grapher.exe.config
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\bin\Debug\Grapher.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\bin\Debug\Grapher.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.csprojResolveAssemblyReference.cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.Properties.Resources.resources
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.csproj.GenerateResource.Cache
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.exe
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.pdb
+C:\Users\Yonatan\Desktop\Coding Stuff\IASACodingStuff\Grapher\Grapher\obj\Debug\Grapher.Form1.resources
+C:\Users\chais\Desktop\Grapher\Grapher\bin\Debug\Grapher.exe.config
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.exe
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.pdb
+C:\Users\chais\Desktop\Grapher\Grapher\bin\Debug\Grapher.exe
+C:\Users\chais\Desktop\Grapher\Grapher\bin\Debug\Grapher.pdb
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.csprojResolveAssemblyReference.cache
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.Form1.resources
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.Properties.Resources.resources
+C:\Users\chais\Desktop\Grapher\Grapher\obj\Debug\Grapher.csproj.GenerateResource.Cache
