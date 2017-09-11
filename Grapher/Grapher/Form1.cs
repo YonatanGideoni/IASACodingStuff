@@ -631,8 +631,8 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -665,8 +665,8 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -699,8 +699,8 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -733,8 +733,8 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, (ParseTree<string>)retBranch[2]));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -767,8 +767,8 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation,
+                                        new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -801,8 +801,7 @@ namespace Grapher
                             {
                                 if (branch.right == null)
                                 {
-                                    branch = new ParseTree<string>(new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null),
-                                                                                    branch.operation, branch.left);
+                                    branch = new ParseTree<string>(branch.left, branch.operation, new ParseTree<string>((ParseTree<string>)(retBranch[1]), retOperand, null));
                                 }
                                 else if (branch.left == null)
                                 {
@@ -830,6 +829,12 @@ namespace Grapher
                     {
                         retBranch = parseBranch((short)(i + 1), function);
                         i = (short)(retBranch[0]);
+
+                        if (i < function.Length - 2 && function[i + 1] == '^')
+                        {
+                            retBranch[1] = new ParseTree<string>((ParseTree<string>)(retBranch[1]), "^", null);
+                            i++;
+                        }
 
                         if (branch.operation == null || branch.operation == "")
                         {
@@ -883,10 +888,14 @@ namespace Grapher
 
             PointF[] fillPoints = new PointF[4];
 
+            int[] RGB = new int[3]{redGraphCheck.Checked?1:0,
+                                   GreenCheckBox.Checked?1:0,
+                                   blueCheckBox.Checked?1:0};
+
             short resolution = (short)ResolutionBox.Value;
             float incY = Math.Abs(maxY - minY) / resolution;
             float incX = Math.Abs(maxX - minX) / resolution;
-            double viewAngle = AngleBar.Value;
+            double viewAngle = AngleBar.Value * Math.PI / 180;
 
             double[,] zCoord = new double[(int)resolution, (int)resolution];
             double[,] xCoord = new double[(int)resolution, (int)resolution];
@@ -913,8 +922,8 @@ namespace Grapher
                                 if (!double.IsInfinity(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]) &&
                                     !double.IsNaN(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
                                 {
-                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle * Math.PI / 180) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
-                                    xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle * Math.PI / 180) * y + x;
+                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
+                                    xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle) * y + x;
 
                                     if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
                                     {
@@ -977,7 +986,9 @@ namespace Grapher
                                 fillPoints[2] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
                                 fillPoints[3] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y - 1] * yScale));
 
-                                graphColor = new SolidBrush(Color.FromArgb((int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif), 0, 0));
+                                graphColor = new SolidBrush(Color.FromArgb(RGB[0] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif),
+                                                                          (RGB[1] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif)),
+                                                                          (RGB[2] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif))));
                                 graph.FillPolygon(graphColor, fillPoints);
 
                                 if (ContourBox.Checked)

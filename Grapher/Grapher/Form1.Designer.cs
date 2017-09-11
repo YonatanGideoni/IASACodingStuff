@@ -46,6 +46,9 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.ResolutionBox = new System.Windows.Forms.NumericUpDown();
             this.ContourBox = new System.Windows.Forms.CheckBox();
+            this.redGraphCheck = new System.Windows.Forms.CheckBox();
+            this.blueCheckBox = new System.Windows.Forms.CheckBox();
+            this.GreenCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MinXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxXVal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MaxYVal)).BeginInit();
@@ -296,18 +299,53 @@
             // 
             this.ContourBox.AutoSize = true;
             this.ContourBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ContourBox.Location = new System.Drawing.Point(181, 47);
+            this.ContourBox.Location = new System.Drawing.Point(182, 47);
             this.ContourBox.Name = "ContourBox";
             this.ContourBox.Size = new System.Drawing.Size(63, 17);
             this.ContourBox.TabIndex = 18;
             this.ContourBox.Text = "Contour";
             this.ContourBox.UseVisualStyleBackColor = true;
             // 
+            // redGraphCheck
+            // 
+            this.redGraphCheck.AutoSize = true;
+            this.redGraphCheck.Checked = true;
+            this.redGraphCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.redGraphCheck.Location = new System.Drawing.Point(385, 10);
+            this.redGraphCheck.Name = "redGraphCheck";
+            this.redGraphCheck.Size = new System.Drawing.Size(46, 17);
+            this.redGraphCheck.TabIndex = 19;
+            this.redGraphCheck.Text = "Red";
+            this.redGraphCheck.UseVisualStyleBackColor = true;
+            // 
+            // blueCheckBox
+            // 
+            this.blueCheckBox.AutoSize = true;
+            this.blueCheckBox.Location = new System.Drawing.Point(385, 42);
+            this.blueCheckBox.Name = "blueCheckBox";
+            this.blueCheckBox.Size = new System.Drawing.Size(47, 17);
+            this.blueCheckBox.TabIndex = 20;
+            this.blueCheckBox.Text = "Blue";
+            this.blueCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // GreenCheckBox
+            // 
+            this.GreenCheckBox.AutoSize = true;
+            this.GreenCheckBox.Location = new System.Drawing.Point(385, 26);
+            this.GreenCheckBox.Name = "GreenCheckBox";
+            this.GreenCheckBox.Size = new System.Drawing.Size(55, 17);
+            this.GreenCheckBox.TabIndex = 21;
+            this.GreenCheckBox.Text = "Green";
+            this.GreenCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 722);
+            this.Controls.Add(this.GreenCheckBox);
+            this.Controls.Add(this.blueCheckBox);
+            this.Controls.Add(this.redGraphCheck);
             this.Controls.Add(this.ContourBox);
             this.Controls.Add(this.ResolutionBox);
             this.Controls.Add(this.textBox5);
@@ -357,6 +395,9 @@
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.NumericUpDown ResolutionBox;
         private System.Windows.Forms.CheckBox ContourBox;
+        private System.Windows.Forms.CheckBox redGraphCheck;
+        private System.Windows.Forms.CheckBox blueCheckBox;
+        private System.Windows.Forms.CheckBox GreenCheckBox;
     }
 }
 
