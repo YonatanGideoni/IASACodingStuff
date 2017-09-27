@@ -979,7 +979,11 @@ namespace Grapher
                                 !double.IsNaN(xCoord[x, y]) && !double.IsNaN(xCoord[x + 1, y]) &&
                                 !double.IsNaN(xCoord[x, y - 1]) && !double.IsNaN(xCoord[x + 1, y - 1]) &&
                                 !double.IsNaN(yCoord[x, y]) && !double.IsNaN(yCoord[x + 1, y]) &&
-                                !double.IsNaN(yCoord[x, y - 1]) && !double.IsNaN(yCoord[x + 1, y - 1]))
+                                !double.IsNaN(yCoord[x, y - 1]) && !double.IsNaN(yCoord[x + 1, y - 1]) &&
+                                !double.IsInfinity(xCoord[x, y]) && !double.IsInfinity(xCoord[x + 1, y]) &&
+                                !double.IsInfinity(xCoord[x, y - 1]) && !double.IsInfinity(xCoord[x + 1, y - 1]) &&
+                                !double.IsInfinity(yCoord[x, y]) && !double.IsInfinity(yCoord[x + 1, y]) &&
+                                !double.IsInfinity(yCoord[x, y - 1]) && !double.IsInfinity(yCoord[x + 1, y - 1]))
                             {
                                 fillPoints[1] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y] * yScale));
                                 fillPoints[0] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y] * yScale));
