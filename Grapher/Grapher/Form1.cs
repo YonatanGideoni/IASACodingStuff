@@ -922,7 +922,7 @@ namespace Grapher
                                 if (!double.IsInfinity(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]) &&
                                     !double.IsNaN(zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]))
                                 {
-                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] + y;
+                                    yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * y + zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
                                     xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle) * y + x;
 
                                     if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
