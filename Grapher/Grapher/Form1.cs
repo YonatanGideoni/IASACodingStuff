@@ -874,6 +874,11 @@ namespace Grapher
             return new ParseTree<string>("0");
         }
 
+        static double calcLength(double[] point)
+        {
+            return Math.Sqrt(Math.Pow(point[0], 2) + Math.Pow(point[1], 2) + Math.Pow(point[2], 2));
+        }
+
         private void ParseButton_Click(object sender, EventArgs e)
         {
             char[] function = FunctionText.Text.ToCharArray();
@@ -885,6 +890,7 @@ namespace Grapher
             float maxY = (float)(MaxYVal.Value);
             double[] maxCoord = new double[3] { double.MinValue, double.MinValue, double.MinValue };
             double[] minCoord = new double[3] { double.MaxValue, double.MaxValue, double.MaxValue };
+            double maxDistance=0;
 
             PointF[] fillPoints = new PointF[4];
 
@@ -924,6 +930,11 @@ namespace Grapher
                                 {
                                     yCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Sin(viewAngle) * y + zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)];
                                     xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] = Math.Cos(viewAngle) * y + x;
+
+                                    if (maxDistance < calcLength(new double[3]{x, y, zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)]}))
+                                    {
+                                        maxDistance = calcLength(new double[3] { x, y, zCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)] });
+                                    }
 
                                     if (maxCoord[0] < xCoord[(int)((x - minX) / incX), (int)((y - minY) / incY)])
                                     {
@@ -990,8 +1001,9 @@ namespace Grapher
                                 fillPoints[2] = new PointF((float)(graphPanel.Width / 2 + xCoord[x, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x, y - 1] * yScale));
                                 fillPoints[3] = new PointF((float)(graphPanel.Width / 2 + xCoord[x + 1, y - 1] * xScale), (float)(graphPanel.Height / 2 - yCoord[x + 1, y - 1] * yScale));
 
-                                graphColor = new SolidBrush(Color.FromArgb(RGB[0] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif),
-                                                                          (RGB[1] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif)),
+                                graphColor = new SolidBrush(Color.FromArgb((int)(Math.Min(255,100*maxDistance/calcLength(new double[3]{xCoord[x,y], yCoord[x,y], zCoord[x,y]}))),
+                                                                            RGB[0] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif),
+                                                                          (RGB[1] * (int)Math.Abs(165 * (zCoord[x, y] - minCoord[2]) / heightDif)),
                                                                           (RGB[2] * (int)Math.Abs(255 * (zCoord[x, y] - minCoord[2]) / heightDif))));
                                 graph.FillPolygon(graphColor, fillPoints);
 
